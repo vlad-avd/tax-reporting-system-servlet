@@ -11,9 +11,11 @@ public interface Pages {
     public static final String LOGIN = "login.jsp";
     public static final String REGISTRATION = "registration.jsp";
     public static final String REPORT = "report.jsp";
+    public static final String INDIVIDUAL_PERSON_REPORT = "create-individual-person-report.jsp";
 
-    public static final String HOME_PATH = "home";
-    public static final String LOGIN_PATH = "login";
+    public static final String HOME_PATH = "home/";
+    public static final String LOGIN_PATH = "login/";
+    public static final String REPORT_PATH = "report/";
 
     public static final String REDIRECT = "redirect:";
     public static final String INCORRECT_PATH = "";
