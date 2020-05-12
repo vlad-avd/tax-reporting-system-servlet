@@ -1,4 +1,6 @@
 package ua.kpi.model.enums;
 
-public class PersonType {
+public enum  PersonType {
+    INDIVIDUAL_PERSON,
+    LEGAL_ENTITY;
 }
