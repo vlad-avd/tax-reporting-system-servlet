@@ -1,4 +1,6 @@
 package ua.kpi.model.enums;
 
-public class RejectionReason {
+public enum RejectionReason {
+    REGISTERED_REPORT,
+    SUBMIT_REPORT_OFFLINE;
 }
