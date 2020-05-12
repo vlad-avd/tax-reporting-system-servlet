@@ -12,6 +12,7 @@ public interface Pages {
     public static final String REGISTRATION = "registration.jsp";
     public static final String REPORT = "report.jsp";
     public static final String INDIVIDUAL_PERSON_REPORT = "create-individual-person-report.jsp";
+    public static final String LEGAL_ENTITY_REPORT = "create-individual-person-report.jsp";
 
     public static final String HOME_PATH = "home/";
     public static final String LOGIN_PATH = "login/";
