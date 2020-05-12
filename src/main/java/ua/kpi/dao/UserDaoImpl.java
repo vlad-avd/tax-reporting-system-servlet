@@ -2,7 +2,7 @@ package ua.kpi.dao;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
 import ua.kpi.db.Mapper;
-import ua.kpi.db.MapperImp;
+import ua.kpi.db.MapperImpl;
 import ua.kpi.db.PGConnectionPool;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
@@ -14,7 +14,7 @@ public class UserDaoImpl implements UserDao {
 
     private Connection connection;
 
-    private Mapper mapper = new MapperImp();
+    private Mapper mapper = new MapperImpl();
 
 //    public UserDaoImpl(){
 //        try {
