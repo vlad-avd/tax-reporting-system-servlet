@@ -5,6 +5,7 @@ import ua.kpi.controller.action.general.IncorrectPath;
 import ua.kpi.controller.action.general.Logout;
 import ua.kpi.controller.action.guest.Login;
 import ua.kpi.controller.action.guest.Registration;
+import ua.kpi.controller.action.user.Report;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,7 @@ public class ActionFactory {
         actions.put("login", new Login());
         actions.put("logout", new Logout());
         actions.put("home", new Home());
+        actions.put("report", new Report());
     }
 
     public Action getAction(String path) {

@@ -9,9 +9,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/home"><fmt:message key="messages.navbar.home"/></a>
             </li>
+            <c:if test="${sessionScope.username != null}">
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/report"> <fmt:message key="messages.navbar.user.reports"/></a>
             </li>
+            </c:if>
             <c:if test="${sessionScope.role == 'ROLE_INSPECTOR' or sessionScope.role == 'ROLE_ADMIN'}">
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/verification-reports"><fmt:message key="messages.navbar.inspector.reports"/></a>
