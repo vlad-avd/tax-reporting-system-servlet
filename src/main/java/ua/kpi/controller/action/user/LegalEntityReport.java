@@ -25,7 +25,12 @@ public class LegalEntityReport extends MultipleRequest implements Action {
     protected String handlePostRequest(HttpServletRequest request) {
         String companyName = request.getParameter("companyName");
         BigDecimal financialTurnover = new BigDecimal(request.getParameter("financialTurnover"));
-        ReportDto reportDto = ReportDto.newBuilder().setCompanyName(companyName).setFinancialTurnover(financialTurnover).build();
+        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+        ReportDto reportDto = ReportDto.newBuilder()
+                .setCompanyName(companyName)
+                .setFinancialTurnover(financialTurnover)
+                .setTaxpayerId(userId)
+                .build();
         reportService.createLegalEntityReport(reportDto);
         return REDIRECT + REPORT_PATH;
     }

@@ -30,7 +30,13 @@ public class IndividualPersonReport extends MultipleRequest implements Action {
         String fullName = request.getParameter("fullName");
         String workplace = request.getParameter("workplace");
         BigDecimal salary = new BigDecimal(request.getParameter("salary"));
-        ReportDto reportDto = ReportDto.newBuilder().setFullName(fullName).setWorkplace(workplace).setSalary(salary).build();
+        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+        ReportDto reportDto = ReportDto.newBuilder()
+                .setFullName(fullName)
+                .setWorkplace(workplace)
+                .setSalary(salary)
+                .setTaxpayerId(userId)
+                .build();
         reportService.createIndividualPersonReport(reportDto);
         return REDIRECT + REPORT_PATH;
     }
