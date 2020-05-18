@@ -32,6 +32,6 @@ public class IndividualPersonReport extends MultipleRequest implements Action {
         BigDecimal salary = new BigDecimal(request.getParameter("salary"));
         ReportDto reportDto = ReportDto.newBuilder().setFullName(fullName).setWorkplace(workplace).setSalary(salary).build();
         reportService.createIndividualPersonReport(reportDto);
-        return REDIRECT + LOGIN_PATH;
+        return REDIRECT + REPORT_PATH;
     }
 }
