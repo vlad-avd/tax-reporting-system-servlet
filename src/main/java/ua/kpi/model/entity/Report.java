@@ -23,6 +23,10 @@ public class Report {
     private RejectionReason rejectionReason;
     private String comment;
 
+    private Long taxpayerId;
+
+    private Long inspectorId;
+
     private LocalDate created;
     private LocalDate lastEdit;
 
@@ -72,6 +76,14 @@ public class Report {
 
     public LocalDate getLastEdit() {
         return lastEdit;
+    }
+
+    public Long getTaxpayerId() {
+        return taxpayerId;
+    }
+
+    public Long getInspectorId() {
+        return inspectorId;
     }
 
     private Report(){
@@ -130,6 +142,16 @@ public class Report {
 
         public Builder setReportStatus(ReportStatus reportStatus) {
             Report.this.reportStatus = reportStatus;
+            return this;
+        }
+
+        public Builder setTaxpayerId(Long taxpayerId) {
+            Report.this.taxpayerId = taxpayerId;
+            return this;
+        }
+
+        public Builder setInspectorId(Long inspectorId) {
+            Report.this.inspectorId = inspectorId;
             return this;
         }
 
