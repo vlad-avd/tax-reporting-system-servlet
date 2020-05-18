@@ -4,6 +4,8 @@ import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.dto.UserDto;
+import ua.kpi.model.enums.PersonType;
+import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 import ua.kpi.service.GuestService;
 import ua.kpi.service.GuestServiceImpl;
@@ -36,6 +38,8 @@ public class IndividualPersonReport extends MultipleRequest implements Action {
                 .setWorkplace(workplace)
                 .setSalary(salary)
                 .setTaxpayerId(userId)
+                .setReportStatus(ReportStatus.ON_VERIFYING)
+                .setPersonType(PersonType.INDIVIDUAL_PERSON)
                 .build();
         reportService.createIndividualPersonReport(reportDto);
         return REDIRECT + REPORT_PATH;
