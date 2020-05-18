@@ -16,4 +16,9 @@ public class ReportServiceImpl implements ReportService {
     public boolean createIndividualPersonReport(ReportDto reportDto) {
         return reportDao.saveIndividualPersonReport(reportDto);
     }
+
+    @Override
+    public boolean createLegalEntityReport(ReportDto reportDto) {
+        return reportDao.saveLegalEntityReport(reportDto);
+    }
 }

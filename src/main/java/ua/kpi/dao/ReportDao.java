@@ -4,4 +4,6 @@ import ua.kpi.dto.ReportDto;
 
 public interface ReportDao {
     boolean saveIndividualPersonReport(ReportDto reportDto);
+
+    boolean saveLegalEntityReport(ReportDto reportDto);
 }

@@ -30,4 +30,22 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public boolean saveLegalEntityReport(ReportDto reportDto) {
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String query = "INSERT INTO REPORT(company_name, financial_turnover) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, reportDto.getCompanyName());
+            ps.setBigDecimal(2, reportDto.getFinancialTurnover());
+            ps.execute();
+            return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }
