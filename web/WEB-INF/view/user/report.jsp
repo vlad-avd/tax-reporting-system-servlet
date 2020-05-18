@@ -6,6 +6,25 @@
 <body>
 <%@include file="../template/header.jsp"%>
 <div class="form-group mt-3">
+    <table class="table">
+        <thead>
+        <tr>
+        <th><fmt:message key="messages.report.id"/></th>
+        <th><fmt:message key="messages.report.person.type"/></th>
+        <th><fmt:message key="messages.report.status"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${reports}" var="report">
+            <tr>
+                <td>${report.id}</td>
+                <td>${report.personType}</td>
+                <td>${report.reportStatus}</td>
+                <td><a href="/report/${report.id}"><fmt:message key="messages.report.open"/></a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
     <form action="${pageContext.request.contextPath}/report/individual-person-report">
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.individual.person.report"/></button>
     </form>
