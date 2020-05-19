@@ -5,10 +5,15 @@ import ua.kpi.db.Mapper;
 import ua.kpi.db.MapperImpl;
 import ua.kpi.db.PGConnectionPool;
 import ua.kpi.dto.UserDto;
+import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
+import ua.kpi.model.enums.PersonType;
+import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
@@ -42,6 +47,50 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String query = "SELECT * FROM USR WHERE id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? mapper.extractUser(rs) : null;
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        String query = "SELECT * FROM USR";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ResultSet resultSet =  ps.executeQuery();
+
+            while (resultSet.next()) {
+                users.add(mapper.extractUser(resultSet));
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+        return users;
     }
 
     @Override
