@@ -9,6 +9,7 @@
         <servlet-class>ua.kpi.controller.RequestControllerServlet</servlet-class>
     </servlet>
 
+
     <servlet-mapping>
         <servlet-name>RequestControllerServlet</servlet-name>
         <url-pattern>/</url-pattern>

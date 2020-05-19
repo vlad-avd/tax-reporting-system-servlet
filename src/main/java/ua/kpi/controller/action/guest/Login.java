@@ -33,7 +33,7 @@ public class Login extends MultipleRequest {
         if(user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("user_id", user.getId());
+            session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole().toString());
             return ROOT_FOLDER + HOME;
         }
