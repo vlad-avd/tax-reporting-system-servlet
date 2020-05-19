@@ -15,6 +15,8 @@ public interface Pages {
     public static final String INDIVIDUAL_PERSON_REPORT = "/create-individual-person-report.jsp";
     public static final String LEGAL_ENTITY_REPORT = "/create-legal-entity-report.jsp";
 
+    public static final String USER_LIST = "user-list.jsp";
+
     public static final String HOME_PATH = "home";
     public static final String LOGIN_PATH = "login";
     public static final String REPORT_PATH = "report";
