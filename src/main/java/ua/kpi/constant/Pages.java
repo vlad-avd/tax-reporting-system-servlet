@@ -10,7 +10,8 @@ public interface Pages {
     public static final String HOME = "index.jsp";
     public static final String LOGIN = "login.jsp";
     public static final String REGISTRATION = "registration.jsp";
-    public static final String REPORT = "report-list.jsp";
+    public static final String REPORT_LIST = "report-list.jsp";
+    public static final String REPORT = "report.jsp";
     public static final String INDIVIDUAL_PERSON_REPORT = "/create-individual-person-report.jsp";
     public static final String LEGAL_ENTITY_REPORT = "/create-legal-entity-report.jsp";
 

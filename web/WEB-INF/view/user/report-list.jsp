@@ -15,12 +15,12 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${reports}" var="report">
+        <c:forEach items="${requestScope.reports}" var="report">
             <tr>
                 <td>${report.id}</td>
                 <td>${report.personType}</td>
                 <td>${report.reportStatus}</td>
-                <td><a href="/report/${report.id}"><fmt:message key="messages.report.open"/></a></td>
+                <td><a href="${pageContext.request.contextPath}/report?id=${report.id}"><fmt:message key="messages.report.open"/></a></td>
             </tr>
         </c:forEach>
         </tbody>

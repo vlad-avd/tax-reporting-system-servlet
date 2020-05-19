@@ -26,6 +26,9 @@ public class ReportDto {
     private LocalDate created;
     private LocalDate lastEdit;
 
+    private Long taxpayerId;
+    private Long inspectorId;
+
     public Long getId() {
         return id;
     }
@@ -72,6 +75,14 @@ public class ReportDto {
 
     public LocalDate getLastEdit() {
         return lastEdit;
+    }
+
+    public Long getTaxpayerId() {
+        return taxpayerId;
+    }
+
+    public Long getInspectorId() {
+        return inspectorId;
     }
 
     private ReportDto(){
@@ -130,6 +141,16 @@ public class ReportDto {
 
         public ReportDto.Builder setReportStatus(ReportStatus reportStatus) {
             ReportDto.this.reportStatus = reportStatus;
+            return this;
+        }
+
+        public ReportDto.Builder setTaxpayerId(Long taxpayerId) {
+            ReportDto.this.taxpayerId = taxpayerId;
+            return this;
+        }
+
+        public ReportDto.Builder setInspectorId(Long inspectorId) {
+            ReportDto.this.inspectorId = inspectorId;
             return this;
         }
 
