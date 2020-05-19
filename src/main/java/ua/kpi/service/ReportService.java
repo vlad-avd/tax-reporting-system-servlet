@@ -11,4 +11,6 @@ public interface ReportService {
     boolean createLegalEntityReport(ReportDto reportDto);
 
     List<Report> getReportsByUserId(Long id);
+
+    Report getReportById(Long id);
 }

@@ -11,4 +11,6 @@ public interface ReportDao {
     boolean saveLegalEntityReport(ReportDto reportDto);
 
     List<Report> getReportsByUserId(Long id);
+
+    Report findReportById(Long id);
 }

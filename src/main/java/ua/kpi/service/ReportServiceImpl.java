@@ -29,4 +29,9 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> getReportsByUserId(Long id) {
         return reportDao.getReportsByUserId(id);
     }
+
+    @Override
+    public Report getReportById(Long id) {
+        return reportDao.findReportById(id);
+    }
 }

@@ -1,6 +1,8 @@
 package ua.kpi.dao;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
+import ua.kpi.db.Mapper;
+import ua.kpi.db.MapperImpl;
 import ua.kpi.db.PGConnectionPool;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
@@ -17,6 +19,8 @@ import java.util.List;
 public class ReportDaoImpl implements ReportDao {
 
     private Connection connection;
+
+    private Mapper mapper = new MapperImpl();
 
     @Override
     public boolean saveIndividualPersonReport(ReportDto reportDto) {
@@ -97,5 +101,24 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
         return reports;
+    }
+
+    @Override
+    public Report findReportById(Long id) {
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String query = "SELECT * FROM REPORT WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? mapper.extractReport(rs) : null;
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
     }
 }
