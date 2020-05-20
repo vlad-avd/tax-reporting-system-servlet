@@ -16,4 +16,6 @@ public interface ReportService {
     Report getReportById(Long id);
 
     boolean updateVerifiedReport(ReportDto reportDto);
+
+    boolean setReplacedInspector(Long reportId, Long inspectorId);
 }

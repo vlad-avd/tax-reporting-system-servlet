@@ -40,4 +40,9 @@ public class ReportServiceImpl implements ReportService {
     public boolean updateVerifiedReport(ReportDto reportDto) {
         return reportDao.updateVerifiedReport(reportDto);
     }
+
+    @Override
+    public boolean setReplacedInspector(Long reportId, Long inspectorId) {
+        return reportDao.setReplacedInspector(reportId, inspectorId);
+    }
 }

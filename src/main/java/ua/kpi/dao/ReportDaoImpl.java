@@ -186,4 +186,24 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public boolean setReplacedInspector(Long reportId, Long inspectorId) {
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String query = "INSERT INTO report_replaced_inspector(inspector_id, report_id) VALUES (?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, inspectorId);
+            ps.setLong(2, reportId);
+
+            ps.execute();
+            return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }

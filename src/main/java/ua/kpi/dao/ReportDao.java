@@ -18,4 +18,6 @@ public interface ReportDao {
     List<Report> getVerificationReports(Long inspectorId);
 
     boolean updateVerifiedReport(ReportDto reportDto);
+
+    boolean setReplacedInspector(Long reportId, Long inspectorId);
 }
