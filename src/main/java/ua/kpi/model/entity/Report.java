@@ -155,5 +155,25 @@ public class Report {
             return this;
         }
 
+        public Builder setRejectionReason(RejectionReason rejectionReason) {
+            Report.this.rejectionReason = rejectionReason;
+            return this;
+        }
+
+        public Builder setComment(String comment) {
+            Report.this.comment = comment;
+            return this;
+        }
+
+        public Builder setCreated(LocalDate created) {
+            Report.this.created = created;
+            return this;
+        }
+
+        public Builder setLastEdit(LocalDate lastEdit) {
+            Report.this.lastEdit = lastEdit;
+            return this;
+        }
+
     }
 }

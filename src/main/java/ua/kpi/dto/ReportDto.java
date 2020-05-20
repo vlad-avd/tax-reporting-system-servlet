@@ -154,5 +154,25 @@ public class ReportDto {
             return this;
         }
 
+        public ReportDto.Builder setRejectionReason(RejectionReason rejectionReason) {
+            ReportDto.this.rejectionReason = rejectionReason;
+            return this;
+        }
+
+        public ReportDto.Builder setComment(String comment) {
+            ReportDto.this.comment = comment;
+            return this;
+        }
+
+        public ReportDto.Builder setCreated(LocalDate created) {
+            ReportDto.this.created = created;
+            return this;
+        }
+
+        public ReportDto.Builder setLastEdit(LocalDate lastEdit) {
+            ReportDto.this.lastEdit = lastEdit;
+            return this;
+        }
+
     }
 }
