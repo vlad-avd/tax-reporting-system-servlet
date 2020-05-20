@@ -2,6 +2,7 @@ package ua.kpi.dao;
 
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.model.enums.ReportStatus;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface ReportDao {
     Report findReportById(Long id);
 
     List<Report> getVerificationReports(Long inspectorId);
+
+    boolean updateVerifiedReport(ReportDto reportDto);
 }

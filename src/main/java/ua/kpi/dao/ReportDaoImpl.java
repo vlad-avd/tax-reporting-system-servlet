@@ -9,10 +9,7 @@ import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,5 +156,34 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
         return reports;
+    }
+
+    @Override
+    public boolean updateVerifiedReport(ReportDto reportDto) {
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String query = "UPDATE report " +
+                "SET report_status = ?, inspector_id = ?, inspector_comment = ?, rejection_reason = ? " +
+                "where id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, reportDto.getReportStatus().toString());
+            ps.setLong(2, reportDto.getInspectorId());
+            ps.setString(3, reportDto.getComment());
+            if(reportDto.getRejectionReason() != null){
+                ps.setString(4, reportDto.getRejectionReason().toString());
+            }
+            else {
+                ps.setNull(4, Types.VARCHAR);
+            }
+            ps.setLong(5, reportDto.getId());
+
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
     }
 }

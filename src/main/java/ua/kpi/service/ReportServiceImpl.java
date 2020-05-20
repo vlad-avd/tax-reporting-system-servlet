@@ -4,6 +4,7 @@ import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.ReportDaoImpl;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.model.enums.ReportStatus;
 
 import java.util.List;
 
@@ -33,5 +34,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Report getReportById(Long id) {
         return reportDao.findReportById(id);
+    }
+
+    @Override
+    public boolean updateVerifiedReport(ReportDto reportDto) {
+        return reportDao.updateVerifiedReport(reportDto);
     }
 }
