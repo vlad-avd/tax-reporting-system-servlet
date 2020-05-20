@@ -44,9 +44,10 @@
         </tbody>
     </table>
 </div>
-<form action="/check-report/${requestScope.report.id}" method="post">
+<form action="${pageContext.request.contextPath}/report-verification/verification-result?id=${requestScope.report.id}" method="post">
     <button type="submit" name="reportStatus" value="approve"><fmt:message key="messages.report.approve"/></button>
     <select name="rejectionReason">
+        <option selected value>- - - - -</option>
         <c:forEach items="${requestScope.rejectionReasons}" var="reason">
             <option value="${reason}">
                     ${reason}
