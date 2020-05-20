@@ -10,6 +10,7 @@ import ua.kpi.controller.action.inspector.ReportVerification;
 import ua.kpi.controller.action.inspector.VerificationResult;
 import ua.kpi.controller.action.user.IndividualPersonReport;
 import ua.kpi.controller.action.user.LegalEntityReport;
+import ua.kpi.controller.action.user.ReplaceInspector;
 import ua.kpi.controller.action.user.ReportAction;
 
 import java.util.Map;
@@ -43,6 +44,7 @@ public class ActionFactory {
         actions.put("user", new UserAction());
         actions.put("report-verification", new ReportVerification());
         actions.put("report-verification/verification-result", new VerificationResult());
+        actions.put("report/replace-inspector", new ReplaceInspector());
     }
 
     public Action getAction(String path) {

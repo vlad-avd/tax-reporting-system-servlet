@@ -43,11 +43,13 @@
         </tbody>
     </table>
 </div>
+<c:if test="${requestScope.report.reportStatus == 'NEED_TO_EDIT' or requestScope.report.reportStatus == 'REJECTED'}">
 <div class="form-group mt-3">
-    <form action="/user/replace-inspector/${requestScope.report.id}">
+    <form action="${pageContext.request.contextPath}/report/replace-inspector?id=${requestScope.report.id}" method="post">
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.replace.inspector"/></button>
     </form>
 </div>
+</c:if>
 <div class="form-group mt-3">
     <form action="${pageContext.request.contextPath}/report/individual-person-report">
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.individual.person.report"/></button>
