@@ -121,4 +121,43 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public List<Report> getVerificationReports(Long inspectorId) {
+        List<Report> reports = new ArrayList<>();
+
+        try {
+            connection = PGConnectionPool.getInstance().getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        String query = "SELECT * FROM report AS r LEFT JOIN report_replaced_inspector AS ri ON r.id = ri.report_id " +
+                "WHERE r.report_status = 'ON_VERIFYING' " +
+                "and (ri.inspector_id <> ? or ri.inspector_id is NULL)";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, inspectorId);
+            ResultSet resultSet =  ps.executeQuery();
+
+            while (resultSet.next()) {
+                Report report = Report.newBuilder()
+                        .setId(resultSet.getLong("id"))
+                        .setCompanyName(resultSet.getString("company_name"))
+                        .setFinancialTurnover(resultSet.getBigDecimal("financial_turnover"))
+                        .setFullName(resultSet.getString("full_name"))
+                        .setInspectorId(resultSet.getLong("inspector_id"))
+                        .setPersonType(PersonType.valueOf(resultSet.getString("person_type")))
+                        .setReportStatus(ReportStatus.valueOf(resultSet.getString("report_status")))
+                        .setSalary(resultSet.getBigDecimal("salary"))
+                        .setTaxpayerId(resultSet.getLong("taxpayer_id"))
+                        .setWorkplace(resultSet.getString("workplace"))
+                        .build();
+                reports.add(report);
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+        return reports;
+    }
 }

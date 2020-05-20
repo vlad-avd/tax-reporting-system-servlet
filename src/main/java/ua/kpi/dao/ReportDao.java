@@ -13,4 +13,6 @@ public interface ReportDao {
     List<Report> getReportsByUserId(Long id);
 
     Report findReportById(Long id);
+
+    List<Report> getVerificationReports(Long inspectorId);
 }
