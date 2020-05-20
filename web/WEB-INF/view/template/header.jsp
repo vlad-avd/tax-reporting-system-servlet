@@ -16,7 +16,7 @@
             </c:if>
             <c:if test="${sessionScope.role == 'ROLE_INSPECTOR' or sessionScope.role == 'ROLE_ADMIN'}">
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/verification-reports"><fmt:message key="messages.navbar.inspector.reports"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/report-verification"><fmt:message key="messages.navbar.inspector.reports"/></a>
             </li>
             </c:if>
 

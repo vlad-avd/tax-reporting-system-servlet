@@ -6,6 +6,7 @@ import ua.kpi.controller.action.general.IncorrectPath;
 import ua.kpi.controller.action.general.Logout;
 import ua.kpi.controller.action.guest.Login;
 import ua.kpi.controller.action.guest.Registration;
+import ua.kpi.controller.action.inspector.ReportVerification;
 import ua.kpi.controller.action.user.IndividualPersonReport;
 import ua.kpi.controller.action.user.LegalEntityReport;
 import ua.kpi.controller.action.user.ReportAction;
@@ -39,6 +40,7 @@ public class ActionFactory {
         actions.put("report/individual-person-report", new IndividualPersonReport());
         actions.put("report/legal-entity-report", new LegalEntityReport());
         actions.put("user", new UserAction());
+        actions.put("report-verification", new ReportVerification());
     }
 
     public Action getAction(String path) {

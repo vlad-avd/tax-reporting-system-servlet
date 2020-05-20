@@ -17,6 +17,8 @@ public interface Pages {
 
     public static final String USER_LIST = "user-list.jsp";
 
+    public static final String REPORT_VERIFICATION = "report-verification-list.jsp";
+
     public static final String HOME_PATH = "home";
     public static final String LOGIN_PATH = "login";
     public static final String REPORT_PATH = "report";
