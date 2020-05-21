@@ -11,39 +11,35 @@ import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class UserDaoImpl implements UserDao {
 
-    private Connection connection;
+    private DataSource dataSource;
 
-    private Mapper mapper = new MapperImpl();
+    private Mapper mapper;
 
-//    public UserDaoImpl(){
-//        try {
-//            Connection connection = PGConnectionPool.getInstance().getConnection();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//    }
+    private ResourceBundle queries;
+
+    {
+        dataSource = PGConnectionPool.getInstance();
+        queries = ResourceBundle.getBundle("sql-queries");
+        mapper = new MapperImpl();
+    }
 
     @Override
     public User getUserByUsername(String username) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "SELECT * FROM USR WHERE username = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.user.by.username"));) {
             ps.setString(1, username);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next() ? mapper.extractUser(rs) : null;
-            }
+            ResultSet rs = ps.executeQuery();
+            return rs.next() ? mapper.extractUser(rs) : null;
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
@@ -51,19 +47,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "SELECT * FROM USR WHERE id = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.user.by.id"));) {
             ps.setLong(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery();
                 return rs.next() ? mapper.extractUser(rs) : null;
-            }
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
@@ -73,15 +63,9 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String query = "SELECT * FROM USR";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.all.users"));) {
             ResultSet resultSet =  ps.executeQuery();
 
             while (resultSet.next()) {
@@ -95,14 +79,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean createUser(UserDto user) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "INSERT INTO USR(username, password, role) VALUES (?, ?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("create.user"));) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getRole().toString());
@@ -115,14 +94,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void setUserRole(Long id, Role role) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "INSERT INTO USER_ROLE VALUES (?, ?)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("set.user.role"));) {
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setLong(1, id);
             ps.setString(2, role.toString());
             ps.execute();

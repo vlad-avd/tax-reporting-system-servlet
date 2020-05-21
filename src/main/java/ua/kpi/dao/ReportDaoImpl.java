@@ -1,6 +1,7 @@
 package ua.kpi.dao;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
+import ua.kpi.db.ConnectionPool;
 import ua.kpi.db.Mapper;
 import ua.kpi.db.MapperImpl;
 import ua.kpi.db.PGConnectionPool;
@@ -9,25 +10,31 @@ import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ReportDaoImpl implements ReportDao {
 
-    private Connection connection;
+    private DataSource dataSource;
 
-    private Mapper mapper = new MapperImpl();
+    private Mapper mapper;
+
+    private ResourceBundle queries;
+
+    {
+        dataSource = PGConnectionPool.getInstance();
+        queries = ResourceBundle.getBundle("sql-queries");
+        mapper = new MapperImpl();
+    }
 
     @Override
     public boolean saveIndividualPersonReport(ReportDto reportDto) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "INSERT INTO REPORT(full_name, workplace, salary, taxpayer_id, person_type, report_status) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("create.individual.person.report"));) {
             ps.setString(1, reportDto.getFullName());
             ps.setString(2, reportDto.getWorkplace());
             ps.setBigDecimal(3, reportDto.getSalary());
@@ -43,13 +50,9 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean saveLegalEntityReport(ReportDto reportDto) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "INSERT INTO REPORT(company_name, financial_turnover, taxpayer_id, person_type, report_status) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("create.legal.entity.report"))) {
             ps.setString(1, reportDto.getCompanyName());
             ps.setBigDecimal(2, reportDto.getFinancialTurnover());
             ps.setLong(3, reportDto.getTaxpayerId());
@@ -67,15 +70,9 @@ public class ReportDaoImpl implements ReportDao {
 
         List<Report> reports = new ArrayList<>();
 
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String query = "SELECT * FROM REPORT WHERE taxpayer_id = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));) {
             ps.setLong(1, id);
             ResultSet resultSet =  ps.executeQuery();
 
@@ -102,18 +99,14 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public Report findReportById(Long id) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "SELECT * FROM REPORT WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.report.by.id"));) {
             ps.setLong(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery();
                 return rs.next() ? mapper.extractReport(rs) : null;
-            }
+
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
@@ -123,17 +116,9 @@ public class ReportDaoImpl implements ReportDao {
     public List<Report> getVerificationReports(Long inspectorId) {
         List<Report> reports = new ArrayList<>();
 
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        String query = "SELECT * FROM report AS r LEFT JOIN report_replaced_inspector AS ri ON r.id = ri.report_id " +
-                "WHERE r.report_status = 'ON_VERIFYING' " +
-                "and (ri.inspector_id <> ? or ri.inspector_id is NULL)";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.verification.reports"));) {
             ps.setLong(1, inspectorId);
             ResultSet resultSet =  ps.executeQuery();
 
@@ -160,15 +145,9 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean updateVerifiedReport(ReportDto reportDto) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "UPDATE report " +
-                "SET report_status = ?, inspector_id = ?, inspector_comment = ?, rejection_reason = ? " +
-                "where id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("update.verified.report"));) {
             ps.setString(1, reportDto.getReportStatus().toString());
             ps.setLong(2, reportDto.getInspectorId());
             ps.setString(3, reportDto.getComment());
@@ -189,14 +168,9 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean setReplacedInspector(Long reportId, Long inspectorId) {
-        try {
-            connection = PGConnectionPool.getInstance().getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        String query = "INSERT INTO report_replaced_inspector(inspector_id, report_id) VALUES (?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("set.replaced.inspector"));) {
             ps.setLong(1, inspectorId);
             ps.setLong(2, reportId);
 
