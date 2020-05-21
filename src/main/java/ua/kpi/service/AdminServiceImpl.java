@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AdminServiceImpl implements AdminService {
 
-    private ConnectionPool connectionPool = PGConnectionPool.getInstance();
+    //private ConnectionPool connectionPool = PGConnectionPool.getInstance();
 
     private UserDao userDao;
 

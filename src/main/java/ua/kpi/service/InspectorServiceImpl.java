@@ -12,8 +12,6 @@ import java.util.List;
 
 public class InspectorServiceImpl implements InspectorService {
 
-    private ConnectionPool connectionPool = PGConnectionPool.getInstance();
-
     private ReportDao reportDao;
 
     {
