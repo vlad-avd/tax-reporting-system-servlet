@@ -13,6 +13,9 @@
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/report"> <fmt:message key="messages.navbar.user.reports"/></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="${pageContext.request.contextPath}/profile"> <fmt:message key="messages.account.my.profile"/></a>
+            </li>
             </c:if>
             <c:if test="${sessionScope.role == 'ROLE_INSPECTOR' or sessionScope.role == 'ROLE_ADMIN'}">
             <li class="nav-item active">
