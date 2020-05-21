@@ -12,11 +12,9 @@ import java.util.ResourceBundle;
 
 public class PGConnectionPool implements ConnectionPool {
 
-    private static ConnectionPool instance;
-
     private static DataSource dataSource;
 
-    private PGConnectionPool(){
+    private static DataSource setProps(){
         ResourceBundle pgProperties = ResourceBundle.getBundle("postgres");
         BasicDataSource ds = new BasicDataSource();
         ds.setUrl(pgProperties.getString("pg.url"));
@@ -26,15 +24,19 @@ public class PGConnectionPool implements ConnectionPool {
         ds.setMinIdle(Integer.parseInt(pgProperties.getString("pg.minIdle")));
         ds.setMaxIdle(Integer.parseInt(pgProperties.getString("pg.maxIdle")));
         ds.setMaxOpenPreparedStatements(Integer.parseInt(pgProperties.getString("pg.maxOpenStatement")));
-        dataSource = ds;
+        return ds;
     }
 
-    public static ConnectionPool getInstance(){
-        if (instance == null)
+    public static DataSource getInstance(){
+        if (dataSource == null)
         {
-            instance = new PGConnectionPool();
+            synchronized (PGConnectionPool.class) {
+                if(dataSource == null) {
+                    dataSource = setProps();
+                }
+            }
         }
-        return instance;
+        return dataSource;
     }
 
     @Override
