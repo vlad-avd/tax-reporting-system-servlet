@@ -105,4 +105,20 @@ public class UserDaoImpl implements UserDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public boolean updateUser(UserDto userDto) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("update.user"));) {
+            ps.setString(1, userDto.getUsername());
+            ps.setString(2, userDto.getPassword());
+            ps.setString(3, userDto.getRole().toString());
+            ps.setLong(4, userDto.getId());
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }
