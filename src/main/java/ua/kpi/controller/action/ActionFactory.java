@@ -1,6 +1,8 @@
 package ua.kpi.controller.action;
 
+import ua.kpi.controller.action.admin.EditUserProfile;
 import ua.kpi.controller.action.admin.UserAction;
+import ua.kpi.controller.action.admin.UserStatistics;
 import ua.kpi.controller.action.general.Home;
 import ua.kpi.controller.action.general.IncorrectPath;
 import ua.kpi.controller.action.general.Logout;
@@ -44,6 +46,8 @@ public class ActionFactory {
         actions.put("report/replace-inspector", new ReplaceInspector());
         actions.put("profile", new Profile());
         actions.put("profile/edit", new EditProfile());
+        actions.put("user/edit", new EditUserProfile());
+        actions.put("user/statistics", new UserStatistics());
     }
 
     public Action getAction(String path) {
