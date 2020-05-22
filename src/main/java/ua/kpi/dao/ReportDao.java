@@ -1,6 +1,7 @@
 package ua.kpi.dao;
 
 import ua.kpi.dto.ReportDto;
+import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.ReportStatus;
 

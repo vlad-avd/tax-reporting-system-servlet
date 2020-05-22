@@ -20,7 +20,8 @@
         <tr>
             <td>${user.username}</td>
             <td>${user.role.toString()}</td>
-            <td><a href="/user/${user.id}"><fmt:message key="messages.user.edit"/></a></td>
+            <td><a href="${pageContext.request.contextPath}/user/edit?id=${user.id}"><fmt:message key="messages.user.edit"/></a></td>
+            <td><a href="${pageContext.request.contextPath}/user/statistics?id=${user.id}"><fmt:message key="messages.user.statistics"/></a></td>
         </tr>
         </c:forEach>>
         </tbody>

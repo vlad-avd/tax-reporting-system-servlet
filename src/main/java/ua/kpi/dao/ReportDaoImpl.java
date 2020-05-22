@@ -6,12 +6,15 @@ import ua.kpi.db.Mapper;
 import ua.kpi.db.MapperImpl;
 import ua.kpi.db.PGConnectionPool;
 import ua.kpi.dto.ReportDto;
+import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,6 +44,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setLong(4, reportDto.getTaxpayerId());
             ps.setString(5, PersonType.INDIVIDUAL_PERSON.toString());
             ps.setString(6, ReportStatus.ON_VERIFYING.toString());
+            ps.setDate(7, Date.valueOf(LocalDate.now()));
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -58,6 +62,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setLong(3, reportDto.getTaxpayerId());
             ps.setString(4, PersonType.LEGAL_ENTITY.toString());
             ps.setString(5, ReportStatus.ON_VERIFYING.toString());
+            ps.setDate(6, Date.valueOf(LocalDate.now()));
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -77,19 +82,7 @@ public class ReportDaoImpl implements ReportDao {
             ResultSet resultSet =  ps.executeQuery();
 
             while (resultSet.next()) {
-                Report report = Report.newBuilder()
-                        .setId(resultSet.getLong("id"))
-                        .setCompanyName(resultSet.getString("company_name"))
-                        .setFinancialTurnover(resultSet.getBigDecimal("financial_turnover"))
-                        .setFullName(resultSet.getString("full_name"))
-                        .setInspectorId(resultSet.getLong("inspector_id"))
-                        .setPersonType(PersonType.valueOf(resultSet.getString("person_type")))
-                        .setReportStatus(ReportStatus.valueOf(resultSet.getString("report_status")))
-                        .setSalary(resultSet.getBigDecimal("salary"))
-                        .setTaxpayerId(resultSet.getLong("taxpayer_id"))
-                        .setWorkplace(resultSet.getString("workplace"))
-                        .build();
-                reports.add(report);
+                reports.add(mapper.extractReport(resultSet));
             }
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
@@ -123,19 +116,7 @@ public class ReportDaoImpl implements ReportDao {
             ResultSet resultSet =  ps.executeQuery();
 
             while (resultSet.next()) {
-                Report report = Report.newBuilder()
-                        .setId(resultSet.getLong("id"))
-                        .setCompanyName(resultSet.getString("company_name"))
-                        .setFinancialTurnover(resultSet.getBigDecimal("financial_turnover"))
-                        .setFullName(resultSet.getString("full_name"))
-                        .setInspectorId(resultSet.getLong("inspector_id"))
-                        .setPersonType(PersonType.valueOf(resultSet.getString("person_type")))
-                        .setReportStatus(ReportStatus.valueOf(resultSet.getString("report_status")))
-                        .setSalary(resultSet.getBigDecimal("salary"))
-                        .setTaxpayerId(resultSet.getLong("taxpayer_id"))
-                        .setWorkplace(resultSet.getString("workplace"))
-                        .build();
-                reports.add(report);
+                reports.add(mapper.extractReport(resultSet));
             }
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
