@@ -89,8 +89,8 @@ public class ReportDto {
 
     }
 
-    public ReportDto.Builder getBuilder() {
-        return new ReportDto.Builder();
+    public Builder getBuilder() {
+        return new Builder();
     }
 
     public static ReportDto.Builder newBuilder() {

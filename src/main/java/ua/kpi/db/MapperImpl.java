@@ -6,8 +6,10 @@ import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class MapperImpl implements Mapper {
     @Override
@@ -22,6 +24,13 @@ public class MapperImpl implements Mapper {
 
     @Override
     public Report extractReport(ResultSet resultSet) throws SQLException {
+
+        Date lastEdit = resultSet.getDate("last_edit");
+        LocalDate lastEditDate = null;
+        if(lastEdit != null){
+            lastEditDate = lastEdit.toLocalDate();
+        }
+
         return Report.newBuilder()
                 .setId(resultSet.getLong("id"))
                 .setCompanyName(resultSet.getString("company_name"))
@@ -33,6 +42,10 @@ public class MapperImpl implements Mapper {
                 .setSalary(resultSet.getBigDecimal("salary"))
                 .setTaxpayerId(resultSet.getLong("taxpayer_id"))
                 .setWorkplace(resultSet.getString("workplace"))
+                .setInspectorId(resultSet.getLong("inspector_id"))
+                .setComment(resultSet.getString("inspector_comment"))
+                .setCreated(resultSet.getDate("created").toLocalDate())
+                .setLastEdit(lastEditDate)
                 .build();
     }
 }
