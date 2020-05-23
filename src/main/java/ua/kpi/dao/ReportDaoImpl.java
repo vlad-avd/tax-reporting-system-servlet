@@ -45,6 +45,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setString(5, PersonType.INDIVIDUAL_PERSON.toString());
             ps.setString(6, ReportStatus.ON_VERIFYING.toString());
             ps.setDate(7, Date.valueOf(LocalDate.now()));
+            ps.setLong(8, reportDto.getInspectorId());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -63,6 +64,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setString(4, PersonType.LEGAL_ENTITY.toString());
             ps.setString(5, ReportStatus.ON_VERIFYING.toString());
             ps.setDate(6, Date.valueOf(LocalDate.now()));
+            ps.setLong(7, reportDto.getInspectorId());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -147,15 +149,101 @@ public class ReportDaoImpl implements ReportDao {
         }
     }
 
+    //TODO: Transaction
+
     @Override
-    public boolean setReplacedInspector(Long reportId, Long inspectorId) {
+    public boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("set.replaced.inspector"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("update.report.inspector.id"))) {
+            ps1.setLong(1, oldInspectorId);
+            ps1.setLong(2, reportId);
+
+            ps1.execute();
+
+            ps2.setLong(1, newInspectorId);
+            ps2.setLong(2, reportId);
+
+            ps2.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<Long> getAllInspectorIds() {
+
+        List<Long> inspectorIds = new ArrayList<>();
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("set.replaced.inspector"));) {
+                     .prepareStatement(queries.getString("get.all.inspector.ids"));) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                inspectorIds.add(rs.getLong(1));
+            }
+
+            return inspectorIds;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<Long> getAllInspectorIdsFromReports() {
+        List<Long> inspectorIds = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.all.inspector.ids.from.reports"));) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                inspectorIds.add(rs.getLong(1));
+            }
+
+            return inspectorIds;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<Long> getReplacedInspectorsByReportId(Long reportId) {
+        List<Long> replacedInspectorIds = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.replaced.inspectors.by.report.id"));) {
+            ps.setLong(1, reportId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                replacedInspectorIds.add(rs.getLong(1));
+            }
+
+            return replacedInspectorIds;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public boolean updateReportInspectorId(Long reportId, Long inspectorId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("update.report.inspector.id"));) {
             ps.setLong(1, inspectorId);
             ps.setLong(2, reportId);
 
-            ps.execute();
+            ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);

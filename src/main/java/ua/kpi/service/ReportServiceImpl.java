@@ -42,7 +42,45 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public boolean setReplacedInspector(Long reportId, Long inspectorId) {
-        return reportDao.setReplacedInspector(reportId, inspectorId);
+    public boolean setReplacedInspector(Long reportId) {
+        Long oldInspectorId = getReportById(reportId).getInspectorId();
+        Long newInspectorId = getInspectorIdWithLeastReportsNumber(reportId);
+        return reportDao.setReplacedInspector(reportId, oldInspectorId, newInspectorId);
+    }
+
+    @Override
+    public Long getInspectorIdWithLeastReportsNumber(Long reportId) {
+        List<Long> inspectors = reportDao.getAllInspectorIds();
+        List<Long> replacedInspectors = reportDao.getReplacedInspectorsByReportId(reportId);
+        inspectors.removeAll(replacedInspectors);
+        List<Long> inspectorIdsInReports = reportDao.getAllInspectorIdsFromReports();
+
+        Long inspectorWithLeastReportsNumber = inspectors.get(0);
+        long reportsNumber = inspectorIdsInReports.stream()
+                .filter(inspectors.get(0)::equals)
+                .count();
+
+        for(Long inspector : inspectors){
+            long rN = inspectorIdsInReports.stream()
+                    .filter(inspector::equals)
+                    .count();
+
+            if(rN < reportsNumber){
+                reportsNumber = rN;
+                inspectorWithLeastReportsNumber = inspector;
+            }
+        }
+
+        return  inspectorWithLeastReportsNumber;
+    }
+
+    @Override
+    public boolean isPossiblyToReplaceInspector(Long reportId) {
+        List<Long> inspectors = reportDao.getAllInspectorIds();
+        System.out.println("All inspectors: " + inspectors);
+        List<Long> replacedInspectors = reportDao.getReplacedInspectorsByReportId(reportId);
+        System.out.println("Replaced inspectors: " + replacedInspectors);
+
+        return (inspectors.size() - replacedInspectors.size()) > 1;
     }
 }

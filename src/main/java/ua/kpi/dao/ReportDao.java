@@ -20,5 +20,13 @@ public interface ReportDao {
 
     boolean updateVerifiedReport(ReportDto reportDto);
 
-    boolean setReplacedInspector(Long reportId, Long inspectorId);
+    boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId);
+
+    List<Long> getAllInspectorIds();
+
+    List<Long> getAllInspectorIdsFromReports();
+
+    List<Long> getReplacedInspectorsByReportId(Long reportId);
+
+    boolean updateReportInspectorId(Long reportId, Long inspectorId);
 }

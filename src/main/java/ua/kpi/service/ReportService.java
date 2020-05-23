@@ -2,6 +2,7 @@ package ua.kpi.service;
 
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.ReportStatus;
 
 import java.util.List;
@@ -17,5 +18,9 @@ public interface ReportService {
 
     boolean updateVerifiedReport(ReportDto reportDto);
 
-    boolean setReplacedInspector(Long reportId, Long inspectorId);
+    boolean setReplacedInspector(Long reportId);
+
+    Long getInspectorIdWithLeastReportsNumber(Long reportId);
+
+    boolean isPossiblyToReplaceInspector(Long reportId);
 }
