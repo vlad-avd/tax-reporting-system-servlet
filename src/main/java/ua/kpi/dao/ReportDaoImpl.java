@@ -149,26 +149,40 @@ public class ReportDaoImpl implements ReportDao {
         }
     }
 
-    //TODO: Transaction
-
     @Override
     public boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps1 = connection
-                     .prepareStatement(queries.getString("set.replaced.inspector"));
-             PreparedStatement ps2 = connection
-                     .prepareStatement(queries.getString("update.report.inspector.id"))) {
-            ps1.setLong(1, oldInspectorId);
-            ps1.setLong(2, reportId);
+        try (Connection connection = dataSource.getConnection();) {
+            try (PreparedStatement ps1 = connection
+                    .prepareStatement(queries.getString("set.replaced.inspector"));
+                 PreparedStatement ps2 = connection
+                         .prepareStatement(queries.getString("update.report.inspector.id"))) {
 
-            ps1.execute();
+                connection.setAutoCommit(false);
 
-            ps2.setLong(1, newInspectorId);
-            ps2.setLong(2, reportId);
+                Savepoint savepoint = connection.setSavepoint("savepoint");
 
-            ps2.executeUpdate();
-            return true;
-        } catch (SQLException ex) {
+                ps1.setLong(1, oldInspectorId);
+                ps1.setLong(2, reportId);
+
+                ps1.execute();
+
+                ps2.setLong(1, newInspectorId);
+                ps2.setLong(2, reportId);
+
+                ps2.executeUpdate();
+
+                connection.commit();
+
+                return true;
+            } catch (SQLException ex) {
+                try {
+                    connection.rollback();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                throw new SqlRuntimeException(ex);
+            }
+        } catch (SQLException ex){
             throw new SqlRuntimeException(ex);
         }
     }
