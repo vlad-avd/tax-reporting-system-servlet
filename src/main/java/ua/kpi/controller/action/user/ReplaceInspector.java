@@ -22,8 +22,8 @@ public class ReplaceInspector implements Action {
         System.out.println(id);
         if(!id.isEmpty()) {
             Long reportId = Long.parseLong(id);
-            Report report = reportService.getReportById(reportId);
-            reportService.setReplacedInspector(reportId, report.getInspectorId());
+
+            reportService.setReplacedInspector(reportId);
         }
         return REDIRECT + REPORT_PATH;
     }
