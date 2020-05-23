@@ -32,6 +32,7 @@ public class LegalEntityReport extends MultipleRequest implements Action {
                 .setCompanyName(companyName)
                 .setFinancialTurnover(financialTurnover)
                 .setTaxpayerId(userId)
+                .setInspectorId(reportService.getInspectorIdWithLeastReportsNumber(0L))
                 .setReportStatus(ReportStatus.ON_VERIFYING)
                 .setPersonType(PersonType.LEGAL_ENTITY)
                 .build();
