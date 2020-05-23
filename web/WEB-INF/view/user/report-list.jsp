@@ -5,8 +5,8 @@
 </head>
 <body>
 <%@include file="../template/header.jsp"%>
-<div class="form-group mt-3">
-    <table class="table">
+<div class="form-group mt-3 container">
+    <table class="table table-striped">
         <thead>
         <tr>
         <th><fmt:message key="messages.report.id"/></th>
@@ -25,13 +25,13 @@
         </c:forEach>
         </tbody>
     </table>
-    <form action="${pageContext.request.contextPath}/report/individual-person-report">
-        <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.individual.person.report"/></button>
-    </form>
-</div>
-<div class="form-group">
-    <form action="${pageContext.request.contextPath}/report/legal-entity-report">
-        <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.legal.entity.report"/></button>
-    </form>
+    <div class="row" style="margin-top: 20px" >
+        <form style="margin-right: 20px" action="${pageContext.request.contextPath}/report/individual-person-report">
+            <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.individual.person.report"/></button>
+        </form>
+        <form action="${pageContext.request.contextPath}/report/legal-entity-report">
+            <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.legal.entity.report"/></button>
+        </form>
+    </div>
 </div>
 </body>

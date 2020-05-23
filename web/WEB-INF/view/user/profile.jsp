@@ -5,8 +5,8 @@
 </head>
 <body>
 <%@include file="../template/header.jsp"%>
-<div>
-    <table class="table">
+<div class="container">
+    <table class="table col-md-4">
         <tbody>
             <tr>
                 <th><fmt:message key="messages.user.username"/>:</th>
@@ -22,10 +22,10 @@
             </tr>
         </tbody>
     </table>
-</div>
-<div class="form-group mt-3">
-    <form action="${pageContext.request.contextPath}/profile/edit">
-        <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.edit"/></button>
-    </form>
+    <div class="form-group mt-3">
+        <form action="${pageContext.request.contextPath}/profile/edit">
+            <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.edit"/></button>
+        </form>
+    </div>
 </div>
 </body>

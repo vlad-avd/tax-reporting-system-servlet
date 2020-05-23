@@ -11,10 +11,10 @@
             </li>
             <c:if test="${sessionScope.username != null}">
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/report"> <fmt:message key="messages.navbar.user.reports"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/profile"> <fmt:message key="messages.account.my.profile"/></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/profile"> <fmt:message key="messages.account.my.profile"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/report"> <fmt:message key="messages.navbar.user.reports"/></a>
             </li>
             </c:if>
             <c:if test="${sessionScope.role == 'ROLE_INSPECTOR' or sessionScope.role == 'ROLE_ADMIN'}">
@@ -27,6 +27,9 @@
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath}/user"><fmt:message key="messages.navbar.users"/></a>
             </li>
+<%--            <li class="nav-item active">--%>
+<%--                <a class="nav-link" href="${pageContext.request.contextPath}/"><fmt:message key="messages.navbar.users"/></a>--%>
+<%--            </li>--%>
             </c:if>
         </ul>
     </div>
@@ -34,20 +37,15 @@
     <c:if test="${sessionScope.username != null}">
     <div class="navbar-text mr-3">${sessionScope.username}</div>
     <form action="${pageContext.request.contextPath}/logout" method="post">
-<%--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.account.logout"/></button>
     </form>
     </c:if>
 
-
-<!--<span><@spring.message "messages.lang.change"/></span>
--->
-
-<a href="?lang=en" style="margin-left: 10px; padding-right: 5px;">
-    <fmt:message key="messages.lang.en"/>
-</a>
-|
-<a href="?lang=ru" style="padding-left: 5px;">
-    <fmt:message key="messages.lang.ru"/>
-</a>
+    <a href="?lang=en" style="margin-left: 10px; padding-right: 5px;">
+        <fmt:message key="messages.lang.en"/>
+    </a>
+    |
+    <a href="?lang=ru" style="padding-left: 5px;">
+        <fmt:message key="messages.lang.ru"/>
+    </a>
 </nav>

@@ -1,18 +1,16 @@
 <%@include file="../template/prefix.jsp"%>
-
+<html>
 <head>
     <%@include file="../template/metadata.jsp"%>
 </head>
 <body>
 <%@include file="../template/header.jsp"%>
-<div class="container mt-5">
-    List of users
-    <table>
+<div class="form-group mt-3 container">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th><fmt:message key="messages.user.username"/></th>
             <th><fmt:message key="messages.user.role"/></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -28,3 +26,4 @@
     </table>
 </div>
 </body>
+</html>
