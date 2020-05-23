@@ -16,13 +16,13 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.account.new.password"/>:</strong></label>
             <div class="col-sm-4">
-                <input type="text" name="username" class="form-control" value="${requestScope.user.password}">
+                <input type="text" name="password" class="form-control" value="${requestScope.user.password}">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.user.password.confirmation"/>:</strong></label>
             <div class="col-sm-4">
-                <input type="text" name="username" class="form-control" value="${requestScope.user.password}">
+                <input type="text" name="passwordConfirmation" class="form-control" value="${requestScope.user.password}">
             </div>
         </div>
         <div class="form-group row">

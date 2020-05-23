@@ -35,7 +35,8 @@ public class EditUserProfile extends MultipleRequest{
         Long user_id = Long.parseLong(request.getParameter("id"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String passwordConfirmation = request.getParameter("password-confirmation");
+        System.out.println(password);
+        String passwordConfirmation = request.getParameter("passwordConfirmation");
         String userRole = request.getParameter("role");
 
         UserDto userDto = UserDto.newBuilder()
