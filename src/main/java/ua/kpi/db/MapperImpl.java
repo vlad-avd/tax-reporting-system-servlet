@@ -26,7 +26,10 @@ public class MapperImpl implements Mapper {
     @Override
     public Report extractReport(ResultSet resultSet) throws SQLException {
 
-        Date lastEdit = resultSet.getDate("last_edit");
+        Date lastEdit = null;
+        if(resultSet.next()) {
+            lastEdit = resultSet.getDate("last_edit");
+        }
         LocalDate lastEditDate = null;
         if(lastEdit != null){
             lastEditDate = lastEdit.toLocalDate();

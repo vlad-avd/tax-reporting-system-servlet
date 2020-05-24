@@ -79,13 +79,23 @@ public class ReportDaoImpl implements ReportDao {
         List<Report> reports = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));) {
-            ps.setLong(1, id);
-            ResultSet resultSet =  ps.executeQuery();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.all.reports.from.archive.by.taxpayer.id"));) {
 
-            while (resultSet.next()) {
-                reports.add(mapper.extractReport(resultSet));
+            ps1.setLong(1, id);
+            ResultSet resultSet1 =  ps1.executeQuery();
+
+            while (resultSet1.next()) {
+                reports.add(mapper.extractReport(resultSet1));
+            }
+
+            ps2.setLong(1, id);
+            ResultSet resultSet2 =  ps2.executeQuery();
+
+            while (resultSet2.next()) {
+                reports.add(mapper.extractReport(resultSet2));
             }
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
@@ -96,12 +106,16 @@ public class ReportDaoImpl implements ReportDao {
     @Override
     public Report findReportById(Long id) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("get.report.by.id"));) {
-            ps.setLong(1, id);
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.report.by.id"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.report.from.archive.by.id"));) {
 
-            ResultSet rs = ps.executeQuery();
-            return rs.next() ? mapper.extractReport(rs) : null;
+            ps1.setLong(1, id);
+            ps2.setLong(1, id);
+
+            ResultSet rs = ps1.executeQuery();
+            return rs.next() ? mapper.extractReport(rs) : mapper.extractReport(ps2.executeQuery());
 
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);

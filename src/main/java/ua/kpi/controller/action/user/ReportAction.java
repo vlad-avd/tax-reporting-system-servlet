@@ -20,7 +20,14 @@ public class ReportAction implements Action {
         if(reportId != null){
             Long id = Long.parseLong(reportId);
             Report report = reportService.getReportById(id);
+            request.setAttribute("replaceInspector", true);
             request.setAttribute("report", report);
+            if(reportService.isPossiblyToReplaceInspector(id)){
+                request.setAttribute("replaceInspector", true);
+            }
+            else{
+                request.setAttribute("replaceInspector", false);
+            }
             return ROOT_FOLDER + USER_PAGES + REPORT;
         }
         List<Report> reports;
