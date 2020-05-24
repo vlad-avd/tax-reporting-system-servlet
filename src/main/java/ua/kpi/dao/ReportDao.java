@@ -20,6 +20,8 @@ public interface ReportDao {
 
     boolean updateVerifiedReport(ReportDto reportDto);
 
+    boolean moveReportToArchive(ReportDto reportDto);
+
     boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId);
 
     List<Long> getAllInspectorIds();
@@ -27,6 +29,4 @@ public interface ReportDao {
     List<Long> getAllInspectorIdsFromReports();
 
     List<Long> getReplacedInspectorsByReportId(Long reportId);
-
-    boolean updateReportInspectorId(Long reportId, Long inspectorId);
 }

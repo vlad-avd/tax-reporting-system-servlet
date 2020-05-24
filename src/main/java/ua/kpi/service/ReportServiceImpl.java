@@ -42,6 +42,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public boolean moveReportToArchive(ReportDto reportDto) {
+        return reportDao.moveReportToArchive(reportDto);
+    }
+
+    @Override
     public boolean setReplacedInspector(Long reportId) {
         Long oldInspectorId = getReportById(reportId).getInspectorId();
         Long newInspectorId = getInspectorIdWithLeastReportsNumber(reportId);

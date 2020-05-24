@@ -17,6 +17,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ReportDaoImpl implements ReportDao {
@@ -100,7 +101,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setLong(1, id);
 
             ResultSet rs = ps.executeQuery();
-                return rs.next() ? mapper.extractReport(rs) : null;
+            return rs.next() ? mapper.extractReport(rs) : null;
 
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
@@ -134,10 +135,9 @@ public class ReportDaoImpl implements ReportDao {
             ps.setString(1, reportDto.getReportStatus().toString());
             ps.setLong(2, reportDto.getInspectorId());
             ps.setString(3, reportDto.getComment());
-            if(reportDto.getRejectionReason() != null){
+            if (reportDto.getRejectionReason() != null) {
                 ps.setString(4, reportDto.getRejectionReason().toString());
-            }
-            else {
+            } else {
                 ps.setNull(4, Types.VARCHAR);
             }
             ps.setLong(5, reportDto.getId());
@@ -145,6 +145,66 @@ public class ReportDaoImpl implements ReportDao {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public boolean moveReportToArchive(ReportDto reportDto) {
+        try (Connection connection = dataSource.getConnection();) {
+            try (PreparedStatement ps1 = connection
+                    .prepareStatement(queries.getString("delete.report"));
+                 PreparedStatement ps2 = connection
+                         .prepareStatement(queries.getString("add.report.to.archive"));
+                PreparedStatement ps3 = connection
+                        .prepareStatement(queries.getString("delete.replaced.inspector"))) {
+
+                connection.setAutoCommit(false);
+
+                ps3.setLong(1, reportDto.getId());
+                ps3.executeUpdate();
+
+                ps1.setLong(1, reportDto.getId());
+                ps1.executeUpdate();
+
+                ps2.setLong(1, reportDto.getId());
+                ps2.setString(2, reportDto.getCompanyName());
+                ps2.setBigDecimal(3, reportDto.getFinancialTurnover());
+                ps2.setString(4, reportDto.getWorkplace());
+                ps2.setBigDecimal(5, reportDto.getSalary());
+                ps2.setString(6, reportDto.getFullName());
+                ps2.setLong(7, reportDto.getInspectorId());
+                ps2.setLong(8, reportDto.getTaxpayerId());
+                ps2.setDate(9, Date.valueOf(reportDto.getCreated()));
+                if(reportDto.getLastEdit() != null) {
+                    ps2.setDate(10, Date.valueOf(reportDto.getLastEdit()));
+                }
+                else {
+                    ps2.setNull(10, Types.DATE);
+                }
+                ps2.setString(11, reportDto.getReportStatus().toString());
+                ps2.setString(12, reportDto.getPersonType().toString());
+                if(reportDto.getRejectionReason() != null) {
+                    ps2.setString(13, reportDto.getRejectionReason().toString());
+                }
+                else {
+                    ps2.setNull(13, Types.VARCHAR);
+                }
+                ps2.setString(14, reportDto.getComment());
+
+                ps2.executeUpdate();
+
+                connection.commit();
+                return true;
+            } catch (SQLException ex) {
+                try {
+                    connection.rollback();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                throw new SqlRuntimeException(ex);
+            }
+        } catch (SQLException ex){
             throw new SqlRuntimeException(ex);
         }
     }
@@ -244,21 +304,6 @@ public class ReportDaoImpl implements ReportDao {
             }
 
             return replacedInspectorIds;
-        } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
-        }
-    }
-
-    @Override
-    public boolean updateReportInspectorId(Long reportId, Long inspectorId) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("update.report.inspector.id"));) {
-            ps.setLong(1, inspectorId);
-            ps.setLong(2, reportId);
-
-            ps.executeUpdate();
-            return true;
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }

@@ -18,6 +18,8 @@ public interface ReportService {
 
     boolean updateVerifiedReport(ReportDto reportDto);
 
+    boolean moveReportToArchive(ReportDto reportDto);
+
     boolean setReplacedInspector(Long reportId);
 
     Long getInspectorIdWithLeastReportsNumber(Long reportId);

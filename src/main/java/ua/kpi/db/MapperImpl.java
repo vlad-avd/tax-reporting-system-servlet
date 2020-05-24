@@ -3,6 +3,7 @@ package ua.kpi.db;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.PersonType;
+import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 
@@ -31,6 +32,12 @@ public class MapperImpl implements Mapper {
             lastEditDate = lastEdit.toLocalDate();
         }
 
+        String rejectReason = resultSet.getString("rejection_reason");
+        RejectionReason rejectionReason = null;
+        if(rejectReason != null){
+            rejectionReason = RejectionReason.valueOf(rejectReason);
+        }
+
         return Report.newBuilder()
                 .setId(resultSet.getLong("id"))
                 .setCompanyName(resultSet.getString("company_name"))
@@ -42,9 +49,9 @@ public class MapperImpl implements Mapper {
                 .setSalary(resultSet.getBigDecimal("salary"))
                 .setTaxpayerId(resultSet.getLong("taxpayer_id"))
                 .setWorkplace(resultSet.getString("workplace"))
-                .setInspectorId(resultSet.getLong("inspector_id"))
                 .setComment(resultSet.getString("inspector_comment"))
                 .setCreated(resultSet.getDate("created").toLocalDate())
+                .setRejectionReason(rejectionReason)
                 .setLastEdit(lastEditDate)
                 .build();
     }
