@@ -30,10 +30,31 @@ public class ReportAction implements Action {
             }
             return ROOT_FOLDER + USER_PAGES + REPORT;
         }
+
+        int currentPage = 1;
+
+        if(request.getParameter("currentPage") != null) {
+            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        }
+
+        int recordsPerPage = 8;
+
         List<Report> reports;
-        Long user_id = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        reports = reportService.getReportsByUserId(user_id);
+        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+        reports = reportService.getReportsByUserId(userId, currentPage, recordsPerPage);
         request.setAttribute("reports", reports);
+
+        int rows = reportService.getReportsNumberByUserId(userId);
+
+        int nOfPages = rows / recordsPerPage;
+
+        if (nOfPages % recordsPerPage > 0) {
+            nOfPages++;
+        }
+
+        request.setAttribute("noOfPages", nOfPages);
+        request.setAttribute("currentPage", currentPage);
+
         return ROOT_FOLDER + USER_PAGES + REPORT_LIST;
     }
 }

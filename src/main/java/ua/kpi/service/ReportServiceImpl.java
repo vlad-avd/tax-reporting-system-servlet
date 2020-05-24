@@ -27,8 +27,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> getReportsByUserId(Long id) {
-        return reportDao.getReportsByUserId(id);
+    public List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage) {
+        return reportDao.getReportsByUserId(id, currentPage, recordsPerPage);
+    }
+
+    @Override
+    public List<Report> getReportsByUserId(Long userId) {
+        return reportDao.getReportsByUserId(userId);
     }
 
     @Override
@@ -87,5 +92,15 @@ public class ReportServiceImpl implements ReportService {
         System.out.println("Replaced inspectors: " + replacedInspectors);
 
         return (inspectors.size() - replacedInspectors.size()) > 1;
+    }
+
+    @Override
+    public int getReportsNumber() {
+        return reportDao.getReportsNumber();
+    }
+
+    @Override
+    public int getReportsNumberByUserId(Long userId) {
+        return reportDao.getReportsNumberByUserId(userId);
     }
 }

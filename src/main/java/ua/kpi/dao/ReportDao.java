@@ -12,6 +12,8 @@ public interface ReportDao {
 
     boolean saveLegalEntityReport(ReportDto reportDto);
 
+    List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage);
+
     List<Report> getReportsByUserId(Long id);
 
     Report findReportById(Long id);
@@ -29,4 +31,8 @@ public interface ReportDao {
     List<Long> getAllInspectorIdsFromReports();
 
     List<Long> getReplacedInspectorsByReportId(Long reportId);
+
+    int getReportsNumber();
+
+    int getReportsNumberByUserId(Long userId);
 }

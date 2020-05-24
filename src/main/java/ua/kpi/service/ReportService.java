@@ -12,7 +12,9 @@ public interface ReportService {
 
     boolean createLegalEntityReport(ReportDto reportDto);
 
-    List<Report> getReportsByUserId(Long id);
+    List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage);
+
+    List<Report> getReportsByUserId(Long userId);
 
     Report getReportById(Long id);
 
@@ -25,4 +27,8 @@ public interface ReportService {
     Long getInspectorIdWithLeastReportsNumber(Long reportId);
 
     boolean isPossiblyToReplaceInspector(Long reportId);
+
+    int getReportsNumber();
+
+    int getReportsNumberByUserId(Long userId);
 }

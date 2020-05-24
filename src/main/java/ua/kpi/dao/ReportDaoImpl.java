@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ReportDaoImpl implements ReportDao {
 
@@ -74,6 +75,43 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
+    public List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage) {
+
+        List<Report> reports = new ArrayList<>();
+
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.all.reports.from.archive.by.taxpayer.id"));) {
+
+            ps1.setLong(1, id);
+            ResultSet resultSet1 =  ps1.executeQuery();
+
+            while (resultSet1.next()) {
+                reports.add(mapper.extractReport(resultSet1));
+            }
+
+
+
+            ps2.setLong(1, id);
+            ResultSet resultSet2 =  ps2.executeQuery();
+
+            while (resultSet2.next()) {
+                reports.add(mapper.extractReport(resultSet2));
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+        return reports.stream().
+                skip(start).
+                limit(recordsPerPage).
+                collect(Collectors.toList());
+    }
+
+    @Override
     public List<Report> getReportsByUserId(Long id) {
 
         List<Report> reports = new ArrayList<>();
@@ -91,6 +129,8 @@ public class ReportDaoImpl implements ReportDao {
                 reports.add(mapper.extractReport(resultSet1));
             }
 
+
+
             ps2.setLong(1, id);
             ResultSet resultSet2 =  ps2.executeQuery();
 
@@ -105,6 +145,9 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public Report findReportById(Long id) {
+
+        Report report = null;
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.report.by.id"));
@@ -114,8 +157,18 @@ public class ReportDaoImpl implements ReportDao {
             ps1.setLong(1, id);
             ps2.setLong(1, id);
 
-            ResultSet rs = ps1.executeQuery();
-            return rs.next() ? mapper.extractReport(rs) : mapper.extractReport(ps2.executeQuery());
+            ResultSet rs1 = ps1.executeQuery();
+            ResultSet rs2 = ps2.executeQuery();
+
+            while(rs1.next()){
+                report = mapper.extractReport(rs1);
+            }
+
+            while(rs2.next()){
+                report = mapper.extractReport(rs2);
+            }
+
+            return report;
 
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
@@ -318,6 +371,54 @@ public class ReportDaoImpl implements ReportDao {
             }
 
             return replacedInspectorIds;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getReportsNumber() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.reports.number"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.archived.reports.number"));) {
+
+            int reportsNumber = 0;
+
+            ResultSet rs1 = ps1.executeQuery();
+            reportsNumber += rs1.next() ? rs1.getInt(1) : 0;
+
+            ResultSet rs2 = ps2.executeQuery();
+            reportsNumber += rs2.next() ? rs2.getInt(1) : 0;
+
+            return reportsNumber;
+
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getReportsNumberByUserId(Long userId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.reports.number.by.user.id"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.archived.reports.number.by.user.id"));) {
+
+            int reportsNumber = 0;
+
+            ps1.setLong(1, userId);
+            ResultSet rs1 = ps1.executeQuery();
+            reportsNumber += rs1.next() ? rs1.getInt(1) : 0;
+
+            ps2.setLong(1, userId);
+            ResultSet rs2 = ps2.executeQuery();
+            reportsNumber += rs2.next() ? rs2.getInt(1) : 0;
+
+            return reportsNumber;
+
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
