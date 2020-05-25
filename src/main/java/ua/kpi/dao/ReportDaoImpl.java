@@ -575,4 +575,24 @@ public class ReportDaoImpl implements ReportDao {
         }
         return reports.size();
     }
+
+    @Override
+    public boolean updateReportContent(Long reportId, ReportDto reportDto) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("update.report.content"));) {
+
+            ps.setString(1, reportDto.getFullName());
+            ps.setString(2, reportDto.getWorkplace());
+            ps.setBigDecimal(3, reportDto.getSalary());
+            ps.setString(4, reportDto.getCompanyName());
+            ps.setBigDecimal(5, reportDto.getFinancialTurnover());
+            ps.setLong(6, reportId);
+
+            return ps.execute();
+
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }

@@ -31,4 +31,6 @@ public interface ReportService {
     int getReportsNumberByUserId(Long userId);
 
     int getVerificationReportsNumberByInspectorId(Long inspectorId);
+
+    public boolean updateReportContent(Long reportId, ReportDto reportDto);
 }

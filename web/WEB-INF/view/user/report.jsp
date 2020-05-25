@@ -43,11 +43,21 @@
         </tbody>
     </table>
 </div>
-<c:if test="${(requestScope.report.reportStatus == 'NEED_TO_EDIT' or requestScope.report.reportStatus == 'ON_VERIFYING') and requestScope.replaceInspector == true}">
+<c:if test="${(requestScope.report.reportStatus == 'NEED_TO_EDIT'
+    or requestScope.report.reportStatus == 'ON_VERIFYING')
+    and requestScope.replaceInspector == true
+    and requestScope.report.taxpayerId == sessionScope.userId}">
 <div class="form-group mt-3">
     <form action="${pageContext.request.contextPath}/report/replace-inspector?id=${requestScope.report.id}" method="post">
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.replace.inspector"/></button>
     </form>
 </div>
+</c:if>
+<c:if test="${requestScope.report.reportStatus == 'NEED_TO_EDIT' and requestScope.report.taxpayerId == sessionScope.userId}">
+    <div class="form-group mt-3">
+        <form action="${pageContext.request.contextPath}/report/edit?id=${requestScope.report.id}&update=false" method="post">
+            <button class="btn btn-primary" type="submit"><fmt:message key="messages.report.edit"/></button>
+        </form>
+    </div>
 </c:if>
 </body>

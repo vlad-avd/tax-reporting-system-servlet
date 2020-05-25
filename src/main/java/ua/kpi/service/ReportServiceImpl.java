@@ -103,4 +103,9 @@ public class ReportServiceImpl implements ReportService {
     public int getVerificationReportsNumberByInspectorId(Long inspectorId) {
         return reportDao.getVerificationReportsNumberByInspectorId(inspectorId);
     }
+
+    @Override
+    public boolean updateReportContent(Long reportId, ReportDto reportDto) {
+        return reportDao.updateReportContent(reportId, reportDto);
+    }
 }
