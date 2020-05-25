@@ -1,23 +1,21 @@
 package ua.kpi.controller.action.admin;
 
-import ua.kpi.controller.action.MultipleRequest;
+import ua.kpi.controller.action.Action;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.entity.User;
 import ua.kpi.service.AdminService;
 import ua.kpi.service.AdminServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
 
-public class AllReports extends MultipleRequest {
+public class AllReports implements Action {
 
     AdminService adminService = new AdminServiceImpl();
 
     @Override
-    protected String handleGetRequest(HttpServletRequest request) {
+    public String handleRequest(HttpServletRequest request) {
 
         int currentPage = 1;
 
@@ -29,10 +27,20 @@ public class AllReports extends MultipleRequest {
 
         List<Report> reports;
 
-        reports = adminService.getAllReports(currentPage, recordsPerPage);
-        request.setAttribute("reports", reports);
+        String sortByDate = request.getParameter("sortByDate");
+        String sortByReportStatus = request.getParameter("sortByReportStatus");
 
-        int rows = adminService.getReportsNumber();
+        int rows = 0;
+
+        if((sortByDate == null && sortByReportStatus == null)
+                || (sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all"))) {
+            reports = adminService.getAllReports(currentPage, recordsPerPage);
+            rows = adminService.getReportsNumber();
+        } else {
+            reports = adminService.getFilteredReports(sortByDate, sortByReportStatus, currentPage, recordsPerPage);
+            rows = adminService.getFilteredReportsNumber(sortByReportStatus);
+        }
+        request.setAttribute("reports", reports);
 
         int nOfPages = rows / recordsPerPage;
 
@@ -44,10 +52,5 @@ public class AllReports extends MultipleRequest {
         request.setAttribute("currentPage", currentPage);
 
         return ROOT_FOLDER + ADMIN_PAGES + ALL_REPORTS;
-    }
-
-    @Override
-    protected String handlePostRequest(HttpServletRequest request) {
-        return null;
     }
 }

@@ -14,11 +14,10 @@ import ua.kpi.model.enums.ReportStatus;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class ReportDaoImpl implements ReportDao {
@@ -470,9 +469,110 @@ public class ReportDaoImpl implements ReportDao {
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
-        return reports.stream().
-                skip(start).
-                limit(recordsPerPage).
-                collect(Collectors.toList());
+        return reports.stream()
+                .skip(start)
+                .limit(recordsPerPage)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage) {
+        List<Report> reports = new ArrayList<>();
+
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.all.reports"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.all.reports.from.archive"));) {
+
+            ResultSet resultSet1 = ps1.executeQuery();
+
+            while (resultSet1.next()) {
+                reports.add(mapper.extractReport(resultSet1));
+            }
+
+            ResultSet resultSet2 = ps2.executeQuery();
+
+            while (resultSet2.next()) {
+                reports.add(mapper.extractReport(resultSet2));
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+
+        reports.sort(Comparator.comparing(Report::getCreated));
+
+        if (sortByDate.equals("fromOldestToNewest")) {
+            Collections.reverse(reports);
+        }
+
+        if (sortByReportStatus.equals("onVerifying")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.ON_VERIFYING))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("needToEdit")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.NEED_TO_EDIT))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("approved")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.APPROVED))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("rejected")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.REJECTED))
+                    .collect(Collectors.toList());
+        }
+        return reports.stream()
+                .skip(start)
+                .limit(recordsPerPage)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getFilteredReportsNumber(String sortByReportStatus) {
+        List<Report> reports = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.all.reports"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.all.reports.from.archive"));) {
+
+            ResultSet resultSet1 = ps1.executeQuery();
+
+            while (resultSet1.next()) {
+                reports.add(mapper.extractReport(resultSet1));
+            }
+
+            ResultSet resultSet2 = ps2.executeQuery();
+
+            while (resultSet2.next()) {
+                reports.add(mapper.extractReport(resultSet2));
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+
+        if (sortByReportStatus.equals("onVerifying")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.ON_VERIFYING))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("needToEdit")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.NEED_TO_EDIT))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("approved")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.APPROVED))
+                    .collect(Collectors.toList());
+        } else if (sortByReportStatus.equals("rejected")) {
+            reports = reports.stream()
+                    .filter(report -> report.getReportStatus().equals(ReportStatus.REJECTED))
+                    .collect(Collectors.toList());
+        }
+        return reports.size();
     }
 }

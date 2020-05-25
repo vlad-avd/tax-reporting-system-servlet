@@ -101,4 +101,14 @@ public class AdminServiceImpl implements AdminService {
     public int getReportsNumber() {
         return reportDao.getReportsNumber();
     }
+
+    @Override
+    public List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage) {
+        return reportDao.getFilteredReports(sortByDate, sortByReportStatus, currentPage, recordsPerPage);
+    }
+
+    @Override
+    public int getFilteredReportsNumber(String sortByReportStatus) {
+        return reportDao.getFilteredReportsNumber(sortByReportStatus);
+    }
 }

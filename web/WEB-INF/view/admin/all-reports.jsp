@@ -6,6 +6,38 @@
 <body>
 <%@include file="../template/header.jsp"%>
 <div class="form-group mt-3 container">
+    <div class="row">
+        <div id="filter-panel" class="filter-panel">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline" role="form" method="post">
+                        <div class="form-group" style="margin-right: 30px">
+                            <label class="filter-col" style="margin-right:10px;"><fmt:message key="messages.filters.sort.by.date"/>:</label>
+                            <select name="sortByDate" class="form-control">
+                                <option selected="selected" value="fromNewestToOldest"><fmt:message key="messages.filters.sort.from.newest.to.oldest"/></option>
+                                <option value="fromOldestToNewest"><fmt:message key="messages.filters.sort.from.oldest.to.newest"/></option>
+                            </select>
+                        </div> <!-- form group [rows] -->
+                        <div class="form-group" style="margin-right: 30px">
+                            <label class="filter-col" style="margin-right:10px;"><fmt:message key="messages.filters.sort.by.report.status"/>:</label>
+                            <select name="sortByReportStatus" class="form-control">
+                                <option selected="selected" value="all"><fmt:message key="messages.filters.sort.all"/></option>
+                                <option value="onVerifying"><fmt:message key="messages.filters.sort.on.verifying"/></option>
+                                <option value="needToEdit"><fmt:message key="messages.filters.sort.need.to.edit"/></option>
+                                <option value="approved"><fmt:message key="messages.filters.sort.approved"/></option>
+                                <option value="rejected"><fmt:message key="messages.filters.sort.rejected"/></option>
+                            </select>
+                        </div> <!-- form group [order by] -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info filter-col">
+                                <fmt:message key="messages.filters.apply"/>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>

@@ -39,4 +39,8 @@ public interface ReportDao {
     int getReportsNumberByUserId(Long userId);
 
     List<Report> getAllReports(int currentPage, int recordsPerPage);
+
+    List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage);
+
+    int getFilteredReportsNumber(String sortByReportStatus);
 }
