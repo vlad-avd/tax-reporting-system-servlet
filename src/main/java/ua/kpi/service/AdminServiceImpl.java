@@ -34,8 +34,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    public List<User> getAllUsers(int currentPage, int recordsPerPage) {
+        return userDao.getAllUsers(currentPage, recordsPerPage);
     }
 
     @Override
@@ -85,5 +85,10 @@ public class AdminServiceImpl implements AdminService {
                 .setApprovedReportsNumber(approvedReportsNumber)
                 .setRejectedReportsNumber(rejectedReportsNumber)
                 .build();
+    }
+
+    @Override
+    public int getUsersNumber() {
+        return userDao.getUsersNumber();
     }
 }

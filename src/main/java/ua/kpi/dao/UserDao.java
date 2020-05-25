@@ -15,7 +15,9 @@ public interface UserDao {
 
     void setUserRole(Long id, Role role);
 
-    List<User> getAllUsers();
+    List<User> getAllUsers(int currentPage, int recordsPerPage);
 
     boolean updateUser(UserDto userDto);
+
+    int getUsersNumber();
 }

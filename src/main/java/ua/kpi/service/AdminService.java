@@ -9,7 +9,9 @@ import java.util.List;
 public interface AdminService {
     User getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<User> getAllUsers(int currentPage, int recordsPerPage);
 
     StatisticsDto getStatistics(Long userId);
+
+    int getUsersNumber();
 }

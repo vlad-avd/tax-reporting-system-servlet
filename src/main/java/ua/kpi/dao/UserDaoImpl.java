@@ -60,12 +60,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(int currentPage, int recordsPerPage) {
         List<User> users = new ArrayList<>();
+
+        int startIndex = currentPage * recordsPerPage - recordsPerPage;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.all.users"));) {
+
+            ps.setInt(1, recordsPerPage);
+            ps.setInt(2, startIndex);
+
             ResultSet resultSet =  ps.executeQuery();
 
             while (resultSet.next()) {
@@ -117,6 +123,21 @@ public class UserDaoImpl implements UserDao {
             ps.setLong(4, userDto.getId());
             ps.executeUpdate();
             return true;
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getUsersNumber() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.users.number"));) {
+
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next() ? rs.getInt(1) : 0;
+
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
