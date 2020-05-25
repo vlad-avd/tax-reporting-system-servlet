@@ -1,6 +1,7 @@
 package ua.kpi.service;
 
 import ua.kpi.dto.StatisticsDto;
+import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 
 import java.time.LocalDate;
@@ -14,4 +15,8 @@ public interface AdminService {
     StatisticsDto getStatistics(Long userId);
 
     int getUsersNumber();
+
+    List<Report> getAllReports(int currentPage, int recordsPerPage);
+
+    int getReportsNumber();
 }

@@ -443,4 +443,36 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public List<Report> getAllReports(int currentPage, int recordsPerPage) {
+        List<Report> reports = new ArrayList<>();
+
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps1 = connection
+                     .prepareStatement(queries.getString("get.all.reports"));
+             PreparedStatement ps2 = connection
+                     .prepareStatement(queries.getString("get.all.reports.from.archive"));) {
+
+            ResultSet resultSet1 =  ps1.executeQuery();
+
+            while (resultSet1.next()) {
+                reports.add(mapper.extractReport(resultSet1));
+            }
+
+            ResultSet resultSet2 =  ps2.executeQuery();
+
+            while (resultSet2.next()) {
+                reports.add(mapper.extractReport(resultSet2));
+            }
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+        return reports.stream().
+                skip(start).
+                limit(recordsPerPage).
+                collect(Collectors.toList());
+    }
 }

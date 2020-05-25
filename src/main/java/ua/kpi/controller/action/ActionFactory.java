@@ -1,5 +1,6 @@
 package ua.kpi.controller.action;
 
+import ua.kpi.controller.action.admin.AllReports;
 import ua.kpi.controller.action.admin.EditUserProfile;
 import ua.kpi.controller.action.admin.UserAction;
 import ua.kpi.controller.action.admin.UserStatistics;
@@ -48,6 +49,7 @@ public class ActionFactory {
         actions.put("profile/edit", new EditProfile());
         actions.put("user/edit", new EditUserProfile());
         actions.put("user/statistics", new UserStatistics());
+        actions.put("report/all", new AllReports());
     }
 
     public Action getAction(String path) {

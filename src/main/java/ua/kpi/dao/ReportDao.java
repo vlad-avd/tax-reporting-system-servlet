@@ -37,4 +37,6 @@ public interface ReportDao {
     int getReportsNumber();
 
     int getReportsNumberByUserId(Long userId);
+
+    List<Report> getAllReports(int currentPage, int recordsPerPage);
 }

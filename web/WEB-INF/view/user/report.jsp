@@ -43,7 +43,7 @@
         </tbody>
     </table>
 </div>
-<c:if test="${requestScope.report.reportStatus == 'NEED_TO_EDIT' or requestScope.report.reportStatus == 'REJECTED'}">
+<c:if test="${(requestScope.report.reportStatus == 'NEED_TO_EDIT' or requestScope.report.reportStatus == 'ON_VERIFYING') and requestScope.replaceInspector == true}">
 <div class="form-group mt-3">
     <form action="${pageContext.request.contextPath}/report/replace-inspector?id=${requestScope.report.id}" method="post">
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.replace.inspector"/></button>

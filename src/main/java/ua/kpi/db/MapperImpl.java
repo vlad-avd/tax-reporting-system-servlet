@@ -25,37 +25,33 @@ public class MapperImpl implements Mapper {
 
     @Override
     public Report extractReport(ResultSet resultSet) throws SQLException {
+            Date lastEdit = resultSet.getDate("last_edit");
+            LocalDate lastEditDate = null;
+            if (lastEdit != null) {
+                lastEditDate = lastEdit.toLocalDate();
+            }
 
-        Date lastEdit = null;
-        if(resultSet.next()) {
-            lastEdit = resultSet.getDate("last_edit");
-        }
-        LocalDate lastEditDate = null;
-        if(lastEdit != null){
-            lastEditDate = lastEdit.toLocalDate();
-        }
+            String rejectReason = resultSet.getString("rejection_reason");
+            RejectionReason rejectionReason = null;
+            if (rejectReason != null) {
+                rejectionReason = RejectionReason.valueOf(rejectReason);
+            }
 
-        String rejectReason = resultSet.getString("rejection_reason");
-        RejectionReason rejectionReason = null;
-        if(rejectReason != null){
-            rejectionReason = RejectionReason.valueOf(rejectReason);
-        }
-
-        return Report.newBuilder()
-                .setId(resultSet.getLong("id"))
-                .setCompanyName(resultSet.getString("company_name"))
-                .setFinancialTurnover(resultSet.getBigDecimal("financial_turnover"))
-                .setFullName(resultSet.getString("full_name"))
-                .setInspectorId(resultSet.getLong("inspector_id"))
-                .setPersonType(PersonType.valueOf(resultSet.getString("person_type")))
-                .setReportStatus(ReportStatus.valueOf(resultSet.getString("report_status")))
-                .setSalary(resultSet.getBigDecimal("salary"))
-                .setTaxpayerId(resultSet.getLong("taxpayer_id"))
-                .setWorkplace(resultSet.getString("workplace"))
-                .setComment(resultSet.getString("inspector_comment"))
-                .setCreated(resultSet.getDate("created").toLocalDate())
-                .setRejectionReason(rejectionReason)
-                .setLastEdit(lastEditDate)
-                .build();
+            return Report.newBuilder()
+                    .setId(resultSet.getLong("id"))
+                    .setCompanyName(resultSet.getString("company_name"))
+                    .setFinancialTurnover(resultSet.getBigDecimal("financial_turnover"))
+                    .setFullName(resultSet.getString("full_name"))
+                    .setInspectorId(resultSet.getLong("inspector_id"))
+                    .setPersonType(PersonType.valueOf(resultSet.getString("person_type")))
+                    .setReportStatus(ReportStatus.valueOf(resultSet.getString("report_status")))
+                    .setSalary(resultSet.getBigDecimal("salary"))
+                    .setTaxpayerId(resultSet.getLong("taxpayer_id"))
+                    .setWorkplace(resultSet.getString("workplace"))
+                    .setComment(resultSet.getString("inspector_comment"))
+                    .setCreated(resultSet.getDate("created").toLocalDate())
+                    .setRejectionReason(rejectionReason)
+                    .setLastEdit(lastEditDate)
+                    .build();
     }
 }

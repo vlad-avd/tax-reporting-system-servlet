@@ -91,4 +91,14 @@ public class AdminServiceImpl implements AdminService {
     public int getUsersNumber() {
         return userDao.getUsersNumber();
     }
+
+    @Override
+    public List<Report> getAllReports(int currentPage, int recordsPerPage) {
+        return reportDao.getAllReports(currentPage, recordsPerPage);
+    }
+
+    @Override
+    public int getReportsNumber() {
+        return reportDao.getReportsNumber();
+    }
 }

@@ -95,11 +95,6 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public int getReportsNumber() {
-        return reportDao.getReportsNumber();
-    }
-
-    @Override
     public int getReportsNumberByUserId(Long userId) {
         return reportDao.getReportsNumberByUserId(userId);
     }

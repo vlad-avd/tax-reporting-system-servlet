@@ -28,8 +28,6 @@ public interface ReportService {
 
     boolean isPossiblyToReplaceInspector(Long reportId);
 
-    int getReportsNumber();
-
     int getReportsNumberByUserId(Long userId);
 
     int getVerificationReportsNumberByInspectorId(Long inspectorId);
