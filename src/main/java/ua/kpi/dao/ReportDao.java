@@ -18,7 +18,9 @@ public interface ReportDao {
 
     Report findReportById(Long id);
 
-    List<Report> getVerificationReports(Long inspectorId);
+    List<Report> getVerificationReports(Long inspectorId, int currentPage, int recordsPerPage);
+
+    int getVerificationReportsNumberByInspectorId(Long inspectorId);
 
     boolean updateVerifiedReport(ReportDto reportDto);
 

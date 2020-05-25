@@ -19,7 +19,7 @@ public class InspectorServiceImpl implements InspectorService {
     }
 
     @Override
-    public List<Report> getVerificationReport(Long inspectorId) {
-        return reportDao.getVerificationReports(inspectorId);
+    public List<Report> getVerificationReport(Long inspectorId, int currentPage, int recordsPerPage) {
+        return reportDao.getVerificationReports(inspectorId, currentPage, recordsPerPage);
     }
 }

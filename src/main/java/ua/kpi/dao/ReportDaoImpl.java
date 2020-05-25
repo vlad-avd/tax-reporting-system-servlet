@@ -176,13 +176,18 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public List<Report> getVerificationReports(Long inspectorId) {
+    public List<Report> getVerificationReports(Long inspectorId, int currentPage, int recordsPerPage) {
         List<Report> reports = new ArrayList<>();
+
+        int startIndex = currentPage * recordsPerPage - recordsPerPage;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.verification.reports"));) {
             ps.setLong(1, inspectorId);
+            ps.setInt(2, recordsPerPage);
+            ps.setInt(3, startIndex);
+
             ResultSet resultSet =  ps.executeQuery();
 
             while (resultSet.next()) {
@@ -192,6 +197,21 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
         return reports;
+    }
+
+    @Override
+    public int getVerificationReportsNumberByInspectorId(Long inspectorId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("get.verification.reports.number.by.inspector.id"));) {
+
+            ps.setLong(1, inspectorId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() ? rs.getInt(1) : 0;
+
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
     }
 
     @Override

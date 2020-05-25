@@ -31,4 +31,6 @@ public interface ReportService {
     int getReportsNumber();
 
     int getReportsNumberByUserId(Long userId);
+
+    int getVerificationReportsNumberByInspectorId(Long inspectorId);
 }

@@ -5,5 +5,5 @@ import ua.kpi.model.entity.Report;
 import java.util.List;
 
 public interface InspectorService {
-    List<Report> getVerificationReport(Long inspectorId);
+    List<Report> getVerificationReport(Long inspectorId, int currentPage, int recordsPerPage);
 }
