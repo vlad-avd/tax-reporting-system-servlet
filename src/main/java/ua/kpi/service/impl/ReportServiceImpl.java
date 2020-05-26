@@ -1,10 +1,10 @@
-package ua.kpi.service;
+package ua.kpi.service.impl;
 
 import ua.kpi.dao.ReportDao;
-import ua.kpi.dao.ReportDaoImpl;
+import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.enums.ReportStatus;
+import ua.kpi.service.ReportService;
 
 import java.util.List;
 

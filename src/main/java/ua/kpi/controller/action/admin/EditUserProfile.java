@@ -1,17 +1,15 @@
 package ua.kpi.controller.action.admin;
 
-import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.Role;
 import ua.kpi.service.AdminService;
-import ua.kpi.service.AdminServiceImpl;
+import ua.kpi.service.impl.AdminServiceImpl;
 import ua.kpi.service.UserService;
-import ua.kpi.service.UserServiceImpl;
+import ua.kpi.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 import static ua.kpi.constant.Pages.*;
 

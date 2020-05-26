@@ -2,8 +2,6 @@ package ua.kpi.service;
 
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.entity.User;
-import ua.kpi.model.enums.ReportStatus;
 
 import java.util.List;
 

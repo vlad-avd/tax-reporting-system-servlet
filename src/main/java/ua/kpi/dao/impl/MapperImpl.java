@@ -1,5 +1,6 @@
-package ua.kpi.db;
+package ua.kpi.dao.impl;
 
+import ua.kpi.dao.Mapper;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.PersonType;

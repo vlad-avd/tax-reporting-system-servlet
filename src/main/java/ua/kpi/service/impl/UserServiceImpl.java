@@ -1,8 +1,9 @@
-package ua.kpi.service;
+package ua.kpi.service.impl;
 
 import ua.kpi.dao.UserDao;
-import ua.kpi.dao.UserDaoImpl;
+import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.UserDto;
+import ua.kpi.service.UserService;
 
 public class UserServiceImpl implements UserService {
 

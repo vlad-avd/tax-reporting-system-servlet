@@ -4,7 +4,6 @@ import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface AdminService {

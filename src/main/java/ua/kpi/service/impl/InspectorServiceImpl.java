@@ -1,12 +1,9 @@
-package ua.kpi.service;
+package ua.kpi.service.impl;
 
 import ua.kpi.dao.ReportDao;
-import ua.kpi.dao.ReportDaoImpl;
-import ua.kpi.dao.UserDao;
-import ua.kpi.dao.UserDaoImpl;
-import ua.kpi.db.ConnectionPool;
-import ua.kpi.db.PGConnectionPool;
+import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.model.entity.Report;
+import ua.kpi.service.InspectorService;
 
 import java.util.List;
 

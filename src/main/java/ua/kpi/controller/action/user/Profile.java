@@ -3,7 +3,7 @@ package ua.kpi.controller.action.user;
 import ua.kpi.controller.action.Action;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.AdminService;
-import ua.kpi.service.AdminServiceImpl;
+import ua.kpi.service.impl.AdminServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;

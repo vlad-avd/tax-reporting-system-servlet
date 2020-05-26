@@ -3,7 +3,7 @@ package ua.kpi.controller.action.admin;
 import ua.kpi.controller.action.Action;
 import ua.kpi.model.entity.Report;
 import ua.kpi.service.AdminService;
-import ua.kpi.service.AdminServiceImpl;
+import ua.kpi.service.impl.AdminServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,13 +27,25 @@ public class AllReports implements Action {
 
         List<Report> reports;
 
+        String newPage = request.getParameter("newPage");
+
+        //if(newPage.equals("false")) {
         String sortByDate = request.getParameter("sortByDate");
         String sortByReportStatus = request.getParameter("sortByReportStatus");
+//        }else{
+//            sortByDate = request.getAttribute("sortByDate").toString();
+//            sortByReportStatus = request.getAttribute("sortByReportStatus").toString();
+//        }
+        System.out.println(sortByDate);
+        System.out.println(sortByReportStatus);
+        if(sortByDate == null && sortByReportStatus == null){
+            sortByDate = "fromNewestToOldest";
+            sortByReportStatus = "all";
+        }
 
         int rows = 0;
 
-        if((sortByDate == null && sortByReportStatus == null)
-                || (sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all"))) {
+        if(sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all")) {
             reports = adminService.getAllReports(currentPage, recordsPerPage);
             rows = adminService.getReportsNumber();
         } else {
@@ -47,6 +59,9 @@ public class AllReports implements Action {
         if (nOfPages % recordsPerPage > 0) {
             nOfPages++;
         }
+
+        request.setAttribute("sortByDate", sortByDate);
+        request.setAttribute("sortByReportStatus", sortByReportStatus);
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);

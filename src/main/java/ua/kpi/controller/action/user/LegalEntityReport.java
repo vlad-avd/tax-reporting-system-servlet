@@ -6,7 +6,7 @@ import ua.kpi.dto.ReportDto;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
-import ua.kpi.service.ReportServiceImpl;
+import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 

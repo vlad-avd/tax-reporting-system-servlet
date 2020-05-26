@@ -1,10 +1,9 @@
 package ua.kpi.controller.action.guest;
 
-import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.GuestService;
-import ua.kpi.service.GuestServiceImpl;
+import ua.kpi.service.impl.GuestServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

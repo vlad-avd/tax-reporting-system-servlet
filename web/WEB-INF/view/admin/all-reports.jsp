@@ -14,18 +14,18 @@
                         <div class="form-group" style="margin-right: 30px">
                             <label class="filter-col" style="margin-right:10px;"><fmt:message key="messages.filters.sort.by.date"/>:</label>
                             <select name="sortByDate" class="form-control">
-                                <option selected="selected" value="fromNewestToOldest"><fmt:message key="messages.filters.sort.from.newest.to.oldest"/></option>
-                                <option value="fromOldestToNewest"><fmt:message key="messages.filters.sort.from.oldest.to.newest"/></option>
+                                <option ${requestScope.sortByDate == 'fromNewestToOldest' ? 'selected="selected"' : ''} value="fromNewestToOldest"><fmt:message key="messages.filters.sort.from.newest.to.oldest"/></option>
+                                <option ${requestScope.sortByDate == 'fromOldestToNewest' ? 'selected="selected"' : ''} value="fromOldestToNewest"><fmt:message key="messages.filters.sort.from.oldest.to.newest"/></option>
                             </select>
                         </div> <!-- form group [rows] -->
                         <div class="form-group" style="margin-right: 30px">
                             <label class="filter-col" style="margin-right:10px;"><fmt:message key="messages.filters.sort.by.report.status"/>:</label>
                             <select name="sortByReportStatus" class="form-control">
-                                <option selected="selected" value="all"><fmt:message key="messages.filters.sort.all"/></option>
-                                <option value="onVerifying"><fmt:message key="messages.filters.sort.on.verifying"/></option>
-                                <option value="needToEdit"><fmt:message key="messages.filters.sort.need.to.edit"/></option>
-                                <option value="approved"><fmt:message key="messages.filters.sort.approved"/></option>
-                                <option value="rejected"><fmt:message key="messages.filters.sort.rejected"/></option>
+                                <option ${requestScope.sortByReportStatus == 'all' ? 'selected="selected"' : ''}  value="all"><fmt:message key="messages.filters.sort.all"/></option>
+                                <option ${requestScope.sortByReportStatus == 'onVerifying' ? 'selected="selected"' : ''} value="onVerifying"><fmt:message key="messages.filters.sort.on.verifying"/></option>
+                                <option ${requestScope.sortByReportStatus == 'needToEdit' ? 'selected="selected"' : ''} value="needToEdit"><fmt:message key="messages.filters.sort.need.to.edit"/></option>
+                                <option ${requestScope.sortByReportStatus == 'approved' ? 'selected="selected"' : ''} value="approved"><fmt:message key="messages.filters.sort.approved"/></option>
+                                <option ${requestScope.sortByReportStatus == 'rejected' ? 'selected="selected"' : ''} value="rejected"><fmt:message key="messages.filters.sort.rejected"/></option>
                             </select>
                         </div> <!-- form group [order by] -->
                         <div class="form-group">
@@ -61,7 +61,11 @@
         <ul class="pagination">
             <c:if test="${requestScope.currentPage != 1}">
                 <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/report/all?&currentPage=${requestScope.currentPage-1}">Previous</a>
+                    <form action="${pageContext.request.contextPath}/report/all?&currentPage=${requestScope.currentPage-1}" method="post">
+                        <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
+                        <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
+                        <button class="page-link" type="submit">Previous</button>
+                    </form>
                 </li>
             </c:if>
 
@@ -73,16 +77,24 @@
                         </li>
                     </c:when>
                     <c:otherwise>
-                        <li class="page-item"><a class="page-link"
-                                                 href="${pageContext.request.contextPath}/report/all?currentPage=${i}">${i}</a>
+                        <li class="page-item">
+                            <form action="${pageContext.request.contextPath}/report/all?&currentPage=${i}" method="post">
+                                <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
+                                <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
+                                <button class="page-link" type="submit">${i}</button>
+                            </form>
                         </li>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
 
             <c:if test="${requestScope.currentPage lt requestScope.noOfPages}">
-                <li class="page-item"><a class="page-link"
-                                         href="${pageContext.request.contextPath}/report/all?currentPage=${currentPage+1}">Next</a>
+                <li class="page-item">
+                    <form action="${pageContext.request.contextPath}/report/all?currentPage=${currentPage+1}" method="post">
+                        <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
+                        <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
+                        <button class="page-link" type="submit">Next</button>
+                    </form>
                 </li>
             </c:if>
         </ul>

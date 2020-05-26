@@ -3,14 +3,10 @@ package ua.kpi.controller.action.user;
 import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.ReportDto;
-import ua.kpi.dto.UserDto;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
-import ua.kpi.model.enums.Role;
-import ua.kpi.service.GuestService;
-import ua.kpi.service.GuestServiceImpl;
 import ua.kpi.service.ReportService;
-import ua.kpi.service.ReportServiceImpl;
+import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 

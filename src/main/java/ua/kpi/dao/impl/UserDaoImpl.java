@@ -1,14 +1,10 @@
-package ua.kpi.dao;
+package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
-import ua.kpi.db.Mapper;
-import ua.kpi.db.MapperImpl;
-import ua.kpi.db.PGConnectionPool;
+import ua.kpi.dao.UserDao;
+import ua.kpi.dao.Mapper;
 import ua.kpi.dto.UserDto;
-import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
-import ua.kpi.model.enums.PersonType;
-import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.model.enums.Role;
 
 import javax.sql.DataSource;

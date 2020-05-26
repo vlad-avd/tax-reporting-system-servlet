@@ -2,7 +2,7 @@ package ua.kpi.controller.action.user;
 
 import ua.kpi.controller.action.Action;
 import ua.kpi.service.ReportService;
-import ua.kpi.service.ReportServiceImpl;
+import ua.kpi.service.impl.ReportServiceImpl;
 import ua.kpi.model.entity.Report;
 import javax.servlet.http.HttpServletRequest;
 

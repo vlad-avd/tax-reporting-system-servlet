@@ -1,19 +1,15 @@
 package ua.kpi.controller.action.admin;
 
 import ua.kpi.controller.action.Action;
-import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.AdminService;
-import ua.kpi.service.AdminServiceImpl;
-import ua.kpi.service.UserService;
-import ua.kpi.service.UserServiceImpl;
+import ua.kpi.service.impl.AdminServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
-import static ua.kpi.constant.Pages.REPORT_LIST;
 
 public class UserAction implements Action {
 

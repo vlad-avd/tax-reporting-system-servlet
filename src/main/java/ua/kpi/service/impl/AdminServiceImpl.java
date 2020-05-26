@@ -1,15 +1,14 @@
-package ua.kpi.service;
+package ua.kpi.service.impl;
 
 import ua.kpi.dao.ReportDao;
-import ua.kpi.dao.ReportDaoImpl;
+import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dao.UserDao;
-import ua.kpi.dao.UserDaoImpl;
-import ua.kpi.db.ConnectionPool;
-import ua.kpi.db.PGConnectionPool;
+import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.ReportStatus;
+import ua.kpi.service.AdminService;
 
 import java.time.LocalDate;
 import java.util.Comparator;

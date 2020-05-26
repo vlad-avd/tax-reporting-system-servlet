@@ -1,10 +1,11 @@
-package ua.kpi.service;
+package ua.kpi.service.impl;
 
 import ua.kpi.dao.UserDao;
-import ua.kpi.dao.UserDaoImpl;
+import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.Role;
+import ua.kpi.service.GuestService;
 
 public class GuestServiceImpl implements GuestService {
 

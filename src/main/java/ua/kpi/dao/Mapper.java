@@ -1,4 +1,4 @@
-package ua.kpi.db;
+package ua.kpi.dao;
 
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;

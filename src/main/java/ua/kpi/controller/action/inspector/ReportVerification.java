@@ -4,16 +4,15 @@ import ua.kpi.controller.action.Action;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.service.InspectorService;
-import ua.kpi.service.InspectorServiceImpl;
+import ua.kpi.service.impl.InspectorServiceImpl;
 import ua.kpi.service.ReportService;
-import ua.kpi.service.ReportServiceImpl;
+import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
-import static ua.kpi.constant.Pages.REPORT_LIST;
 
 public class ReportVerification implements Action {
 

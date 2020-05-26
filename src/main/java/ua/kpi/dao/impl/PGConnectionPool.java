@@ -1,9 +1,7 @@
-package ua.kpi.db;
+package ua.kpi.dao.impl;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-import org.postgresql.ds.PGPoolingDataSource;
-import org.postgresql.ds.PGSimpleDataSource;
-import ua.kpi.controller.action.ActionFactory;
+import ua.kpi.dao.ConnectionPool;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

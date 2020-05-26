@@ -3,11 +3,10 @@ package ua.kpi.controller.action.inspector;
 import ua.kpi.controller.action.Action;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
-import ua.kpi.service.ReportServiceImpl;
+import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;

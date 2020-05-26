@@ -1,14 +1,10 @@
-package ua.kpi.dao;
+package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
-import ua.kpi.db.ConnectionPool;
-import ua.kpi.db.Mapper;
-import ua.kpi.db.MapperImpl;
-import ua.kpi.db.PGConnectionPool;
+import ua.kpi.dao.ReportDao;
+import ua.kpi.dao.Mapper;
 import ua.kpi.dto.ReportDto;
-import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 
@@ -17,7 +13,6 @@ import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class ReportDaoImpl implements ReportDao {
