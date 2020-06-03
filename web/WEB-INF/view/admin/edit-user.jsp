@@ -29,7 +29,11 @@
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.user.role"/>:</strong></label>
             <div class="col-sm-8">
                 <c:forEach items="${requestScope.roles}" var="role">
-                    <label class="form-check-label" style="margin-right: 30px"><input class="form-check-input radio-inline" type="radio" name="role" value="${role}" ${role==requestScope.user.role?"checked":""}>${role}</label>
+                    <c:if test="${!role.toString().equals('ROLE_GUEST')}">
+                        <label class="form-check-label" style="margin-right: 30px">
+                            <input class="form-check-input radio-inline" type="radio" name="role" value="${role}" ${role==requestScope.user.role?"checked":""}>${role}
+                        </label>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>
