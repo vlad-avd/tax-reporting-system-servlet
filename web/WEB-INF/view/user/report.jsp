@@ -41,20 +41,19 @@
             <td>${requestScope.report.reportStatus}</td>
         </tr>
         <c:if test="${((requestScope.report.reportStatus.toString().equals('NEED_TO_EDIT')
-            or (requestScope.report.reportStatus.toString().equals('REJECTED')))
-            and (requestScope.report.comment != null))}">
-        <tr>
-            <th><fmt:message key="messages.report.inspector.comment"/>:</th>
-            <td>${requestScope.report.comment}</td>
-        </tr>
+                or (requestScope.report.reportStatus.toString().equals('REJECTED')))
+                and (requestScope.report.comment != null))}">
+            <tr>
+                <th><fmt:message key="messages.report.inspector.comment"/>:</th>
+                <td>${requestScope.report.comment}</td>
+            </tr>
         </c:if>
-        <c:if test="${((requestScope.report.reportStatus.toString().equals('NEED_TO_EDIT')
-            or (requestScope.report.reportStatus.toString().equals('REJECTED')))
-            and (requestScope.report.rejectionReason != null))}">
-        <tr>
-            <th><fmt:message key="messages.report.rejection.reason"/>:</th>
-            <td>${requestScope.report.rejectionReason}</td>
-        </tr>
+        <c:if test="${(requestScope.report.reportStatus.toString().equals('REJECTED')
+                and (requestScope.report.rejectionReason != null))}">
+            <tr>
+                <th><fmt:message key="messages.report.rejection.reason"/>:</th>
+                <td>${requestScope.report.rejectionReason}</td>
+            </tr>
         </c:if>
         </tbody>
     </table>
