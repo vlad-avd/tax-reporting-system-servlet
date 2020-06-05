@@ -55,6 +55,7 @@ public class AllReports implements Action {
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
 
         return ROOT_FOLDER + ADMIN_PAGES + ALL_REPORTS;
     }

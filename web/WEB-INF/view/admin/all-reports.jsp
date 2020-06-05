@@ -41,15 +41,15 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th><fmt:message key="messages.report.id"/></th>
+            <th>#</th>
             <th><fmt:message key="messages.report.person.type"/></th>
             <th><fmt:message key="messages.report.status"/></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${requestScope.reports}" var="report">
+        <c:forEach items="${requestScope.reports}" var="report" varStatus="reportStat">
             <tr>
-                <td>${report.id}</td>
+                <td>${reportStat.index + requestScope.recordsPerPage * (requestScope.currentPage - 1) + 1}</td>
                 <td>${report.personType}</td>
                 <td>${report.reportStatus}</td>
                 <td><a href="${pageContext.request.contextPath}/report?id=${report.id}"><fmt:message key="messages.report.open"/></a></td>
@@ -61,7 +61,7 @@
         <ul class="pagination">
             <c:if test="${requestScope.currentPage != 1}">
                 <li class="page-item">
-                    <form action="${pageContext.request.contextPath}/report/all?&currentPage=${requestScope.currentPage-1}" method="post">
+                    <form action="${pageContext.request.contextPath}/reports/all?&currentPage=${requestScope.currentPage-1}" method="post">
                         <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
                         <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
                         <button class="page-link" type="submit">Previous</button>
@@ -78,7 +78,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="page-item">
-                            <form action="${pageContext.request.contextPath}/report/all?&currentPage=${i}" method="post">
+                            <form action="${pageContext.request.contextPath}/reports/all?&currentPage=${i}" method="post">
                                 <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
                                 <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
                                 <button class="page-link" type="submit">${i}</button>
@@ -90,7 +90,7 @@
 
             <c:if test="${requestScope.currentPage lt requestScope.noOfPages}">
                 <li class="page-item">
-                    <form action="${pageContext.request.contextPath}/report/all?currentPage=${currentPage+1}" method="post">
+                    <form action="${pageContext.request.contextPath}/reports/all?currentPage=${currentPage+1}" method="post">
                         <input type="hidden" name="sortByDate" value="${requestScope.sortByDate}">
                         <input type="hidden" name="sortByReportStatus" value="${requestScope.sortByReportStatus}">
                         <button class="page-link" type="submit">Next</button>

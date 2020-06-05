@@ -50,6 +50,7 @@ public class ReportAction implements Action {
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
 
         return ROOT_FOLDER + USER_PAGES + REPORT_LIST;
     }

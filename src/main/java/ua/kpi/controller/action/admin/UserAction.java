@@ -43,6 +43,7 @@ public class UserAction implements Action {
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
 
         return ROOT_FOLDER + ADMIN_PAGES + USER_LIST;
     }

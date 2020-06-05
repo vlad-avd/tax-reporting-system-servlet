@@ -17,15 +17,15 @@
     <table class="table table-striped">
         <thead>
         <tr>
-        <th><fmt:message key="messages.report.id"/></th>
+        <th>#</th>
         <th><fmt:message key="messages.report.person.type"/></th>
         <th><fmt:message key="messages.report.status"/></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${requestScope.reports}" var="report">
+        <c:forEach items="${requestScope.reports}" var="report" varStatus="reportStat">
             <tr>
-                <td>${report.id}</td>
+                <td>${reportStat.index + requestScope.recordsPerPage * (requestScope.currentPage - 1) + 1}</td>
                 <td>${report.personType}</td>
                 <td>${report.reportStatus}</td>
                 <td><a href="${pageContext.request.contextPath}/report?id=${report.id}"><fmt:message key="messages.report.open"/></a></td>

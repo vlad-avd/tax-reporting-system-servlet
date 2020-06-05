@@ -9,13 +9,15 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th>#</th>
             <th><fmt:message key="messages.user.username"/></th>
             <th><fmt:message key="messages.user.role"/></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${requestScope.users}" var="user">
+        <c:forEach items="${requestScope.users}" var="user" varStatus="reportStat">
         <tr>
+            <td>${reportStat.index + requestScope.recordsPerPage * (requestScope.currentPage - 1) + 1}</td>
             <td>${user.username}</td>
             <td>${user.role.toString()}</td>
             <td><a href="${pageContext.request.contextPath}/user/edit?id=${user.id}"><fmt:message key="messages.user.edit"/></a></td>

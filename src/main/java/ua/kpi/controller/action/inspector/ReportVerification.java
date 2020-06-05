@@ -53,6 +53,7 @@ public class ReportVerification implements Action {
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
 
         return ROOT_FOLDER + INSPECTOR_PAGES + REPORT_VERIFICATION_LIST;
     }
