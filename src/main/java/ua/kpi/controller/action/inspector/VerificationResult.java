@@ -37,28 +37,32 @@ public class VerificationResult implements Action {
                 .setSalary(report.getSalary())
                 .setTaxpayerId(report.getTaxpayerId())
                 .setWorkplace(report.getWorkplace())
-                .setComment(comment)
                 .setCreated(report.getCreated())
                 .setLastEdit(report.getLastEdit())
                 .build();
-
-        if(!rejectionReason.isEmpty()){
-            reportDto.getBuilder().setRejectionReason(RejectionReason.valueOf(rejectionReason));
-        }
 
         if( reportStatus.equals("approve") ){
             reportDto.getBuilder().setReportStatus(ReportStatus.APPROVED).build();
             reportService.moveReportToArchive(reportDto);
 
         }
-        else if( reportStatus.equals("reject") ){
+        else if(reportStatus.equals("reject") ){
             reportDto.getBuilder().setReportStatus(ReportStatus.REJECTED).build();
+            if(!rejectionReason.isEmpty()){
+                reportDto.getBuilder().setRejectionReason(RejectionReason.valueOf(rejectionReason));
+            }
+            if(!comment.isEmpty()) {
+                reportDto.getBuilder().setComment(comment);
+            }
             reportService.moveReportToArchive(reportDto);
         }
         else if(reportStatus.equals("sendToEdit")){
             reportDto.getBuilder().setReportStatus(ReportStatus.NEED_TO_EDIT).build();
+            if(!comment.isEmpty()) {
+                reportDto.getBuilder().setComment(comment);
+            }
             reportService.updateVerifiedReport(reportDto);
         }
-        return ROOT_FOLDER + INSPECTOR_PAGES + REPORT_VERIFICATION_LIST;
+        return REDIRECT + REPORT_VERIFICATION_LIST_PATH;
     }
 }
