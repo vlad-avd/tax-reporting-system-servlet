@@ -21,7 +21,9 @@ public class ReportVerification implements Action {
 
     @Override
     public String handleRequest(HttpServletRequest request) throws SQLException {
+
         String reportId = request.getParameter("id");
+
         if(reportId != null){
             Long id = Long.parseLong(reportId);
             Report report = reportService.getReportById(id);
@@ -47,11 +49,7 @@ public class ReportVerification implements Action {
 
         int rows = reportService.getVerificationReportsNumberByInspectorId(userId);
 
-        int nOfPages = rows / recordsPerPage;
-
-        if (nOfPages % recordsPerPage > 0) {
-            nOfPages++;
-        }
+        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);

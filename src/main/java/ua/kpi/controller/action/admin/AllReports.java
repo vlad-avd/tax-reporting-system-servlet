@@ -27,15 +27,9 @@ public class AllReports implements Action {
 
         List<Report> reports;
 
-        String newPage = request.getParameter("newPage");
-
-        //if(newPage.equals("false")) {
         String sortByDate = request.getParameter("sortByDate");
         String sortByReportStatus = request.getParameter("sortByReportStatus");
-//        }else{
-//            sortByDate = request.getAttribute("sortByDate").toString();
-//            sortByReportStatus = request.getAttribute("sortByReportStatus").toString();
-//        }
+
         System.out.println(sortByDate);
         System.out.println(sortByReportStatus);
         if(sortByDate == null && sortByReportStatus == null){
@@ -43,7 +37,7 @@ public class AllReports implements Action {
             sortByReportStatus = "all";
         }
 
-        int rows = 0;
+        int rows;
 
         if(sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all")) {
             reports = adminService.getAllReports(currentPage, recordsPerPage);
@@ -54,11 +48,7 @@ public class AllReports implements Action {
         }
         request.setAttribute("reports", reports);
 
-        int nOfPages = rows / recordsPerPage;
-
-        if (nOfPages % recordsPerPage > 0) {
-            nOfPages++;
-        }
+        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
 
         request.setAttribute("sortByDate", sortByDate);
         request.setAttribute("sortByReportStatus", sortByReportStatus);

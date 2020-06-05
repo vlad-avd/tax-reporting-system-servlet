@@ -39,11 +39,7 @@ public class UserAction implements Action {
 
         int rows = adminService.getUsersNumber();
 
-        int nOfPages = rows / recordsPerPage;
-
-        if (nOfPages % recordsPerPage > 0) {
-            nOfPages++;
-        }
+        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
 
         request.setAttribute("noOfPages", nOfPages);
         request.setAttribute("currentPage", currentPage);
