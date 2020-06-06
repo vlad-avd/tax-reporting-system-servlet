@@ -99,10 +99,11 @@ public class ReportDaoImpl implements ReportDao {
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
-        return reports.stream().
-                skip(start).
-                limit(recordsPerPage).
-                collect(Collectors.toList());
+        return reports.stream()
+                .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
+                .skip(start)
+                .limit(recordsPerPage)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -465,6 +466,7 @@ public class ReportDaoImpl implements ReportDao {
             throw new SqlRuntimeException(ex);
         }
         return reports.stream()
+                .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
                 .skip(start)
                 .limit(recordsPerPage)
                 .collect(Collectors.toList());
@@ -521,6 +523,7 @@ public class ReportDaoImpl implements ReportDao {
                     .collect(Collectors.toList());
         }
         return reports.stream()
+                .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
                 .skip(start)
                 .limit(recordsPerPage)
                 .collect(Collectors.toList());
