@@ -32,4 +32,9 @@ public class GuestServiceImpl implements GuestService {
     public void setUserRole(Long id, Role role) {
         userDao.setUserRole(id, role);
     }
+
+    @Override
+    public boolean isUserExistsWithUsername(String username) {
+        return userDao.isUserExistsWithUsername(username);
+    }
 }

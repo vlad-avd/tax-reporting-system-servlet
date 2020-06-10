@@ -138,4 +138,19 @@ public class UserDaoImpl implements UserDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public boolean isUserExistsWithUsername(String username) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("is.exists.user.with.username"));) {
+
+            ps.setString(1,username);
+
+            return ps.executeQuery().next();
+
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }

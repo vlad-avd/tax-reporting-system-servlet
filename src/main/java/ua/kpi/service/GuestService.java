@@ -11,4 +11,6 @@ public interface GuestService {
     boolean createUser(UserDto user);
 
     void setUserRole(Long id, Role role);
+
+    boolean isUserExistsWithUsername(String username);
 }

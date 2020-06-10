@@ -20,4 +20,6 @@ public interface UserDao {
     boolean updateUser(UserDto userDto);
 
     int getUsersNumber();
+
+    boolean isUserExistsWithUsername(String username);
 }
