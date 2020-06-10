@@ -9,6 +9,7 @@ import ua.kpi.service.AdminService;
 import ua.kpi.service.impl.AdminServiceImpl;
 import ua.kpi.service.UserService;
 import ua.kpi.service.impl.UserServiceImpl;
+import ua.kpi.util.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,20 +34,40 @@ public class EditProfile extends MultipleRequest implements Action {
 
     @Override
     protected String handlePostRequest(HttpServletRequest request) {
+
+        UserValidator userValidator = new UserValidator();
+
         Long user_id = Long.parseLong(request.getSession().getAttribute("userId").toString());
         String role = request.getSession().getAttribute("role").toString();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("password-confirmation");
 
-        UserDto userDto = UserDto.newBuilder()
-                .setId(user_id)
-                .setUsername(username)
-                .setPassword(password)
-                .setRole(Role.valueOf(role))
-                .build();
-        userService.updateUser(userDto);
+        if (userValidator.isValidUsername(username)
+                && userValidator.isValidPassword(password)
+                && userValidator.arePasswordsMatch(password, passwordConfirmation)) {
 
-        return REDIRECT + PROFILE_PATH;
+            UserDto userDto = UserDto.newBuilder()
+                    .setId(user_id)
+                    .setUsername(username)
+                    .setPassword(password)
+                    .setRole(Role.valueOf(role))
+                    .build();
+            userService.updateUser(userDto);
+
+            return REDIRECT + PROFILE_PATH;
+        }
+
+        else {
+            request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));
+            request.setAttribute("passwordIsValid", userValidator.isValidPassword(password));
+            request.setAttribute("passwordMismatch", userValidator.arePasswordsMatch(password, passwordConfirmation));
+
+            User user = adminService.getUserById(user_id);
+            request.setAttribute("user", user);
+            request.setAttribute("role", role);
+
+            return ROOT_FOLDER + USER_PAGES + EDIT_PROFILE;
+        }
     }
 }
