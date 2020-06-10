@@ -153,4 +153,20 @@ public class UserDaoImpl implements UserDao {
             throw new SqlRuntimeException(ex);
         }
     }
+
+    @Override
+    public boolean areUsernameAndPasswordCorrect(String username, String password) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection
+                     .prepareStatement(queries.getString("are.username.and.password.correct"));) {
+
+            ps.setString(1,username);
+            ps.setString(2, password);
+
+            return ps.executeQuery().next();
+
+        } catch (SQLException ex) {
+            throw new SqlRuntimeException(ex);
+        }
+    }
 }

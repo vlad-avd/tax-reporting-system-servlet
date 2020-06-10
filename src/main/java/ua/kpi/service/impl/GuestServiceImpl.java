@@ -37,4 +37,9 @@ public class GuestServiceImpl implements GuestService {
     public boolean isUserExistsWithUsername(String username) {
         return userDao.isUserExistsWithUsername(username);
     }
+
+    @Override
+    public boolean areUsernameAndPasswordCorrect(String username, String password) {
+        return userDao.areUsernameAndPasswordCorrect(username, password);
+    }
 }

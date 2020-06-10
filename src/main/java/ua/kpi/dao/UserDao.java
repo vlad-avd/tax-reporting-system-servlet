@@ -22,4 +22,6 @@ public interface UserDao {
     int getUsersNumber();
 
     boolean isUserExistsWithUsername(String username);
+
+    boolean areUsernameAndPasswordCorrect(String username, String password);
 }

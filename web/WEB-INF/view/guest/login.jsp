@@ -19,6 +19,9 @@
                 <input type="password" name="password" class="form-control" placeholder=<fmt:message key="messages.user.password"/>>
             </div>
         </div>
+        <c:if test="${requestScope.wrongUsernameOrPassword == true}">
+            <div class="alert alert-danger"><p><fmt:message key="messages.incorrect.username.or.password"/></p></div>
+        </c:if>
     <%--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
     <%--    <#if !isRegisterForm>--%>
     <%--    <a href="/registration"><fmt:message key="messages.account.add"/></a>--%>

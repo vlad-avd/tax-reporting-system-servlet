@@ -27,15 +27,20 @@ public class Login extends MultipleRequest {
     @Override
     protected String handlePostRequest(HttpServletRequest request) {
         String username = request.getParameter("username");
-        User user = guestService.getUserByUsername(username);
-        System.out.println(user);
-        if(user != null) {
+        String password = request.getParameter("password");
+
+        if(guestService.areUsernameAndPasswordCorrect(username, password)) {
+            User user = guestService.getUserByUsername(username);
             HttpSession session = request.getSession();
             session.setAttribute("username", user.getUsername());
             session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole().toString());
             return ROOT_FOLDER + HOME;
         }
+        else {
+            request.setAttribute("wrongUsernameOrPassword", "true");
+        }
+
         return ROOT_FOLDER + GUEST_PAGES + LOGIN;
     }
 }

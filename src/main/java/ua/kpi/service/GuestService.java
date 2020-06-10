@@ -13,4 +13,6 @@ public interface GuestService {
     void setUserRole(Long id, Role role);
 
     boolean isUserExistsWithUsername(String username);
+
+    boolean areUsernameAndPasswordCorrect(String username, String password);
 }
