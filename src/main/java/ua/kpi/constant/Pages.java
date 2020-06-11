@@ -31,7 +31,9 @@ public interface Pages {
     public static final String REPORT_PATH = "report";
     public static final String PROFILE_PATH = "profile";
     public static final String USER_LIST_PATH = "user";
+    public static final String REPORT_VERIFICATION_LIST_PATH = "report-verification";
 
     public static final String REDIRECT = "redirect:";
     public static final String INCORRECT_PATH = "";
+    public static final String ERROR = "error-page.jsp";
 }

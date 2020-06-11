@@ -49,7 +49,7 @@ public class ActionFactory {
         actions.put("profile/edit", new EditProfile());
         actions.put("user/edit", new EditUserProfile());
         actions.put("user/statistics", new UserStatistics());
-        actions.put("report/all", new AllReports());
+        actions.put("reports/all", new AllReports());
         actions.put("report/edit", new EditReport());
     }
 

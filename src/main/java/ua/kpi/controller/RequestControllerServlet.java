@@ -7,11 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-
-import static ua.kpi.constant.Pages.HOME_PATH;
-import static ua.kpi.constant.Pages.LOGIN_PATH;
 
 public class RequestControllerServlet extends HttpServlet {
     @Override
@@ -34,10 +30,8 @@ public class RequestControllerServlet extends HttpServlet {
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
         String path = request.getRequestURI().replaceFirst(".*/tax-reporting-system/", "");
-        System.out.println("path: " + path);
         String page = ActionFactory.getInstance().getAction(path).handleRequest(request);
-        System.out.println("page: " + page);
-        System.out.println("Context: " + request.getContextPath());
+
         if (page.contains("redirect:")) {
             response.sendRedirect(page.replace("redirect:", "/tax-reporting-system/"));
         } else {

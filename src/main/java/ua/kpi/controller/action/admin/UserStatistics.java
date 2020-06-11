@@ -26,10 +26,13 @@ public class UserStatistics implements Action {
         Long userId = Long.parseLong(request.getParameter("id"));
         User user = adminService.getUserById(userId);
         StatisticsDto statistics = adminService.getStatistics(userId);
+
         List<Report> reports = reportService.getReportsByUserId(userId);
+
         request.setAttribute("reports", reports);
         request.setAttribute("user", user);
         request.setAttribute("statistics", statistics);
+
         return ROOT_FOLDER + ADMIN_PAGES + USER_STATISTICS;
     }
 }

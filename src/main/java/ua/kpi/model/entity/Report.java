@@ -3,7 +3,6 @@ package ua.kpi.model.entity;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.model.enums.ReportStatus;
-import ua.kpi.model.enums.Role;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

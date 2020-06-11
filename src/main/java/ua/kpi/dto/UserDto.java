@@ -2,8 +2,6 @@ package ua.kpi.dto;
 
 import ua.kpi.model.enums.Role;
 
-import java.util.Set;
-
 public class UserDto {
     private Long id;
     private String username;

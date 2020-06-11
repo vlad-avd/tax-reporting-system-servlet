@@ -1,6 +1,5 @@
 package ua.kpi.dto;
 
-import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.model.enums.ReportStatus;

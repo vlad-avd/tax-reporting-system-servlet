@@ -1,7 +1,5 @@
 package ua.kpi.dto;
 
-import ua.kpi.model.enums.Role;
-
 import java.time.LocalDate;
 
 public class StatisticsDto {

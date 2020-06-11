@@ -6,16 +6,20 @@ import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
+import ua.kpi.util.RequestParametersSetter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ua.kpi.constant.Pages.*;
 
 public class EditReport implements Action {
 
     ReportService reportService = new ReportServiceImpl();
+    RequestParametersSetter parametersSetter = new RequestParametersSetter();
 
     @Override
     public String handleRequest(HttpServletRequest request) throws SQLException {
@@ -49,8 +53,11 @@ public class EditReport implements Action {
                         .build();
             }
 
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("id", reportId.toString());
+
             reportService.updateReportContent(reportId, reportDto);
-            return ROOT_FOLDER + USER_PAGES + REPORT;
+            return REDIRECT + REPORT_PATH + parametersSetter.setParameters(parameters);
         }
     }
 }

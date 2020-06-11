@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 
 public class AdminServiceImpl implements AdminService {
 
-    //private ConnectionPool connectionPool = PGConnectionPool.getInstance();
-
     private UserDao userDao;
     private ReportDao reportDao;
 

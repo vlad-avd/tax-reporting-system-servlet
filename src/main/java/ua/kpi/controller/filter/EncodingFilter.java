@@ -17,6 +17,7 @@ public class EncodingFilter implements Filter {
         servletRequest.setAttribute("locale",
                 ((HttpServletRequest) servletRequest).getSession().getAttribute("locale"));
         filterChain.doFilter(servletRequest, servletResponse);
+
     }
 
     public void destroy() {

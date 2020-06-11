@@ -15,11 +15,13 @@ public class LocaleFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession();
+
         String locale = servletRequest.getParameter("lang");
+
         if(locale == null) {
             locale = (String)session.getAttribute("locale");
         }
-        System.out.println("lang: " + locale);
+
         session.setAttribute("locale", locale);
         filterChain.doFilter(request, servletResponse);
     }
