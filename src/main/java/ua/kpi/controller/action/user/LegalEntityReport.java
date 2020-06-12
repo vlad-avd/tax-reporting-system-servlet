@@ -7,6 +7,7 @@ import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
+import ua.kpi.util.ReportValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,18 +26,34 @@ public class LegalEntityReport extends MultipleRequest implements Action {
 
     @Override
     protected String handlePostRequest(HttpServletRequest request) {
+
+        ReportValidator reportValidator = new ReportValidator();
+
         String companyName = request.getParameter("companyName");
-        BigDecimal financialTurnover = new BigDecimal(request.getParameter("financialTurnover"));
-        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        ReportDto reportDto = ReportDto.newBuilder()
-                .setCompanyName(companyName)
-                .setFinancialTurnover(financialTurnover)
-                .setTaxpayerId(userId)
-                .setInspectorId(reportService.getInspectorIdWithLeastReportsNumber(0L))
-                .setReportStatus(ReportStatus.ON_VERIFYING)
-                .setPersonType(PersonType.LEGAL_ENTITY)
-                .build();
-        reportService.createLegalEntityReport(reportDto);
-        return REDIRECT + REPORT_PATH;
+        String financialTurnoverParameter = request.getParameter("financialTurnover");
+
+        if(reportValidator.isWorkplaceValid(companyName)
+                && reportValidator.isSalaryValid(financialTurnoverParameter)) {
+
+            BigDecimal financialTurnover = new BigDecimal(financialTurnoverParameter);
+            Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+            ReportDto reportDto = ReportDto.newBuilder()
+                    .setCompanyName(companyName)
+                    .setFinancialTurnover(financialTurnover)
+                    .setTaxpayerId(userId)
+                    .setInspectorId(reportService.getInspectorIdWithLeastReportsNumber(0L))
+                    .setReportStatus(ReportStatus.ON_VERIFYING)
+                    .setPersonType(PersonType.LEGAL_ENTITY)
+                    .build();
+            reportService.createLegalEntityReport(reportDto);
+            return REDIRECT + REPORT_PATH;
+        }
+
+        else {
+            request.setAttribute("isCompanyNameValid", reportValidator.isWorkplaceValid(companyName));
+            request.setAttribute("isFinancialTurnoverValid", reportValidator.isSalaryValid(financialTurnoverParameter));
+
+            return ROOT_FOLDER + USER_PAGES + LEGAL_ENTITY_REPORT;
+        }
     }
 }
