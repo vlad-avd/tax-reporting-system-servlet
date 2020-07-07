@@ -6,6 +6,7 @@ public interface Pages {
     public static final String USER_PAGES = "user/";
     public static final String INSPECTOR_PAGES = "inspector/";
     public static final String ADMIN_PAGES = "admin/";
+    public static final String TEMPLATE_PAGES = "template/";
 
     public static final String HOME = "index.jsp";
     public static final String LOGIN = "login.jsp";
@@ -17,6 +18,7 @@ public interface Pages {
     public static final String PROFILE = "profile.jsp";
     public static final String EDIT_PROFILE = "edit-profile.jsp";
     public static final String EDIT_REPORT = "edit-report.jsp";
+    public static final String ERROR_403 = "error-403.jsp";
 
     public static final String USER_LIST = "user-list.jsp";
     public static final String EDIT_USER = "edit-user.jsp";

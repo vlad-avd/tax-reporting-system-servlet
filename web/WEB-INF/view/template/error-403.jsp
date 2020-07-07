@@ -8,7 +8,7 @@
 <div class="container">
     <div style="margin-top: 50px" class="col-md-12 text-center">
         <h1><fmt:message key="messages.error.title"/></h1>
-        <p><fmt:message key="messages.error.content"/></p>
+        <p><fmt:message key="messages.error.access.denied.content"/></p>
     </div>
 </div>
 </body>
