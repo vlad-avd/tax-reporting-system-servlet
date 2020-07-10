@@ -2,6 +2,7 @@ package ua.kpi.dao;
 
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.util.Page;
 
 import java.util.List;
 
@@ -12,11 +13,11 @@ public interface ReportDao {
 
     List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage);
 
-    List<Report> getReportsByUserId(Long id);
+    List<Report> getAllReportsByUserId(Long id);
 
     Report findReportById(Long id);
 
-    List<Report> getVerificationReports(Long inspectorId, int currentPage, int recordsPerPage);
+    List<Report> getVerificationReports(Long inspectorId, Page page);
 
     int getVerificationReportsNumberByInspectorId(Long inspectorId);
 

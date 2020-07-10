@@ -14,10 +14,10 @@
             </div>
         </div>
         <c:if test="${requestScope.usernameIsValid == false}">
-            <div class="alert alert-info"><p><fmt:message key="messages.invalid.username"/></p></div>
+            <div class="alert alert-danger"><p><fmt:message key="messages.invalid.username"/></p></div>
         </c:if>
         <c:if test="${requestScope.isUserExists == true}">
-            <div class="alert alert-info"><p><fmt:message key="messages.user.already.exists"/></p></div>
+            <div class="alert alert-danger"><p><fmt:message key="messages.user.already.exists"/></p></div>
         </c:if>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> <fmt:message key="messages.user.password"/>: </label>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <c:if test="${requestScope.passwordIsValid == false}">
-            <div class="alert alert-info"><p><fmt:message key="messages.invalid.password"/></p></div>
+            <div class="alert alert-danger"><p><fmt:message key="messages.invalid.password"/></p></div>
         </c:if>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> <fmt:message key="messages.user.password.confirmation"/>: </label>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <c:if test="${requestScope.passwordMismatch == false}">
-            <div class="alert alert-info"><p><fmt:message key="messages.password.mismatch"/></p></div>
+            <div class="alert alert-danger"><p><fmt:message key="messages.password.mismatch"/></p></div>
         </c:if>
         <button class="btn btn-primary" type="submit"><fmt:message key="messages.account.add"/></button>
     </form>

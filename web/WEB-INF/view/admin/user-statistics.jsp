@@ -52,8 +52,5 @@
             </tbody>
         </table>
     </div>
-    <form action="${pageContext.request.contextPath}/report/individual-person-report">
-        <button class="btn btn-primary" type="submit"><fmt:message key="messages.user.create.individual.person.report"/></button>
-    </form>
 </div>
 </body>

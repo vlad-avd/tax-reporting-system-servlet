@@ -17,7 +17,7 @@ public class ReportAction implements Action {
     @Override
     public String handleRequest(HttpServletRequest request) {
         String reportId = request.getParameter("id");
-        if(reportId != null){
+        if(reportId != null) {
             Long id = Long.parseLong(reportId);
             Report report = reportService.getReportById(id);
             request.setAttribute("replaceInspector", true);

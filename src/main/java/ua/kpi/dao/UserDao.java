@@ -13,8 +13,6 @@ public interface UserDao {
 
     boolean createUser(UserDto userDTO);
 
-    void setUserRole(Long id, Role role);
-
     List<User> getAllUsers(int currentPage, int recordsPerPage);
 
     boolean updateUser(UserDto userDto);

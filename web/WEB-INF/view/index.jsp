@@ -18,8 +18,8 @@
               <button class="btn btn-primary" type="submit"><fmt:message key="messages.account.add"/></button>
             </form>
         </div>
-        </c:if>
       </div>
+      </c:if>
     </div>
   </body>
 </html>

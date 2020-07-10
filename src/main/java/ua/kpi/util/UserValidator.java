@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 public class UserValidator {
 
     GuestService guestService;
-    private ResourceBundle regexpBundle;
+    private final ResourceBundle regexpBundle;
 
     {
         guestService = new GuestServiceImpl();

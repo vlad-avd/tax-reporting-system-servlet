@@ -1,12 +1,14 @@
 package ua.kpi.controller.action.inspector;
 
 import ua.kpi.controller.action.Action;
+import ua.kpi.dto.PageableReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.service.InspectorService;
 import ua.kpi.service.impl.InspectorServiceImpl;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
+import ua.kpi.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -33,27 +35,23 @@ public class ReportVerification implements Action {
             return ROOT_FOLDER + INSPECTOR_PAGES + REPORT_VERIFICATION;
         }
 
-        int currentPage = 1;
+        Page page = new Page();
 
         if(request.getParameter("currentPage") != null) {
-            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+            page.setCurrentPage(Integer.parseInt(request.getParameter("currentPage")));
         }
 
-        int recordsPerPage = 2;
-
-        List<Report> reports;
-
         Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        reports = inspectorService.getVerificationReport(userId, currentPage, recordsPerPage);
-        request.setAttribute("reports", reports);
+        PageableReportDto pageableReportDto = inspectorService.getVerificationReport(userId, page);
 
-        int rows = reportService.getVerificationReportsNumberByInspectorId(userId);
+        request.setAttribute("reports", pageableReportDto.getReportsPage());
 
-        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
+        page.setSize(reportService.getVerificationReportsNumberByInspectorId(userId));
+        page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("recordsPerPage", recordsPerPage);
+        request.setAttribute("noOfPages", page.getPageNumber());
+        request.setAttribute("currentPage", page.getCurrentPage());
+        request.setAttribute("recordsPerPage", page.getRecordsPerPage());
 
         return ROOT_FOLDER + INSPECTOR_PAGES + REPORT_VERIFICATION_LIST;
     }

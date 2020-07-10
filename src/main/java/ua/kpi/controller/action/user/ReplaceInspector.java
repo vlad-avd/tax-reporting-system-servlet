@@ -16,7 +16,6 @@ public class ReplaceInspector implements Action {
     @Override
     public String handleRequest(HttpServletRequest request) throws SQLException {
         String id = request.getParameter("id");
-        System.out.println(id);
         if(!id.isEmpty()) {
             Long reportId = Long.parseLong(id);
 

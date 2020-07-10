@@ -4,11 +4,14 @@ import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dao.UserDao;
 import ua.kpi.dao.impl.UserDaoImpl;
+import ua.kpi.dto.PageableReportDto;
+import ua.kpi.dto.PageableUserDto;
 import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.AdminService;
+import ua.kpi.util.Page;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -17,8 +20,8 @@ import java.util.stream.Collectors;
 
 public class AdminServiceImpl implements AdminService {
 
-    private UserDao userDao;
-    private ReportDao reportDao;
+    private final UserDao userDao;
+    private final ReportDao reportDao;
 
     {
         userDao = new UserDaoImpl();
@@ -26,18 +29,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userDao.getUserById(id);
-    }
+    public PageableUserDto getAllUsers(Page page) {
+        PageableUserDto pageableUserDto = new PageableUserDto();
+        pageableUserDto.setUserPage(userDao.getAllUsers(page.getCurrentPage(), page.getRecordsPerPage()));
+        pageableUserDto.setRowNumber(getUsersNumber());
 
-    @Override
-    public List<User> getAllUsers(int currentPage, int recordsPerPage) {
-        return userDao.getAllUsers(currentPage, recordsPerPage);
+        return  pageableUserDto;
     }
 
     @Override
     public StatisticsDto getStatistics(Long userId) {
-        List<Report> reports = reportDao.getReportsByUserId(userId);
+        List<Report> reports = reportDao.getAllReportsByUserId(userId);
 
         int reportsNumber = reports.size();
 
@@ -100,12 +102,30 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage) {
-        return reportDao.getFilteredReports(sortByDate, sortByReportStatus, currentPage, recordsPerPage);
+    public PageableReportDto getFilteredReports(Page page, String sortByDate, String sortByReportStatus) {
+
+        PageableReportDto reports = new PageableReportDto();
+
+        if(sortByDate == null && sortByReportStatus == null){
+            sortByDate = "fromNewestToOldest";
+            sortByReportStatus = "all";
+        }
+
+        if(sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all")) {
+            reports.setReportsPage(getAllReports(page.getCurrentPage(), page.getRecordsPerPage()));
+            reports.setRowNumber(getReportsNumber());
+        } else {
+            reports.setReportsPage(reportDao.getFilteredReports(sortByDate, sortByReportStatus, page.getCurrentPage(), page.getRecordsPerPage()));
+            reports.setRowNumber(getFilteredReportsNumber(sortByReportStatus));
+        }
+
+        return reports;
     }
 
     @Override
     public int getFilteredReportsNumber(String sortByReportStatus) {
         return reportDao.getFilteredReportsNumber(sortByReportStatus);
     }
+
+
 }

@@ -7,6 +7,7 @@ import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
+import ua.kpi.util.Page;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,11 +18,11 @@ import java.util.stream.Collectors;
 
 public class ReportDaoImpl implements ReportDao {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    private Mapper mapper;
+    private final Mapper mapper;
 
-    private ResourceBundle queries;
+    private final ResourceBundle queries;
 
     {
         dataSource = PGConnectionPool.getInstance();
@@ -71,34 +72,10 @@ public class ReportDaoImpl implements ReportDao {
     @Override
     public List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage) {
 
-        List<Report> reports = new ArrayList<>();
-
         int start = currentPage * recordsPerPage - recordsPerPage;
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps1 = connection
-                     .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));
-             PreparedStatement ps2 = connection
-                     .prepareStatement(queries.getString("get.all.reports.from.archive.by.taxpayer.id"));) {
+        List<Report> reports = getAllReportsByUserId(id);
 
-            ps1.setLong(1, id);
-            ResultSet resultSet1 =  ps1.executeQuery();
-
-            while (resultSet1.next()) {
-                reports.add(mapper.extractReport(resultSet1));
-            }
-
-
-
-            ps2.setLong(1, id);
-            ResultSet resultSet2 =  ps2.executeQuery();
-
-            while (resultSet2.next()) {
-                reports.add(mapper.extractReport(resultSet2));
-            }
-        } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
-        }
         return reports.stream()
                 .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
                 .skip(start)
@@ -107,7 +84,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public List<Report> getReportsByUserId(Long id) {
+    public List<Report> getAllReportsByUserId(Long id) {
 
         List<Report> reports = new ArrayList<>();
 
@@ -171,16 +148,16 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public List<Report> getVerificationReports(Long inspectorId, int currentPage, int recordsPerPage) {
+    public List<Report> getVerificationReports(Long inspectorId, Page page) {
         List<Report> reports = new ArrayList<>();
 
-        int startIndex = currentPage * recordsPerPage - recordsPerPage;
+        int startIndex = page.getCurrentPage() * page.getRecordsPerPage() - page.getRecordsPerPage();
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.verification.reports"));) {
             ps.setLong(1, inspectorId);
-            ps.setInt(2, recordsPerPage);
+            ps.setInt(2, page.getRecordsPerPage());
             ps.setInt(3, startIndex);
 
             ResultSet resultSet =  ps.executeQuery();
@@ -439,11 +416,8 @@ public class ReportDaoImpl implements ReportDao {
         }
     }
 
-    @Override
-    public List<Report> getAllReports(int currentPage, int recordsPerPage) {
+    public List<Report> getAllReports() {
         List<Report> reports = new ArrayList<>();
-
-        int start = currentPage * recordsPerPage - recordsPerPage;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps1 = connection
@@ -465,6 +439,14 @@ public class ReportDaoImpl implements ReportDao {
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }
+        return reports;
+    }
+
+    @Override
+    public List<Report> getAllReports(int currentPage, int recordsPerPage) {
+        int start = currentPage * recordsPerPage - recordsPerPage;
+        List<Report> reports = getAllReports();
+
         return reports.stream()
                 .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
                 .skip(start)
@@ -472,38 +454,7 @@ public class ReportDaoImpl implements ReportDao {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage) {
-        List<Report> reports = new ArrayList<>();
-
-        int start = currentPage * recordsPerPage - recordsPerPage;
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps1 = connection
-                     .prepareStatement(queries.getString("get.all.reports"));
-             PreparedStatement ps2 = connection
-                     .prepareStatement(queries.getString("get.all.reports.from.archive"));) {
-
-            ResultSet resultSet1 = ps1.executeQuery();
-
-            while (resultSet1.next()) {
-                reports.add(mapper.extractReport(resultSet1));
-            }
-
-            ResultSet resultSet2 = ps2.executeQuery();
-
-            while (resultSet2.next()) {
-                reports.add(mapper.extractReport(resultSet2));
-            }
-        } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
-        }
-
-        reports.sort(Comparator.comparing(Report::getCreated));
-
-        if (sortByDate.equals("fromOldestToNewest")) {
-            Collections.reverse(reports);
-        }
+    public List<Report> filterReports(List<Report> reports, String sortByDate, String sortByReportStatus) {
 
         if (sortByReportStatus.equals("onVerifying")) {
             reports = reports.stream()
@@ -522,8 +473,25 @@ public class ReportDaoImpl implements ReportDao {
                     .filter(report -> report.getReportStatus().equals(ReportStatus.REJECTED))
                     .collect(Collectors.toList());
         }
+
+        if (sortByDate.equals("fromOldestToNewest")) {
+            Collections.reverse(reports);
+        }
+
+        return reports;
+    }
+
+    @Override
+    public List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage) {
+        int start = currentPage * recordsPerPage - recordsPerPage;
+
+        List<Report> reports = getAllReports();
+
+        reports.sort(Comparator.comparing(Report::getId).reversed());
+
+        reports = filterReports(reports, sortByDate, sortByReportStatus);
+
         return reports.stream()
-                .sorted((r1, r2) -> Long.compare(r2.getId(), r1.getId()))
                 .skip(start)
                 .limit(recordsPerPage)
                 .collect(Collectors.toList());
@@ -531,46 +499,9 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int getFilteredReportsNumber(String sortByReportStatus) {
-        List<Report> reports = new ArrayList<>();
+        List<Report> reports = getAllReports();
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps1 = connection
-                     .prepareStatement(queries.getString("get.all.reports"));
-             PreparedStatement ps2 = connection
-                     .prepareStatement(queries.getString("get.all.reports.from.archive"));) {
-
-            ResultSet resultSet1 = ps1.executeQuery();
-
-            while (resultSet1.next()) {
-                reports.add(mapper.extractReport(resultSet1));
-            }
-
-            ResultSet resultSet2 = ps2.executeQuery();
-
-            while (resultSet2.next()) {
-                reports.add(mapper.extractReport(resultSet2));
-            }
-        } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
-        }
-
-        if (sortByReportStatus.equals("onVerifying")) {
-            reports = reports.stream()
-                    .filter(report -> report.getReportStatus().equals(ReportStatus.ON_VERIFYING))
-                    .collect(Collectors.toList());
-        } else if (sortByReportStatus.equals("needToEdit")) {
-            reports = reports.stream()
-                    .filter(report -> report.getReportStatus().equals(ReportStatus.NEED_TO_EDIT))
-                    .collect(Collectors.toList());
-        } else if (sortByReportStatus.equals("approved")) {
-            reports = reports.stream()
-                    .filter(report -> report.getReportStatus().equals(ReportStatus.APPROVED))
-                    .collect(Collectors.toList());
-        } else if (sortByReportStatus.equals("rejected")) {
-            reports = reports.stream()
-                    .filter(report -> report.getReportStatus().equals(ReportStatus.REJECTED))
-                    .collect(Collectors.toList());
-        }
+        reports = filterReports(reports, "fromOldestToNewest", sortByReportStatus);
         return reports.size();
     }
 

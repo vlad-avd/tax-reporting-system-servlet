@@ -28,7 +28,7 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/user"><fmt:message key="messages.navbar.users"/></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/report/all"><fmt:message key="messages.report.all.reports"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/reports/all"><fmt:message key="messages.report.all.reports"/></a>
             </li>
             </c:if>
         </ul>

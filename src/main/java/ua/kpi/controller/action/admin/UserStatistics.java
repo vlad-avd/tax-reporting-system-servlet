@@ -5,9 +5,11 @@ import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.AdminService;
+import ua.kpi.service.UserService;
 import ua.kpi.service.impl.AdminServiceImpl;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
+import ua.kpi.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -19,12 +21,14 @@ public class UserStatistics implements Action {
 
     AdminService adminService = new AdminServiceImpl();
 
+    UserService userService = new UserServiceImpl();
+
     ReportService reportService = new ReportServiceImpl();
 
     @Override
     public String handleRequest(HttpServletRequest request) throws SQLException {
         Long userId = Long.parseLong(request.getParameter("id"));
-        User user = adminService.getUserById(userId);
+        User user = userService.getUserById(userId);
         StatisticsDto statistics = adminService.getStatistics(userId);
 
         List<Report> reports = reportService.getReportsByUserId(userId);

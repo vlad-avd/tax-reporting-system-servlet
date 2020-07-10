@@ -1,12 +1,12 @@
 package ua.kpi.controller.action.admin;
 
 import ua.kpi.controller.action.Action;
-import ua.kpi.model.entity.Report;
+import ua.kpi.dto.PageableReportDto;
 import ua.kpi.service.AdminService;
 import ua.kpi.service.impl.AdminServiceImpl;
+import ua.kpi.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -17,45 +17,29 @@ public class AllReports implements Action {
     @Override
     public String handleRequest(HttpServletRequest request) {
 
-        int currentPage = 1;
+        Page page = new Page();
 
         if(request.getParameter("currentPage") != null) {
-            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+            page.setCurrentPage(Integer.parseInt(request.getParameter("currentPage")));
         }
-
-        int recordsPerPage = 8;
-
-        List<Report> reports;
 
         String sortByDate = request.getParameter("sortByDate");
         String sortByReportStatus = request.getParameter("sortByReportStatus");
 
-        System.out.println(sortByDate);
-        System.out.println(sortByReportStatus);
-        if(sortByDate == null && sortByReportStatus == null){
-            sortByDate = "fromNewestToOldest";
-            sortByReportStatus = "all";
-        }
+        PageableReportDto pageableReport = adminService.getFilteredReports(page, sortByDate, sortByReportStatus);
 
-        int rows;
+        page.setSize(pageableReport.getRowNumber());
 
-        if(sortByDate.equals("fromNewestToOldest") && sortByReportStatus.equals("all")) {
-            reports = adminService.getAllReports(currentPage, recordsPerPage);
-            rows = adminService.getReportsNumber();
-        } else {
-            reports = adminService.getFilteredReports(sortByDate, sortByReportStatus, currentPage, recordsPerPage);
-            rows = adminService.getFilteredReportsNumber(sortByReportStatus);
-        }
-        request.setAttribute("reports", reports);
+        request.setAttribute("reports", pageableReport.getReportsPage());
 
-        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
+        page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
         request.setAttribute("sortByDate", sortByDate);
         request.setAttribute("sortByReportStatus", sortByReportStatus);
 
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("recordsPerPage", recordsPerPage);
+        request.setAttribute("noOfPages", page.getPageNumber());
+        request.setAttribute("currentPage", page.getCurrentPage());
+        request.setAttribute("recordsPerPage", page.getRecordsPerPage());
 
         return ROOT_FOLDER + ADMIN_PAGES + ALL_REPORTS;
     }

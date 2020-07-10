@@ -15,11 +15,11 @@ import java.util.ResourceBundle;
 
 public class UserDaoImpl implements UserDao {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    private Mapper mapper;
+    private final Mapper mapper;
 
-    private ResourceBundle queries;
+    private final ResourceBundle queries;
 
     {
         dataSource = PGConnectionPool.getInstance();
@@ -89,20 +89,6 @@ public class UserDaoImpl implements UserDao {
             ps.setString(3, user.getRole().toString());
             ps.execute();
             return true;
-        } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void setUserRole(Long id, Role role) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("set.user.role"));) {
-
-            ps.setLong(1, id);
-            ps.setString(2, role.toString());
-            ps.execute();
         } catch (SQLException ex) {
             throw new SqlRuntimeException(ex);
         }

@@ -4,13 +4,15 @@ import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.model.enums.RejectionReason;
+import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
 
 import java.util.List;
 
 public class ReportServiceImpl implements ReportService {
 
-    private ReportDao reportDao;
+    private final ReportDao reportDao;
 
     {
         reportDao = new ReportDaoImpl();
@@ -33,7 +35,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<Report> getReportsByUserId(Long userId) {
-        return reportDao.getReportsByUserId(userId);
+        return reportDao.getAllReportsByUserId(userId);
     }
 
     @Override
@@ -107,5 +109,31 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public boolean updateReportContent(Long reportId, ReportDto reportDto) {
         return reportDao.updateReportContent(reportId, reportDto);
+    }
+
+    @Override
+    public void verifyReport(ReportDto reportDto, String reportStatus, String rejectionReason, String comment) {
+        if(reportStatus.equals("approve") ){
+            reportDto.getBuilder().setReportStatus(ReportStatus.APPROVED).build();
+            moveReportToArchive(reportDto);
+
+        }
+        else if(reportStatus.equals("reject") ){
+            reportDto.getBuilder().setReportStatus(ReportStatus.REJECTED).build();
+            if(!rejectionReason.isEmpty()){
+                reportDto.getBuilder().setRejectionReason(RejectionReason.valueOf(rejectionReason));
+            }
+            if(!comment.isEmpty()) {
+                reportDto.getBuilder().setComment(comment);
+            }
+            moveReportToArchive(reportDto);
+        }
+        else if(reportStatus.equals("sendToEdit")){
+            reportDto.getBuilder().setReportStatus(ReportStatus.NEED_TO_EDIT).build();
+            if(!comment.isEmpty()) {
+                reportDto.getBuilder().setComment(comment);
+            }
+            updateVerifiedReport(reportDto);
+        }
     }
 }

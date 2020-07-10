@@ -6,6 +6,7 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
+    private String passwordConfirmation;
 
     private Role role;
 
@@ -19,6 +20,10 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
     }
 
     public Role getRole() {
@@ -54,6 +59,11 @@ public class UserDto {
 
         public Builder setPassword(String password) {
             UserDto.this.password = password;
+            return this;
+        }
+
+        public Builder setPasswordConfirmation(String passwordConfirmation) {
+            UserDto.this.passwordConfirmation = passwordConfirmation;
             return this;
         }
 

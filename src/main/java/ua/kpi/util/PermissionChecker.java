@@ -23,6 +23,6 @@ public class PermissionChecker {
         List<String> pages = (List<String>) rolePages.get(role);
 
         return pages.stream()
-                .anyMatch(p -> p.contains(path));
+                .anyMatch(path::matches);
     }
 }

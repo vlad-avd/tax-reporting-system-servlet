@@ -30,5 +30,7 @@ public interface ReportService {
 
     int getVerificationReportsNumberByInspectorId(Long inspectorId);
 
-    public boolean updateReportContent(Long reportId, ReportDto reportDto);
+    boolean updateReportContent(Long reportId, ReportDto reportDto);
+
+    void verifyReport(ReportDto reportDto, String reportStatus, String rejectionReason, String comment);
 }

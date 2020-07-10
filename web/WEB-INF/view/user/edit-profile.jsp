@@ -37,7 +37,7 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.user.role"/>:</strong></label>
             <div class="col-sm-4">
-                <input type="text" name="password-confirmation" class="form-control" value="${requestScope.role}" readonly>
+                <input type="text" name="password-confirmation" class="form-control" value="${requestScope.user.role}" readonly>
             </div>
         </div>
         <div>
