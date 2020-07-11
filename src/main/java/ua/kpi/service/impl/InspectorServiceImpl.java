@@ -3,11 +3,8 @@ package ua.kpi.service.impl;
 import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dto.PageableReportDto;
-import ua.kpi.model.entity.Report;
 import ua.kpi.service.InspectorService;
 import ua.kpi.util.Page;
-
-import java.util.List;
 
 public class InspectorServiceImpl implements InspectorService {
 

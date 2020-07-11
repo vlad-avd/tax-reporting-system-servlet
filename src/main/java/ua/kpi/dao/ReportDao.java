@@ -43,5 +43,5 @@ public interface ReportDao {
 
     int getFilteredReportsNumber(String sortByReportStatus);
 
-    boolean updateReportContent(Long reportId, ReportDto reportDto);
+    boolean updateReport(ReportDto reportDto);
 }

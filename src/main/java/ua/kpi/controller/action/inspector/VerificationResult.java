@@ -3,15 +3,14 @@ package ua.kpi.controller.action.inspector;
 import ua.kpi.controller.action.Action;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.enums.RejectionReason;
-import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
-import static ua.kpi.constant.Pages.*;
+import static ua.kpi.constant.Pages.REDIRECT;
+import static ua.kpi.constant.Pages.REPORT_VERIFICATION_LIST_PATH;
 
 public class VerificationResult implements Action {
 

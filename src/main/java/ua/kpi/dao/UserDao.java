@@ -2,7 +2,6 @@ package ua.kpi.dao;
 
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
-import ua.kpi.model.enums.Role;
 
 import java.util.List;
 

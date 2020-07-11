@@ -10,7 +10,6 @@ import ua.kpi.service.impl.ReportServiceImpl;
 import ua.kpi.util.ReportValidator;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.math.BigDecimal;
 
 import static ua.kpi.constant.Pages.*;
@@ -48,11 +47,10 @@ public class IndividualPersonReport extends MultipleRequest implements Action {
                     .setReportStatus(ReportStatus.ON_VERIFYING)
                     .setPersonType(PersonType.INDIVIDUAL_PERSON)
                     .build();
+
             reportService.createIndividualPersonReport(reportDto);
             return REDIRECT + REPORT_PATH;
-        }
-
-        else {
+        } else {
             request.setAttribute("isFullNameValid", reportValidator.isFullNameValid(fullName));
             request.setAttribute("isWorkplaceValid", reportValidator.isWorkplaceValid(workplace));
             request.setAttribute("isSalaryValid", reportValidator.isSalaryValid(salaryParameter));

@@ -1,8 +1,8 @@
 package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
-import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.Mapper;
+import ua.kpi.dao.ReportDao;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
@@ -10,8 +10,8 @@ import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.util.Page;
 
 import javax.sql.DataSource;
-import java.sql.*;
 import java.sql.Date;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -506,7 +506,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public boolean updateReportContent(Long reportId, ReportDto reportDto) {
+    public boolean updateReport(ReportDto reportDto) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("update.report.content"));) {
@@ -516,7 +516,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.setBigDecimal(3, reportDto.getSalary());
             ps.setString(4, reportDto.getCompanyName());
             ps.setBigDecimal(5, reportDto.getFinancialTurnover());
-            ps.setLong(6, reportId);
+            ps.setLong(6, reportDto.getId());
 
             return ps.execute();
 

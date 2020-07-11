@@ -10,7 +10,6 @@ import ua.kpi.service.impl.ReportServiceImpl;
 import ua.kpi.util.ReportValidator;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.math.BigDecimal;
 
 import static ua.kpi.constant.Pages.*;
@@ -45,11 +44,10 @@ public class LegalEntityReport extends MultipleRequest implements Action {
                     .setReportStatus(ReportStatus.ON_VERIFYING)
                     .setPersonType(PersonType.LEGAL_ENTITY)
                     .build();
+
             reportService.createLegalEntityReport(reportDto);
             return REDIRECT + REPORT_PATH;
-        }
-
-        else {
+        } else {
             request.setAttribute("isCompanyNameValid", reportValidator.isWorkplaceValid(companyName));
             request.setAttribute("isFinancialTurnoverValid", reportValidator.isSalaryValid(financialTurnoverParameter));
 

@@ -11,7 +11,6 @@ import ua.kpi.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -25,7 +24,7 @@ public class UserAction implements Action {
     public String handleRequest(HttpServletRequest request) throws SQLException {
         String userId = request.getParameter("id");
 
-        if(userId != null){
+        if(userId != null) {
             Long id = Long.parseLong(userId);
             User user = userService.getUserById(id);
             request.setAttribute("user", user);
@@ -39,11 +38,10 @@ public class UserAction implements Action {
         }
 
         PageableUserDto pageableUserDto = adminService.getAllUsers(page);
-        request.setAttribute("users", pageableUserDto.getUsers());
-
         page.setSize(pageableUserDto.getRowNumber());
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
+        request.setAttribute("users", pageableUserDto.getUsers());
         request.setAttribute("noOfPages", page.getPageNumber());
         request.setAttribute("currentPage", page.getCurrentPage());
         request.setAttribute("recordsPerPage", page.getRecordsPerPage());

@@ -2,11 +2,13 @@ package ua.kpi.service.impl;
 
 import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.impl.ReportDaoImpl;
+import ua.kpi.dto.PageableReportDto;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.ReportService;
+import ua.kpi.util.Page;
 
 import java.util.List;
 
@@ -19,23 +21,22 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public boolean createIndividualPersonReport(ReportDto reportDto) {
-        return reportDao.saveIndividualPersonReport(reportDto);
+    public boolean createIndividualPersonReport(ReportDto report) {
+        return reportDao.saveIndividualPersonReport(report);
     }
 
     @Override
-    public boolean createLegalEntityReport(ReportDto reportDto) {
-        return reportDao.saveLegalEntityReport(reportDto);
+    public boolean createLegalEntityReport(ReportDto report) {
+        return reportDao.saveLegalEntityReport(report);
     }
 
     @Override
-    public List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage) {
-        return reportDao.getReportsByUserId(id, currentPage, recordsPerPage);
-    }
+    public PageableReportDto getReportsByUserId(Long id, Page page) {
+        PageableReportDto pageableReportDto = new PageableReportDto();
+        pageableReportDto.setReportsPage(reportDao.getReportsByUserId(id, page.getCurrentPage(), page.getRecordsPerPage()));
+        pageableReportDto.setRowNumber(getReportsNumberByUserId(id));
 
-    @Override
-    public List<Report> getReportsByUserId(Long userId) {
-        return reportDao.getAllReportsByUserId(userId);
+        return pageableReportDto;
     }
 
     @Override
@@ -107,8 +108,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public boolean updateReportContent(Long reportId, ReportDto reportDto) {
-        return reportDao.updateReportContent(reportId, reportDto);
+    public boolean updateReport(ReportDto reportDto) {
+        return reportDao.updateReport(reportDto);
     }
 
     @Override

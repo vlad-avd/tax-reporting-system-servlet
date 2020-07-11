@@ -4,12 +4,14 @@ import ua.kpi.model.enums.Role;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.Locale;
 
 public class SessionListener implements HttpSessionListener {
     private static final String DEFAULT_LOCALE = "ru";
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         httpSessionEvent.getSession().setAttribute("locale", DEFAULT_LOCALE);
+        Locale.setDefault(new Locale(DEFAULT_LOCALE));
         if(httpSessionEvent.getSession().getAttribute("role") == null){
             httpSessionEvent.getSession().setAttribute("role", Role.ROLE_GUEST);
         }

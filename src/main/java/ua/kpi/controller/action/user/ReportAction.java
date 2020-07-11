@@ -1,12 +1,13 @@
 package ua.kpi.controller.action.user;
 
 import ua.kpi.controller.action.Action;
+import ua.kpi.dto.PageableReportDto;
+import ua.kpi.model.entity.Report;
 import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
-import ua.kpi.model.entity.Report;
-import javax.servlet.http.HttpServletRequest;
+import ua.kpi.util.Page;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -24,33 +25,28 @@ public class ReportAction implements Action {
             request.setAttribute("report", report);
             if(reportService.isPossiblyToReplaceInspector(id)){
                 request.setAttribute("replaceInspector", true);
-            }
-            else{
+            } else{
                 request.setAttribute("replaceInspector", false);
             }
             return ROOT_FOLDER + USER_PAGES + REPORT;
         }
 
-        int currentPage = 1;
+        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+
+        Page page = new Page();
 
         if(request.getParameter("currentPage") != null) {
-            currentPage = Integer.parseInt(request.getParameter("currentPage"));
+            page.setCurrentPage(Integer.parseInt(request.getParameter("currentPage")));
         }
 
-        int recordsPerPage = 8;
+        PageableReportDto pageableReportDto = reportService.getReportsByUserId(userId, page);
+        page.setSize(reportService.getReportsNumberByUserId(userId));
+        page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
-        List<Report> reports;
-        Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        reports = reportService.getReportsByUserId(userId, currentPage, recordsPerPage);
-        request.setAttribute("reports", reports);
-
-        int rows = reportService.getReportsNumberByUserId(userId);
-
-        int nOfPages = (int)Math.ceil((double)rows / recordsPerPage);
-
-        request.setAttribute("noOfPages", nOfPages);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("recordsPerPage", recordsPerPage);
+        request.setAttribute("reports", pageableReportDto.getReportsPage());
+        request.setAttribute("noOfPages", page.getPageNumber());
+        request.setAttribute("currentPage", page.getCurrentPage());
+        request.setAttribute("recordsPerPage", page.getRecordsPerPage());
 
         return ROOT_FOLDER + USER_PAGES + REPORT_LIST;
     }

@@ -2,13 +2,11 @@ package ua.kpi.controller.action.admin;
 
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.UserDto;
-import ua.kpi.dto.UserValidationDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.Role;
-import ua.kpi.service.AdminService;
-import ua.kpi.service.impl.AdminServiceImpl;
 import ua.kpi.service.UserService;
 import ua.kpi.service.impl.UserServiceImpl;
+import ua.kpi.util.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,11 +22,14 @@ public class EditUserProfile extends MultipleRequest{
         User user = userService.getUserById(userId);
         request.setAttribute("user", user);
         request.setAttribute("roles", Role.values());
+
         return ROOT_FOLDER + ADMIN_PAGES + EDIT_USER;
     }
 
     @Override
     protected String handlePostRequest(HttpServletRequest request) {
+        UserValidator userValidator = new UserValidator();
+
         Long user_id = Long.parseLong(request.getParameter("id"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -43,16 +44,16 @@ public class EditUserProfile extends MultipleRequest{
                 .setRole(Role.valueOf(userRole))
                 .build();
 
-        UserValidationDto userValidationDto = userService.updateUser(userDto);
+        if(userValidator.isValidUsername(username)
+                && userValidator.isValidPassword(password)
+                && userValidator.arePasswordsMatch(password, passwordConfirmation)) {
 
-        if(userValidationDto.isUserValid()) {
+            userService.updateUser(userDto);
             return REDIRECT + USER_LIST_PATH;
-        }
-        else {
-            request.setAttribute("usernameIsValid", userValidationDto.isUsernameValid());
-            request.setAttribute("passwordIsValid", userValidationDto.isPasswordValid());
-            request.setAttribute("passwordMismatch", userValidationDto.arePasswordsMatch());
-            request.setAttribute("isUserExists", userValidationDto.isUserExistsWithUsername());
+        } else {
+            request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));
+            request.setAttribute("passwordIsValid", userValidator.isValidPassword(password));
+            request.setAttribute("passwordMismatch", userValidator.arePasswordsMatch(password, passwordConfirmation));
 
             return ROOT_FOLDER + USER_PAGES + EDIT_REPORT;
         }

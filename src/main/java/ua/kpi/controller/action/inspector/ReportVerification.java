@@ -5,14 +5,13 @@ import ua.kpi.dto.PageableReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.RejectionReason;
 import ua.kpi.service.InspectorService;
-import ua.kpi.service.impl.InspectorServiceImpl;
 import ua.kpi.service.ReportService;
+import ua.kpi.service.impl.InspectorServiceImpl;
 import ua.kpi.service.impl.ReportServiceImpl;
 import ua.kpi.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.List;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -42,13 +41,12 @@ public class ReportVerification implements Action {
         }
 
         Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
+
         PageableReportDto pageableReportDto = inspectorService.getVerificationReport(userId, page);
-
-        request.setAttribute("reports", pageableReportDto.getReportsPage());
-
         page.setSize(reportService.getVerificationReportsNumberByInspectorId(userId));
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
+        request.setAttribute("reports", pageableReportDto.getReportsPage());
         request.setAttribute("noOfPages", page.getPageNumber());
         request.setAttribute("currentPage", page.getCurrentPage());
         request.setAttribute("recordsPerPage", page.getRecordsPerPage());

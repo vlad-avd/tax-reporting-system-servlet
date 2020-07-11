@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
 
 public class LocaleFilter implements Filter {
     @Override
@@ -23,6 +24,7 @@ public class LocaleFilter implements Filter {
         }
 
         session.setAttribute("locale", locale);
+        Locale.setDefault(new Locale(locale));
         filterChain.doFilter(request, servletResponse);
     }
 

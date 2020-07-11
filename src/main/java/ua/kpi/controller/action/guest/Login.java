@@ -36,8 +36,7 @@ public class Login extends MultipleRequest {
             session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole().toString());
             return REDIRECT + HOME_PATH;
-        }
-        else {
+        } else {
             request.setAttribute("wrongUsernameOrPassword", "true");
         }
 

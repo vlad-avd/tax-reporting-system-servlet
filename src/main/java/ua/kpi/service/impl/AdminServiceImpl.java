@@ -1,14 +1,13 @@
 package ua.kpi.service.impl;
 
 import ua.kpi.dao.ReportDao;
-import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dao.UserDao;
+import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.PageableReportDto;
 import ua.kpi.dto.PageableUserDto;
 import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.Report;
-import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.service.AdminService;
 import ua.kpi.util.Page;

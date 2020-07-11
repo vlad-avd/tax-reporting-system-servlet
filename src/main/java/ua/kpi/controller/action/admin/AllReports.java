@@ -16,7 +16,6 @@ public class AllReports implements Action {
 
     @Override
     public String handleRequest(HttpServletRequest request) {
-
         Page page = new Page();
 
         if(request.getParameter("currentPage") != null) {
@@ -27,16 +26,12 @@ public class AllReports implements Action {
         String sortByReportStatus = request.getParameter("sortByReportStatus");
 
         PageableReportDto pageableReport = adminService.getFilteredReports(page, sortByDate, sortByReportStatus);
-
         page.setSize(pageableReport.getRowNumber());
-
-        request.setAttribute("reports", pageableReport.getReportsPage());
-
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 
+        request.setAttribute("reports", pageableReport.getReportsPage());
         request.setAttribute("sortByDate", sortByDate);
         request.setAttribute("sortByReportStatus", sortByReportStatus);
-
         request.setAttribute("noOfPages", page.getPageNumber());
         request.setAttribute("currentPage", page.getCurrentPage());
         request.setAttribute("recordsPerPage", page.getRecordsPerPage());

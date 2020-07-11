@@ -27,26 +27,28 @@ public class EditReport implements Action {
         String update = request.getParameter("update");
         Long reportId = Long.parseLong(request.getParameter("id"));
         Report report = reportService.getReportById(reportId);
-        ReportDto reportDto = ReportDto.newBuilder().build();
+        ReportDto reportDto = ReportDto.newBuilder()
+                .setId(reportId)
+                .build();
 
         if (update.equals("false")) {
             request.setAttribute("report", report);
-
             return ROOT_FOLDER + USER_PAGES + EDIT_REPORT;
         } else {
             if(report.getPersonType().equals(PersonType.INDIVIDUAL_PERSON)) {
                 String fullName = request.getParameter("fullName");
                 String workplace = request.getParameter("workplace");
                 BigDecimal salary = new BigDecimal(request.getParameter("salary"));
+
                 reportDto.getBuilder()
                         .setFullName(fullName)
                         .setWorkplace(workplace)
                         .setSalary(salary)
                         .build();
-            }
-            else {
+            } else {
                 String companyName = request.getParameter("companyName");
                 BigDecimal financialTurnover = new BigDecimal(request.getParameter("financialTurnover"));
+
                 reportDto.getBuilder()
                         .setCompanyName(companyName)
                         .setFinancialTurnover(financialTurnover)
@@ -56,7 +58,7 @@ public class EditReport implements Action {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("id", reportId.toString());
 
-            reportService.updateReportContent(reportId, reportDto);
+            reportService.updateReport(reportDto);
             return REDIRECT + REPORT_PATH + parametersSetter.setParameters(parameters);
         }
     }

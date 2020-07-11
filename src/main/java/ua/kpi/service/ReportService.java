@@ -1,7 +1,9 @@
 package ua.kpi.service;
 
+import ua.kpi.dto.PageableReportDto;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
+import ua.kpi.util.Page;
 
 import java.util.List;
 
@@ -10,9 +12,7 @@ public interface ReportService {
 
     boolean createLegalEntityReport(ReportDto reportDto);
 
-    List<Report> getReportsByUserId(Long id, int currentPage, int recordsPerPage);
-
-    List<Report> getReportsByUserId(Long userId);
+    PageableReportDto getReportsByUserId(Long id, Page page);
 
     Report getReportById(Long id);
 
@@ -30,7 +30,7 @@ public interface ReportService {
 
     int getVerificationReportsNumberByInspectorId(Long inspectorId);
 
-    boolean updateReportContent(Long reportId, ReportDto reportDto);
+    boolean updateReport(ReportDto reportDto);
 
     void verifyReport(ReportDto reportDto, String reportStatus, String rejectionReason, String comment);
 }

@@ -7,7 +7,8 @@ import ua.kpi.service.impl.ReportServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
-import static ua.kpi.constant.Pages.*;
+import static ua.kpi.constant.Pages.REDIRECT;
+import static ua.kpi.constant.Pages.REPORT_PATH;
 
 public class ReplaceInspector implements Action {
 
@@ -18,7 +19,6 @@ public class ReplaceInspector implements Action {
         String id = request.getParameter("id");
         if(!id.isEmpty()) {
             Long reportId = Long.parseLong(id);
-
             reportService.setReplacedInspector(reportId);
         }
         return REDIRECT + REPORT_PATH;

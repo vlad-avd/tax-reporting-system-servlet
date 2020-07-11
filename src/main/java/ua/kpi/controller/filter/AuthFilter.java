@@ -1,11 +1,10 @@
 package ua.kpi.controller.filter;
 
-import ua.kpi.util.PermissionChecker;
 import ua.kpi.model.enums.Role;
+import ua.kpi.util.PermissionChecker;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static ua.kpi.constant.Pages.*;
