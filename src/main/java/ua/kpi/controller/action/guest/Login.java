@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.guest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.model.entity.User;
@@ -14,6 +16,7 @@ import static ua.kpi.constant.Pages.*;
 public class Login extends MultipleRequest {
 
     private final GuestService guestService = new GuestServiceImpl();
+    Logger logger = LoggerFactory.getLogger(Login.class);
 
     @Override
     protected String handleGetRequest(HttpServletRequest request) {
@@ -29,6 +32,8 @@ public class Login extends MultipleRequest {
     protected String handlePostRequest(HttpServletRequest request) throws UserNotFoundException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
+        logger.debug("User: " + username + "logged in.");
 
         if(guestService.areUsernameAndPasswordCorrect(username, password)) {
             User user = guestService.getUserByUsername(username);

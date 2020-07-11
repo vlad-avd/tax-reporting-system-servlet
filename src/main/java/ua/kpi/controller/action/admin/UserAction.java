@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.PageableUserDto;
@@ -17,8 +19,8 @@ import static ua.kpi.constant.Pages.*;
 public class UserAction implements Action {
 
     AdminService adminService = new AdminServiceImpl();
-
     UserService userService = new UserServiceImpl();
+    Logger logger = LoggerFactory.getLogger(UserAction.class);
 
     @Override
     public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
@@ -38,6 +40,7 @@ public class UserAction implements Action {
         }
 
         PageableUserDto pageableUserDto = adminService.getAllUsers(page);
+        logger.debug("All users were received by admin.");
         page.setSize(pageableUserDto.getRowNumber());
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 

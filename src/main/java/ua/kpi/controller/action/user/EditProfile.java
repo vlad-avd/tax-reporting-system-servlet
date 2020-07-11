@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.controller.exception.UserNotFoundException;
@@ -17,6 +19,7 @@ import static ua.kpi.constant.Pages.*;
 public class EditProfile extends MultipleRequest implements Action {
 
     UserService userService = new UserServiceImpl();
+    Logger logger = LoggerFactory.getLogger(EditReport.class);
 
     @Override
     protected String handleGetRequest(HttpServletRequest request) throws UserNotFoundException {
@@ -53,6 +56,7 @@ public class EditProfile extends MultipleRequest implements Action {
                 && userValidator.arePasswordsMatch(password, passwordConfirmation)) {
 
             userService.updateUser(userDto);
+            logger.debug("User data: " + userId + " has been updated.");
             return REDIRECT + PROFILE_PATH;
         } else {
             request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));

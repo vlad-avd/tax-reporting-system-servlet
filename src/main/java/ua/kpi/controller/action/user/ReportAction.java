@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.dto.PageableReportDto;
 import ua.kpi.model.entity.Report;
@@ -14,6 +16,7 @@ import static ua.kpi.constant.Pages.*;
 public class ReportAction implements Action {
 
     ReportService reportService = new ReportServiceImpl();
+    Logger logger = LoggerFactory.getLogger(ReportAction.class);
 
     @Override
     public String handleRequest(HttpServletRequest request) {
@@ -40,6 +43,7 @@ public class ReportAction implements Action {
         }
 
         PageableReportDto pageableReportDto = reportService.getReportsByUserId(userId, page);
+        logger.debug("User: " + userId + " received their reports.");
         page.setSize(reportService.getReportsNumberByUserId(userId));
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 

@@ -31,13 +31,13 @@
         <div class="form-group row">
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.legal.entity.report.company.name"/>:</strong></label>
             <div class="col-sm-4">
-                <input type="text" name="companyName" class="form-control" value="${requestScope.report.companyName}" readonly>
+                <input type="text" name="companyName" class="form-control" value="${requestScope.report.companyName}">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label"><strong> <fmt:message key="messages.legal.entity.report.financial.turnover"/>:</strong></label>
             <div class="col-sm-4">
-                <input type="text" name="financialTurnover" class="form-control" value="${requestScope.report.financialTurnover}" readonly>
+                <input type="text" name="financialTurnover" class="form-control" value="${requestScope.report.financialTurnover}">
             </div>
         </div>
         </c:if>

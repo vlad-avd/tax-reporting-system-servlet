@@ -259,8 +259,8 @@ public class ReportDaoImpl implements ReportDao {
             } catch (SQLException ex) {
                 try {
                     connection.rollback();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 throw new SqlRuntimeException(ex);
             }
@@ -297,8 +297,8 @@ public class ReportDaoImpl implements ReportDao {
             } catch (SQLException ex) {
                 try {
                     connection.rollback();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 throw new SqlRuntimeException(ex);
             }

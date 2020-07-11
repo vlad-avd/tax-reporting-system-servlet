@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.ReportDto;
@@ -17,6 +19,7 @@ import static ua.kpi.constant.Pages.*;
 public class LegalEntityReport extends MultipleRequest implements Action {
 
     private final ReportService reportService = new ReportServiceImpl();
+    Logger logger = LoggerFactory.getLogger(LegalEntityReport.class);
 
     @Override
     protected String handleGetRequest(HttpServletRequest request) {
@@ -46,6 +49,7 @@ public class LegalEntityReport extends MultipleRequest implements Action {
                     .build();
 
             reportService.createLegalEntityReport(reportDto);
+            logger.debug("Legal entity report has been created.");
             return REDIRECT + REPORT_PATH;
         } else {
             request.setAttribute("isCompanyNameValid", reportValidator.isWorkplaceValid(companyName));

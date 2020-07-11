@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
@@ -19,6 +21,7 @@ public class EditReport implements Action {
 
     ReportService reportService = new ReportServiceImpl();
     RequestParametersSetter parametersSetter = new RequestParametersSetter();
+    Logger logger = LoggerFactory.getLogger(EditProfile.class);
 
     @Override
     public String handleRequest(HttpServletRequest request) {
@@ -58,6 +61,7 @@ public class EditReport implements Action {
             parameters.put("id", reportId.toString());
 
             reportService.updateReport(reportDto);
+            logger.debug("Report data: " + reportId + " has been updated.");
             return REDIRECT + REPORT_PATH + parametersSetter.setParameters(parameters);
         }
     }

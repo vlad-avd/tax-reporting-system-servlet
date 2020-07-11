@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.dto.PageableReportDto;
 import ua.kpi.service.AdminService;
@@ -13,6 +15,7 @@ import static ua.kpi.constant.Pages.*;
 public class AllReports implements Action {
 
     AdminService adminService = new AdminServiceImpl();
+    Logger logger = LoggerFactory.getLogger(AllReports.class);
 
     @Override
     public String handleRequest(HttpServletRequest request) {
@@ -26,6 +29,7 @@ public class AllReports implements Action {
         String sortByReportStatus = request.getParameter("sortByReportStatus");
 
         PageableReportDto pageableReport = adminService.getFilteredReports(page, sortByDate, sortByReportStatus);
+        logger.debug("All reports were received by the admin.");
         page.setSize(pageableReport.getRowNumber());
         page.setPageNumber((int)Math.ceil((double)page.getSize() / page.getRecordsPerPage()));
 

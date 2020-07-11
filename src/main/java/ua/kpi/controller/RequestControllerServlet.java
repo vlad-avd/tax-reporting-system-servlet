@@ -1,6 +1,7 @@
 package ua.kpi.controller;
 
 import ua.kpi.controller.action.ActionFactory;
+import ua.kpi.controller.exception.UserNotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +15,8 @@ public class RequestControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             handleRequest(req, resp);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | UserNotFoundException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -23,12 +24,12 @@ public class RequestControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             handleRequest(req, resp);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | UserNotFoundException ex) {
+            ex.printStackTrace();
         }
     }
 
-    private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException {
+    private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException, UserNotFoundException {
         String path = request.getRequestURI().replaceFirst(".*/tax-reporting-system/", "");
         String page = ActionFactory.getInstance().getAction(path).handleRequest(request);
 

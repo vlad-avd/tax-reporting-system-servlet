@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.StatisticsDto;
@@ -16,8 +18,8 @@ import static ua.kpi.constant.Pages.*;
 public class UserStatistics implements Action {
 
     AdminService adminService = new AdminServiceImpl();
-
     UserService userService = new UserServiceImpl();
+    Logger logger = LoggerFactory.getLogger(UserStatistics.class);
 
     @Override
     public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
@@ -25,7 +27,7 @@ public class UserStatistics implements Action {
 
         User user = userService.getUserById(userId);
         StatisticsDto statistics = adminService.getStatistics(userId);
-
+        logger.debug("User: " + userId + " statistics were received.");
         request.setAttribute("user", user);
         request.setAttribute("statistics", statistics);
 

@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.UserDto;
@@ -16,6 +18,7 @@ import static ua.kpi.constant.Pages.*;
 public class EditUserProfile extends MultipleRequest{
 
     UserService userService = new UserServiceImpl();
+    Logger logger = LoggerFactory.getLogger(EditUserProfile.class);
 
     @Override
     protected String handleGetRequest(HttpServletRequest request) throws UserNotFoundException {
@@ -31,14 +34,14 @@ public class EditUserProfile extends MultipleRequest{
     protected String handlePostRequest(HttpServletRequest request) {
         UserValidator userValidator = new UserValidator();
 
-        Long user_id = Long.parseLong(request.getParameter("id"));
+        Long userId = Long.parseLong(request.getParameter("id"));
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("passwordConfirmation");
         String userRole = request.getParameter("role");
 
         UserDto userDto = UserDto.newBuilder()
-                .setId(user_id)
+                .setId(userId)
                 .setUsername(username)
                 .setPassword(password)
                 .setPasswordConfirmation(passwordConfirmation)
@@ -50,6 +53,7 @@ public class EditUserProfile extends MultipleRequest{
                 && userValidator.arePasswordsMatch(password, passwordConfirmation)) {
 
             userService.updateUser(userDto);
+            logger.debug("User: " + userId + " has been updated.");
             return REDIRECT + USER_LIST_PATH;
         } else {
             request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));

@@ -1,5 +1,7 @@
 package ua.kpi.controller.action.guest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.MultipleRequest;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.enums.Role;
@@ -14,6 +16,7 @@ import static ua.kpi.constant.Pages.*;
 public class Registration extends MultipleRequest {
 
     private final GuestService guestService = new GuestServiceImpl();
+    Logger logger = LoggerFactory.getLogger(Registration.class);
 
     @Override
     protected String handleGetRequest(HttpServletRequest request) {
@@ -42,6 +45,7 @@ public class Registration extends MultipleRequest {
                 && userValidator.arePasswordsMatch(password, passwordConfirmation)) {
 
             guestService.createUser(user);
+            logger.debug("User: " + user.getUsername() + " has been created.");
             return REDIRECT + LOGIN_PATH;
         } else {
             request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));

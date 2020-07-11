@@ -9,7 +9,7 @@ import static ua.kpi.constant.Pages.ROOT_FOLDER;
 
 public abstract class MultipleRequest implements Action {
     @Override
-    public String handleRequest(HttpServletRequest request) {
+    public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
         if(request.getMethod().equals("GET")){
             return handleGetRequest(request);
         }
