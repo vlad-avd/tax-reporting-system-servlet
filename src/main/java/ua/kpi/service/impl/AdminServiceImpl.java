@@ -17,6 +17,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for receiving and processing data necessary for the admin.
+ * @author Vladyslav Avdiienko
+ * @version 1.0
+ */
 public class AdminServiceImpl implements AdminService {
 
     private final UserDao userDao;
@@ -27,6 +32,12 @@ public class AdminServiceImpl implements AdminService {
         reportDao = new ReportDaoImpl();
     }
 
+    /** Returns user edit form filled with current user data.
+     * @param page Page content description
+     * @see Page
+     * @return Page of reports to display, total number of reports to display.
+     * @see PageableUserDto
+     */
     @Override
     public PageableUserDto getAllUsers(Page page) {
         PageableUserDto pageableUserDto = new PageableUserDto();
@@ -36,6 +47,11 @@ public class AdminServiceImpl implements AdminService {
         return  pageableUserDto;
     }
 
+    /** Returns user statistics.
+     * @param userId User id whose statistics get
+     * @return User statistics.
+     * @see StatisticsDto
+     */
     @Override
     public StatisticsDto getStatistics(Long userId) {
         List<Report> reports = reportDao.getAllReportsByUserId(userId);
@@ -85,21 +101,39 @@ public class AdminServiceImpl implements AdminService {
                 .build();
     }
 
+    /** Returns total number of users.
+     * @return number of users.
+     */
     @Override
     public int getUsersNumber() {
         return userDao.getUsersNumber();
     }
 
+    /** Returns all reports.
+     * @param currentPage Number of current page to display
+     * @param recordsPerPage Max number of reports to display per page
+     * @return List of reports.
+     */
     @Override
     public List<Report> getAllReports(int currentPage, int recordsPerPage) {
         return reportDao.getAllReports(currentPage, recordsPerPage);
     }
 
+    /** Returns total number of reports.
+     * @return number of reports.
+     */
     @Override
     public int getReportsNumber() {
         return reportDao.getReportsNumber();
     }
 
+    /** Returns filtered reports.
+     * @param page Page content description
+     * @param sortByDate Sorting direction
+     * @param sortByReportStatus Status filter
+     * @see ReportStatus
+     * @return filtered reports
+     */
     @Override
     public PageableReportDto getFilteredReports(Page page, String sortByDate, String sortByReportStatus) {
 
@@ -121,6 +155,11 @@ public class AdminServiceImpl implements AdminService {
         return reports;
     }
 
+    /** Returns total number of filtered reports.
+     * @param sortByReportStatus Status filter
+     * @see ReportStatus
+     * @return number of filtered reports.
+     */
     @Override
     public int getFilteredReportsNumber(String sortByReportStatus) {
         return reportDao.getFilteredReportsNumber(sortByReportStatus);

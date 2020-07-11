@@ -6,6 +6,11 @@ import ua.kpi.dto.PageableReportDto;
 import ua.kpi.service.InspectorService;
 import ua.kpi.util.Page;
 
+/**
+ * Class for receiving and processing data necessary for the inspector.
+ * @author Vladyslav Avdiienko
+ * @version 1.0
+ */
 public class InspectorServiceImpl implements InspectorService {
 
     private final ReportDao reportDao;

@@ -7,6 +7,11 @@ import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.UserService;
 
+/**
+ * Class for receiving and processing data necessary for the user.
+ * @author Vladyslav Avdiienko
+ * @version 1.0
+ */
 public class UserServiceImpl implements UserService {
 
     UserDao userDao;
@@ -15,11 +20,22 @@ public class UserServiceImpl implements UserService {
         userDao = new UserDaoImpl();
     }
 
+    /** Return user with given id.
+     * @param id
+     * @exception UserNotFoundException if user was not found.
+     * @return User.
+     * @see User
+     */
     @Override
     public User getUserById(Long id) throws UserNotFoundException {
         return userDao.getUserById(id);
     }
 
+    /** Update user data.
+     * @param user User to update.
+     * @see UserDto
+     * @return Updating result.
+     */
     @Override
     public boolean updateUser(UserDto user) {
         return userDao.updateUser(user);
