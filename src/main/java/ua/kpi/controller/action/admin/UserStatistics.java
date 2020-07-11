@@ -1,6 +1,7 @@
 package ua.kpi.controller.action.admin;
 
 import ua.kpi.controller.action.Action;
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.StatisticsDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.AdminService;
@@ -9,7 +10,6 @@ import ua.kpi.service.impl.AdminServiceImpl;
 import ua.kpi.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -20,7 +20,7 @@ public class UserStatistics implements Action {
     UserService userService = new UserServiceImpl();
 
     @Override
-    public String handleRequest(HttpServletRequest request) throws SQLException {
+    public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getParameter("id"));
 
         User user = userService.getUserById(userId);

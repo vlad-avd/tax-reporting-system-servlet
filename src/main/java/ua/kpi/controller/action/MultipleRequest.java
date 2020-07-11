@@ -1,5 +1,7 @@
 package ua.kpi.controller.action;
 
+import ua.kpi.controller.exception.UserNotFoundException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import static ua.kpi.constant.Pages.HOME;
@@ -17,9 +19,9 @@ public abstract class MultipleRequest implements Action {
         return ROOT_FOLDER + HOME;
     }
 
-    protected abstract String handleGetRequest(HttpServletRequest request);
+    protected abstract String handleGetRequest(HttpServletRequest request) throws UserNotFoundException;
 
-    protected abstract String handlePostRequest(HttpServletRequest request);
+    protected abstract String handlePostRequest(HttpServletRequest request) throws UserNotFoundException;
 
 
 }

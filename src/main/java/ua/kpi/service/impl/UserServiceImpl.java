@@ -1,5 +1,6 @@
 package ua.kpi.service.impl;
 
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dao.UserDao;
 import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.UserDto;
@@ -15,7 +16,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(Long id) throws UserNotFoundException {
         return userDao.getUserById(id);
     }
 

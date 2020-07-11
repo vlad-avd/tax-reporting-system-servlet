@@ -1,6 +1,7 @@
 package ua.kpi.controller.action.guest;
 
 import ua.kpi.controller.action.MultipleRequest;
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.GuestService;
 import ua.kpi.service.impl.GuestServiceImpl;
@@ -25,7 +26,7 @@ public class Login extends MultipleRequest {
     }
 
     @Override
-    protected String handlePostRequest(HttpServletRequest request) {
+    protected String handlePostRequest(HttpServletRequest request) throws UserNotFoundException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 

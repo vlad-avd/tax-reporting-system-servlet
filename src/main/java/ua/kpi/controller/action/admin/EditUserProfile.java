@@ -1,6 +1,7 @@
 package ua.kpi.controller.action.admin;
 
 import ua.kpi.controller.action.MultipleRequest;
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.model.enums.Role;
@@ -17,7 +18,7 @@ public class EditUserProfile extends MultipleRequest{
     UserService userService = new UserServiceImpl();
 
     @Override
-    protected String handleGetRequest(HttpServletRequest request) {
+    protected String handleGetRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getParameter("id"));
         User user = userService.getUserById(userId);
         request.setAttribute("user", user);

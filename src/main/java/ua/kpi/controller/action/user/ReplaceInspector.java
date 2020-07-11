@@ -5,7 +5,6 @@ import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 import static ua.kpi.constant.Pages.REDIRECT;
 import static ua.kpi.constant.Pages.REPORT_PATH;
@@ -15,7 +14,7 @@ public class ReplaceInspector implements Action {
     ReportService reportService = new ReportServiceImpl();
 
     @Override
-    public String handleRequest(HttpServletRequest request) throws SQLException {
+    public String handleRequest(HttpServletRequest request) {
         String id = request.getParameter("id");
         if(!id.isEmpty()) {
             Long reportId = Long.parseLong(id);

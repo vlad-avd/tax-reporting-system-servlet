@@ -1,5 +1,6 @@
 package ua.kpi.dao.impl;
 
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.controller.exception.SqlRuntimeException;
 import ua.kpi.dao.Mapper;
 import ua.kpi.dao.ReportDao;
@@ -143,7 +144,7 @@ public class ReportDaoImpl implements ReportDao {
             return report;
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new ReportNotFoundException("Report: " + id + " was not found.");
         }
     }
 

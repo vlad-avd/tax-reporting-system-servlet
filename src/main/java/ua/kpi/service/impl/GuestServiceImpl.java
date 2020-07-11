@@ -1,5 +1,6 @@
 package ua.kpi.service.impl;
 
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dao.UserDao;
 import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.UserDto;
@@ -15,7 +16,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws UserNotFoundException {
         return userDao.getUserByUsername(username);
     }
 

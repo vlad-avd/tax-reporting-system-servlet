@@ -10,7 +10,6 @@ import ua.kpi.util.RequestParametersSetter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class EditReport implements Action {
     RequestParametersSetter parametersSetter = new RequestParametersSetter();
 
     @Override
-    public String handleRequest(HttpServletRequest request) throws SQLException {
+    public String handleRequest(HttpServletRequest request) {
 
         String update = request.getParameter("update");
         Long reportId = Long.parseLong(request.getParameter("id"));

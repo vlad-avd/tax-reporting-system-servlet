@@ -7,7 +7,6 @@ import ua.kpi.service.ReportService;
 import ua.kpi.service.impl.ReportServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 import static ua.kpi.constant.Pages.REDIRECT;
 import static ua.kpi.constant.Pages.REPORT_VERIFICATION_LIST_PATH;
@@ -17,7 +16,7 @@ public class VerificationResult implements Action {
     ReportService reportService = new ReportServiceImpl();
 
     @Override
-    public String handleRequest(HttpServletRequest request) throws SQLException {
+    public String handleRequest(HttpServletRequest request) {
         String reportStatus = request.getParameter("reportStatus");
         String reportId = request.getParameter("id");
         String rejectionReason = request.getParameter("rejectionReason");

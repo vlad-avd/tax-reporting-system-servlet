@@ -1,6 +1,8 @@
 package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.SqlRuntimeException;
+import ua.kpi.controller.exception.UserAlreadyExistsException;
+import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dao.Mapper;
 import ua.kpi.dao.UserDao;
 import ua.kpi.dto.UserDto;
@@ -30,7 +32,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws UserNotFoundException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.user.by.username"));) {
@@ -39,12 +41,12 @@ public class UserDaoImpl implements UserDao {
             ResultSet rs = ps.executeQuery();
             return rs.next() ? mapper.extractUser(rs) : null;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new UserNotFoundException("User: " + username + "was not found.");
         }
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(Long id) throws UserNotFoundException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.user.by.id"));) {
@@ -53,7 +55,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet rs = ps.executeQuery();
                 return rs.next() ? mapper.extractUser(rs) : null;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new UserNotFoundException("User: " + id + "was not found.");
         }
     }
 
@@ -92,7 +94,7 @@ public class UserDaoImpl implements UserDao {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new UserAlreadyExistsException("User: " + user.getUsername() + " already exists.");
         }
     }
 
@@ -138,7 +140,7 @@ public class UserDaoImpl implements UserDao {
             return ps.executeQuery().next();
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new UserAlreadyExistsException("User: " + username + " already exists.");
         }
     }
 

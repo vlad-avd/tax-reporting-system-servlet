@@ -11,7 +11,6 @@ import ua.kpi.service.impl.ReportServiceImpl;
 import ua.kpi.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 import static ua.kpi.constant.Pages.*;
 
@@ -21,7 +20,7 @@ public class ReportVerification implements Action {
     ReportService reportService = new ReportServiceImpl();
 
     @Override
-    public String handleRequest(HttpServletRequest request) throws SQLException {
+    public String handleRequest(HttpServletRequest request) {
 
         String reportId = request.getParameter("id");
 
