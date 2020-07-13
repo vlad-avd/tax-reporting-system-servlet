@@ -16,7 +16,7 @@ public class RequestControllerServlet extends HttpServlet {
         try {
             handleRequest(req, resp);
         } catch (SQLException | UserNotFoundException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
@@ -25,7 +25,7 @@ public class RequestControllerServlet extends HttpServlet {
         try {
             handleRequest(req, resp);
         } catch (SQLException | UserNotFoundException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException();
         }
     }
 

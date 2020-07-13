@@ -1,6 +1,5 @@
 package ua.kpi.dao.impl;
 
-import ua.kpi.controller.exception.SqlRuntimeException;
 import ua.kpi.controller.exception.UserAlreadyExistsException;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dao.ConnectionPool;
@@ -9,7 +8,6 @@ import ua.kpi.dao.UserDao;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,7 +77,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(mapper.extractUser(resultSet));
             }
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
         return users;
     }
@@ -111,7 +109,7 @@ public class UserDaoImpl implements UserDao {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -126,7 +124,7 @@ public class UserDaoImpl implements UserDao {
             return rs.next() ? rs.getInt(1) : 0;
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -157,7 +155,7 @@ public class UserDaoImpl implements UserDao {
             return ps.executeQuery().next();
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 }

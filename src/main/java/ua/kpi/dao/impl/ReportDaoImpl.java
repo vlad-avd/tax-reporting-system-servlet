@@ -1,7 +1,6 @@
 package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.ReportNotFoundException;
-import ua.kpi.controller.exception.SqlRuntimeException;
 import ua.kpi.dao.ConnectionPool;
 import ua.kpi.dao.Mapper;
 import ua.kpi.dao.ReportDao;
@@ -11,7 +10,6 @@ import ua.kpi.model.enums.PersonType;
 import ua.kpi.model.enums.ReportStatus;
 import ua.kpi.util.Page;
 
-import javax.sql.DataSource;
 import java.sql.Date;
 import java.sql.*;
 import java.time.LocalDate;
@@ -48,7 +46,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -67,7 +65,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -110,7 +108,7 @@ public class ReportDaoImpl implements ReportDao {
                 reports.add(mapper.extractReport(resultSet2));
             }
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
         return reports;
     }
@@ -166,7 +164,7 @@ public class ReportDaoImpl implements ReportDao {
                 reports.add(mapper.extractReport(resultSet));
             }
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
         return reports;
     }
@@ -182,7 +180,7 @@ public class ReportDaoImpl implements ReportDao {
             return rs.next() ? rs.getInt(1) : 0;
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -204,7 +202,7 @@ public class ReportDaoImpl implements ReportDao {
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -253,12 +251,12 @@ public class ReportDaoImpl implements ReportDao {
                 try {
                     connection.rollback();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
-                throw new SqlRuntimeException(ex);
+                throw new RuntimeException(ex);
             }
         } catch (SQLException ex){
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -291,12 +289,12 @@ public class ReportDaoImpl implements ReportDao {
                 try {
                     connection.rollback();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(ex);
                 }
-                throw new SqlRuntimeException(ex);
+                throw new RuntimeException(ex);
             }
         } catch (SQLException ex){
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -317,7 +315,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return inspectorIds;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -337,7 +335,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return inspectorIds;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -358,7 +356,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return replacedInspectorIds;
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -381,7 +379,7 @@ public class ReportDaoImpl implements ReportDao {
             return reportsNumber;
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -406,7 +404,7 @@ public class ReportDaoImpl implements ReportDao {
             return reportsNumber;
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -431,7 +429,7 @@ public class ReportDaoImpl implements ReportDao {
                 reports.add(mapper.extractReport(resultSet2));
             }
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
         return reports;
     }
@@ -515,7 +513,7 @@ public class ReportDaoImpl implements ReportDao {
             return ps.execute();
 
         } catch (SQLException ex) {
-            throw new SqlRuntimeException(ex);
+            throw new RuntimeException(ex);
         }
     }
 }
