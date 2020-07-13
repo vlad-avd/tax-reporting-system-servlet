@@ -19,8 +19,7 @@ public class Logout implements Action {
 
         HttpSession session = request.getSession();
         logger.debug("User: " + session.getAttribute("username") + "logged out.");
-        session.removeAttribute("username");
-        session.removeAttribute("role");
+        session.invalidate();
 
         return REDIRECT + LOGIN_PATH;
     }

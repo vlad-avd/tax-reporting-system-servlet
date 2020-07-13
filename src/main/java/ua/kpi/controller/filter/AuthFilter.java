@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static ua.kpi.constant.Pages.*;
-
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -32,8 +30,7 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         }
         else {
-//            ((HttpServletResponse) servletResponse).sendError();
-            request.getRequestDispatcher(ROOT_FOLDER + TEMPLATE_PAGES + ERROR_403).forward(request, servletResponse);
+            ((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }
 

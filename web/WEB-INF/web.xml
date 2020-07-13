@@ -46,6 +46,10 @@
         <exception-type>java.lang.Exception</exception-type>
         <location>/WEB-INF/view/template/error-page.jsp</location>
     </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/view/template/error-403.jsp</location>
+    </error-page>
 
     <listener>
         <listener-class>ua.kpi.controller.listener.SessionListener</listener-class>
