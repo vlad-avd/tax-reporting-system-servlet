@@ -3,6 +3,7 @@ package ua.kpi.controller.action.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.dto.PageableReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.service.ReportService;
@@ -23,7 +24,8 @@ public class ReportAction implements Action {
         String reportId = request.getParameter("id");
         if(reportId != null) {
             Long id = Long.parseLong(reportId);
-            Report report = reportService.getReportById(id);
+            Report report = reportService.getReportById(id)
+                    .orElseThrow(() -> new ReportNotFoundException("Report: " + reportId + " was not found"));
             request.setAttribute("replaceInspector", true);
             request.setAttribute("report", report);
             if(reportService.isPossiblyToReplaceInspector(id)){

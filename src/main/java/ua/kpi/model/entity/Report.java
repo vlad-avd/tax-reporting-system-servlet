@@ -27,7 +27,6 @@ public class Report {
     private Long inspectorId;
 
     private LocalDate created;
-    private LocalDate lastEdit;
 
     public Long getId() {
         return id;
@@ -71,10 +70,6 @@ public class Report {
 
     public LocalDate getCreated() {
         return created;
-    }
-
-    public LocalDate getLastEdit() {
-        return lastEdit;
     }
 
     public Long getTaxpayerId() {
@@ -168,11 +163,5 @@ public class Report {
             Report.this.created = created;
             return this;
         }
-
-        public Builder setLastEdit(LocalDate lastEdit) {
-            Report.this.lastEdit = lastEdit;
-            return this;
-        }
-
     }
 }

@@ -25,7 +25,8 @@ public class EditProfile extends MultipleRequest implements Action {
     protected String handleGetRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
         String role = request.getSession().getAttribute("role").toString();
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User: " + userId + " was not found."));
         request.setAttribute("user", user);
         request.setAttribute("role", role);
 

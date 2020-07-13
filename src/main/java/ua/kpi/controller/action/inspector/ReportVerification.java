@@ -1,6 +1,7 @@
 package ua.kpi.controller.action.inspector;
 
 import ua.kpi.controller.action.Action;
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.dto.PageableReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.RejectionReason;
@@ -26,7 +27,8 @@ public class ReportVerification implements Action {
 
         if(reportId != null){
             Long id = Long.parseLong(reportId);
-            Report report = reportService.getReportById(id);
+            Report report = reportService.getReportById(id)
+                    .orElseThrow(() -> new ReportNotFoundException("Report: " + reportId + " was not found"));
             request.setAttribute("report", report);
             RejectionReason[] rejectionReasons = RejectionReason.values();
             request.setAttribute("rejectionReasons", rejectionReasons);

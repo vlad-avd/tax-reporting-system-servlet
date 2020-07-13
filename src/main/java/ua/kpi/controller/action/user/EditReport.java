@@ -3,6 +3,7 @@ package ua.kpi.controller.action.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.model.enums.PersonType;
@@ -28,7 +29,8 @@ public class EditReport implements Action {
 
         String update = request.getParameter("update");
         Long reportId = Long.parseLong(request.getParameter("id"));
-        Report report = reportService.getReportById(reportId);
+        Report report = reportService.getReportById(reportId)
+                .orElseThrow(() -> new ReportNotFoundException("Report: " + reportId + " was not found"));
         ReportDto reportDto = ReportDto.newBuilder()
                 .setId(reportId)
                 .build();

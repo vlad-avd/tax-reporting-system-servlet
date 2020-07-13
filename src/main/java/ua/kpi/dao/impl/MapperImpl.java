@@ -26,12 +26,6 @@ public class MapperImpl implements Mapper {
 
     @Override
     public Report extractReport(ResultSet resultSet) throws SQLException {
-            Date lastEdit = resultSet.getDate("last_edit");
-            LocalDate lastEditDate = null;
-            if (lastEdit != null) {
-                lastEditDate = lastEdit.toLocalDate();
-            }
-
             String rejectReason = resultSet.getString("rejection_reason");
             RejectionReason rejectionReason = null;
             if (rejectReason != null) {
@@ -52,7 +46,6 @@ public class MapperImpl implements Mapper {
                     .setComment(resultSet.getString("inspector_comment"))
                     .setCreated(resultSet.getDate("created").toLocalDate())
                     .setRejectionReason(rejectionReason)
-                    .setLastEdit(lastEditDate)
                     .build();
     }
 }

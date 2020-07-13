@@ -46,7 +46,7 @@ public class IndividualPersonReport extends MultipleRequest implements Action {
                     .setWorkplace(workplace)
                     .setSalary(salary)
                     .setTaxpayerId(userId)
-                    .setInspectorId(reportService.getInspectorIdWithLeastReportsNumber(0L))
+                    .setInspectorId(reportService.getInspectorIdWithLeastReportsNumber(0L, true))
                     .setReportStatus(ReportStatus.ON_VERIFYING)
                     .setPersonType(PersonType.INDIVIDUAL_PERSON)
                     .build();

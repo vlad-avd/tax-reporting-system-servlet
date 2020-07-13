@@ -6,6 +6,7 @@ import ua.kpi.model.entity.Report;
 import ua.kpi.util.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReportService {
     boolean createIndividualPersonReport(ReportDto reportDto);
@@ -14,7 +15,7 @@ public interface ReportService {
 
     PageableReportDto getReportsByUserId(Long id, Page page);
 
-    Report getReportById(Long id);
+    Optional<Report> getReportById(Long id);
 
     boolean updateVerifiedReport(ReportDto reportDto);
 
@@ -22,7 +23,7 @@ public interface ReportService {
 
     boolean setReplacedInspector(Long reportId);
 
-    Long getInspectorIdWithLeastReportsNumber(Long reportId);
+    Long getInspectorIdWithLeastReportsNumber(Long reportId, boolean createReport);
 
     boolean isPossiblyToReplaceInspector(Long reportId);
 

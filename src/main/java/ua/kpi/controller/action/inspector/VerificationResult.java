@@ -3,6 +3,7 @@ package ua.kpi.controller.action.inspector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.kpi.controller.action.Action;
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.dto.ReportDto;
 import ua.kpi.model.entity.Report;
 import ua.kpi.service.ReportService;
@@ -26,7 +27,8 @@ public class VerificationResult implements Action {
         String comment = request.getParameter("comment");
         Long id = Long.parseLong(reportId);
 
-        Report report = reportService.getReportById(id);
+        Report report = reportService.getReportById(id)
+                .orElseThrow(() -> new ReportNotFoundException("Report: " + reportId + " was not found"));
 
         ReportDto reportDto = ReportDto.newBuilder()
                 .setId(report.getId())
@@ -39,7 +41,6 @@ public class VerificationResult implements Action {
                 .setTaxpayerId(report.getTaxpayerId())
                 .setWorkplace(report.getWorkplace())
                 .setCreated(report.getCreated())
-                .setLastEdit(report.getLastEdit())
                 .build();
 
         reportService.verifyReport(reportDto, reportStatus, rejectionReason, comment);

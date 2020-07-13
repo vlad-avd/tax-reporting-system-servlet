@@ -5,6 +5,7 @@ import ua.kpi.util.PermissionChecker;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static ua.kpi.constant.Pages.*;
@@ -19,6 +20,7 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         PermissionChecker permissionChecker = new PermissionChecker();
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         Role role = Role.ROLE_GUEST;
 
@@ -30,6 +32,7 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         }
         else {
+//            ((HttpServletResponse) servletResponse).sendError();
             request.getRequestDispatcher(ROOT_FOLDER + TEMPLATE_PAGES + ERROR_403).forward(request, servletResponse);
         }
     }

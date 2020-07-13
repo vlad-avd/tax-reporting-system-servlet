@@ -7,6 +7,8 @@ import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 import ua.kpi.service.GuestService;
 
+import java.util.Optional;
+
 /**
  * Class for receiving and processing data necessary for the guest.
  * @author Vladyslav Avdiienko
@@ -27,8 +29,8 @@ public class GuestServiceImpl implements GuestService {
      * @see User
      */
     @Override
-    public User getUserByUsername(String username) throws UserNotFoundException {
-        return userDao.getUserByUsername(username);
+    public Optional<User> getUserByUsername(String username) throws UserNotFoundException {
+        return Optional.ofNullable(userDao.getUserByUsername(username));
     }
 
     /** Create new user with given data.

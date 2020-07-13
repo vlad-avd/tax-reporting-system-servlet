@@ -12,10 +12,10 @@ public class PermissionChecker {
     private Map rolePages = new HashMap<>();
 
     public PermissionChecker() {
-        rolePages.put(Role.ROLE_GUEST, Arrays.asList("home", "registration", "login"));
-        rolePages.put(Role.ROLE_USER, Arrays.asList("home", "registration", "login", "report.*", "profile.*", "logout"));
-        rolePages.put(Role.ROLE_INSPECTOR, Arrays.asList("home", "registration", "login", "report.*", "profile.*", "logout", "report-verification.*"));
-        rolePages.put(Role.ROLE_ADMIN, Arrays.asList("home", "registration", "login", "report.*", "profile.*", "logout", "report-verification.*", "user.*", "reports.*"));
+        rolePages.put(Role.ROLE_GUEST, Arrays.asList("", "home", "registration", "login"));
+        rolePages.put(Role.ROLE_USER, Arrays.asList("", "home", "registration", "login", "report.*", "profile.*", "logout"));
+        rolePages.put(Role.ROLE_INSPECTOR, Arrays.asList("", "home", "registration", "login", "report.*", "profile.*", "logout", "report-verification.*"));
+        rolePages.put(Role.ROLE_ADMIN, Arrays.asList("", "home", "registration", "login", "report.*", "profile.*", "logout", "report-verification.*", "user.*", "reports.*"));
     }
 
     public boolean checkPermission(HttpServletRequest request, Role role){

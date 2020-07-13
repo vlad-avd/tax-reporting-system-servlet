@@ -25,7 +25,8 @@ public class UserStatistics implements Action {
     public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getParameter("id"));
 
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User: " + userId + " was not found."));
         StatisticsDto statistics = adminService.getStatistics(userId);
         logger.debug("User: " + userId + " statistics were received.");
         request.setAttribute("user", user);

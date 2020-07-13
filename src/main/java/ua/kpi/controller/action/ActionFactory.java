@@ -20,11 +20,13 @@ public class ActionFactory {
 
     private static ActionFactory instance;
 
-    synchronized public static ActionFactory getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new ActionFactory();
+    public static ActionFactory getInstance() {
+        if (instance == null) {
+            synchronized (ActionFactory.class) {
+                if(instance == null) {
+                    instance = new ActionFactory();
+                }
+            }
         }
         return instance;
     }

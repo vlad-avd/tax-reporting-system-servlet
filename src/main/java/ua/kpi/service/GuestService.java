@@ -4,9 +4,11 @@ import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
 
+import java.util.Optional;
+
 public interface GuestService {
 
-    User getUserByUsername(String username) throws UserNotFoundException;
+    Optional<User> getUserByUsername(String username) throws UserNotFoundException;
 
     boolean createUser(UserDto user);
 

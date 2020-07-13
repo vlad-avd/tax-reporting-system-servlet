@@ -36,5 +36,4 @@ public interface Pages {
     public static final String REPORT_VERIFICATION_LIST_PATH = "report-verification";
 
     public static final String REDIRECT = "redirect:";
-    public static final String ERROR = "error-page.jsp";
 }

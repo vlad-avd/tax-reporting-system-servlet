@@ -23,7 +23,6 @@ public class ReportDto {
     private String comment;
 
     private LocalDate created;
-    private LocalDate lastEdit;
 
     private Long taxpayerId;
     private Long inspectorId;
@@ -70,10 +69,6 @@ public class ReportDto {
 
     public LocalDate getCreated() {
         return created;
-    }
-
-    public LocalDate getLastEdit() {
-        return lastEdit;
     }
 
     public Long getTaxpayerId() {
@@ -167,11 +162,5 @@ public class ReportDto {
             ReportDto.this.created = created;
             return this;
         }
-
-        public ReportDto.Builder setLastEdit(LocalDate lastEdit) {
-            ReportDto.this.lastEdit = lastEdit;
-            return this;
-        }
-
     }
 }

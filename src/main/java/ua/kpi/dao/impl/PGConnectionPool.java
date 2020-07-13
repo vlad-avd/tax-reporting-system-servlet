@@ -26,8 +26,7 @@ public class PGConnectionPool implements ConnectionPool {
     }
 
     public static DataSource getInstance(){
-        if (dataSource == null)
-        {
+        if (dataSource == null) {
             synchronized (PGConnectionPool.class) {
                 if(dataSource == null) {
                     dataSource = setProps();
@@ -39,6 +38,6 @@ public class PGConnectionPool implements ConnectionPool {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return getInstance().getConnection();
     }
 }

@@ -17,7 +17,8 @@ public class Profile implements Action {
     @Override
     public String handleRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User: " + userId + " was not found."));
         request.setAttribute("user", user);
         return ROOT_FOLDER + USER_PAGES + PROFILE;
     }

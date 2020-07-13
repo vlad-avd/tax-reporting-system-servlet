@@ -35,7 +35,6 @@ public class Registration extends MultipleRequest {
         UserDto user = UserDto.newBuilder()
                 .setUsername(username)
                 .setPassword(password)
-                .setPasswordConfirmation(passwordConfirmation)
                 .setRole(Role.ROLE_USER)
                 .build();
 

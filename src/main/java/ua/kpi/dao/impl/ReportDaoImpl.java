@@ -2,6 +2,7 @@ package ua.kpi.dao.impl;
 
 import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.controller.exception.SqlRuntimeException;
+import ua.kpi.dao.ConnectionPool;
 import ua.kpi.dao.Mapper;
 import ua.kpi.dao.ReportDao;
 import ua.kpi.dto.ReportDto;
@@ -19,21 +20,21 @@ import java.util.stream.Collectors;
 
 public class ReportDaoImpl implements ReportDao {
 
-    private final DataSource dataSource;
+    private final ConnectionPool connectionPool;
 
     private final Mapper mapper;
 
     private final ResourceBundle queries;
 
     {
-        dataSource = PGConnectionPool.getInstance();
+        connectionPool = new PGConnectionPool();
         queries = ResourceBundle.getBundle("sql-queries");
         mapper = new MapperImpl();
     }
 
     @Override
     public boolean saveIndividualPersonReport(ReportDto reportDto) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("create.individual.person.report"));) {
             ps.setString(1, reportDto.getFullName());
@@ -53,7 +54,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean saveLegalEntityReport(ReportDto reportDto) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("create.legal.entity.report"))) {
             ps.setString(1, reportDto.getCompanyName());
@@ -89,7 +90,7 @@ public class ReportDaoImpl implements ReportDao {
 
         List<Report> reports = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.all.reports.by.taxpayer.id"));
              PreparedStatement ps2 = connection
@@ -101,8 +102,6 @@ public class ReportDaoImpl implements ReportDao {
             while (resultSet1.next()) {
                 reports.add(mapper.extractReport(resultSet1));
             }
-
-
 
             ps2.setLong(1, id);
             ResultSet resultSet2 =  ps2.executeQuery();
@@ -121,7 +120,7 @@ public class ReportDaoImpl implements ReportDao {
 
         Report report = null;
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.report.by.id"));
              PreparedStatement ps2 = connection
@@ -154,7 +153,7 @@ public class ReportDaoImpl implements ReportDao {
 
         int startIndex = page.getCurrentPage() * page.getRecordsPerPage() - page.getRecordsPerPage();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.verification.reports"));) {
             ps.setLong(1, inspectorId);
@@ -174,7 +173,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int getVerificationReportsNumberByInspectorId(Long inspectorId) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.verification.reports.number.by.inspector.id"));) {
 
@@ -189,7 +188,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean updateVerifiedReport(ReportDto reportDto) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("update.verified.report"));) {
             ps.setString(1, reportDto.getReportStatus().toString());
@@ -211,7 +210,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean moveReportToArchive(ReportDto reportDto) {
-        try (Connection connection = dataSource.getConnection();) {
+        try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps1 = connection
                     .prepareStatement(queries.getString("delete.report"));
                  PreparedStatement ps2 = connection
@@ -236,21 +235,15 @@ public class ReportDaoImpl implements ReportDao {
                 ps2.setLong(7, reportDto.getInspectorId());
                 ps2.setLong(8, reportDto.getTaxpayerId());
                 ps2.setDate(9, Date.valueOf(reportDto.getCreated()));
-                if(reportDto.getLastEdit() != null) {
-                    ps2.setDate(10, Date.valueOf(reportDto.getLastEdit()));
-                }
-                else {
-                    ps2.setNull(10, Types.DATE);
-                }
-                ps2.setString(11, reportDto.getReportStatus().toString());
-                ps2.setString(12, reportDto.getPersonType().toString());
+                ps2.setString(10, reportDto.getReportStatus().toString());
+                ps2.setString(11, reportDto.getPersonType().toString());
                 if(reportDto.getRejectionReason() != null) {
-                    ps2.setString(13, reportDto.getRejectionReason().toString());
+                    ps2.setString(12, reportDto.getRejectionReason().toString());
                 }
                 else {
-                    ps2.setNull(13, Types.VARCHAR);
+                    ps2.setNull(12, Types.VARCHAR);
                 }
-                ps2.setString(14, reportDto.getComment());
+                ps2.setString(13, reportDto.getComment());
 
                 ps2.executeUpdate();
 
@@ -271,7 +264,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId) {
-        try (Connection connection = dataSource.getConnection();) {
+        try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps1 = connection
                     .prepareStatement(queries.getString("set.replaced.inspector"));
                  PreparedStatement ps2 = connection
@@ -312,7 +305,7 @@ public class ReportDaoImpl implements ReportDao {
 
         List<Long> inspectorIds = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.all.inspector.ids"));) {
 
@@ -332,7 +325,7 @@ public class ReportDaoImpl implements ReportDao {
     public List<Long> getAllInspectorIdsFromReports() {
         List<Long> inspectorIds = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.all.inspector.ids.from.reports"));) {
 
@@ -352,7 +345,7 @@ public class ReportDaoImpl implements ReportDao {
     public List<Long> getReplacedInspectorsByReportId(Long reportId) {
         List<Long> replacedInspectorIds = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.replaced.inspectors.by.report.id"));) {
             ps.setLong(1, reportId);
@@ -371,7 +364,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int getReportsNumber() {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.reports.number"));
              PreparedStatement ps2 = connection
@@ -394,7 +387,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public int getReportsNumberByUserId(Long userId) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.reports.number.by.user.id"));
              PreparedStatement ps2 = connection
@@ -420,7 +413,7 @@ public class ReportDaoImpl implements ReportDao {
     public List<Report> getAllReports() {
         List<Report> reports = new ArrayList<>();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps1 = connection
                      .prepareStatement(queries.getString("get.all.reports"));
              PreparedStatement ps2 = connection
@@ -508,7 +501,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public boolean updateReport(ReportDto reportDto) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("update.report.content"));) {
 

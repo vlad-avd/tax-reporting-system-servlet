@@ -23,7 +23,8 @@ public class EditUserProfile extends MultipleRequest{
     @Override
     protected String handleGetRequest(HttpServletRequest request) throws UserNotFoundException {
         Long userId = Long.parseLong(request.getParameter("id"));
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User: " + userId + " was not found."));
         request.setAttribute("user", user);
         request.setAttribute("roles", Role.values());
 
@@ -56,11 +57,13 @@ public class EditUserProfile extends MultipleRequest{
             logger.debug("User: " + userId + " has been updated.");
             return REDIRECT + USER_LIST_PATH;
         } else {
+            request.setAttribute("user", userDto);
+            request.setAttribute("roles", Role.values());
             request.setAttribute("usernameIsValid", userValidator.isValidUsername(username));
             request.setAttribute("passwordIsValid", userValidator.isValidPassword(password));
             request.setAttribute("passwordMismatch", userValidator.arePasswordsMatch(password, passwordConfirmation));
 
-            return ROOT_FOLDER + USER_PAGES + EDIT_REPORT;
+            return ROOT_FOLDER + ADMIN_PAGES + EDIT_USER;
         }
     }
 }

@@ -28,7 +28,8 @@ public class UserAction implements Action {
 
         if(userId != null) {
             Long id = Long.parseLong(userId);
-            User user = userService.getUserById(id);
+            User user = userService.getUserById(id)
+                    .orElseThrow(() -> new UserNotFoundException("User: " + userId + " was not found."));
             request.setAttribute("user", user);
             return ROOT_FOLDER + USER_PAGES + REPORT;
         }

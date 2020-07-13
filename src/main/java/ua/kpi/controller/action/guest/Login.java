@@ -33,19 +33,18 @@ public class Login extends MultipleRequest {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        logger.debug("User: " + username + "logged in.");
-
         if(guestService.areUsernameAndPasswordCorrect(username, password)) {
-            User user = guestService.getUserByUsername(username);
+            User user = guestService.getUserByUsername(username)
+                    .orElseThrow(() -> new UserNotFoundException("User: " + username + " was not found."));
             HttpSession session = request.getSession();
             session.setAttribute("username", user.getUsername());
             session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole().toString());
+            logger.debug("User: " + username + "logged in.");
             return REDIRECT + HOME_PATH;
         } else {
             request.setAttribute("wrongUsernameOrPassword", "true");
+            return ROOT_FOLDER + GUEST_PAGES + LOGIN;
         }
-
-        return ROOT_FOLDER + GUEST_PAGES + LOGIN;
     }
 }

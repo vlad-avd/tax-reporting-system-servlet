@@ -3,6 +3,7 @@ package ua.kpi.dao.impl;
 import ua.kpi.controller.exception.SqlRuntimeException;
 import ua.kpi.controller.exception.UserAlreadyExistsException;
 import ua.kpi.controller.exception.UserNotFoundException;
+import ua.kpi.dao.ConnectionPool;
 import ua.kpi.dao.Mapper;
 import ua.kpi.dao.UserDao;
 import ua.kpi.dto.UserDto;
@@ -19,21 +20,21 @@ import java.util.ResourceBundle;
 
 public class UserDaoImpl implements UserDao {
 
-    private final DataSource dataSource;
+    private final ConnectionPool connectionPool;
 
     private final Mapper mapper;
 
     private final ResourceBundle queries;
 
     {
-        dataSource = PGConnectionPool.getInstance();
+        connectionPool = new PGConnectionPool();
         queries = ResourceBundle.getBundle("sql-queries");
         mapper = new MapperImpl();
     }
 
     @Override
     public User getUserByUsername(String username) throws UserNotFoundException {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.user.by.username"));) {
             ps.setString(1, username);
@@ -47,7 +48,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) throws UserNotFoundException {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.user.by.id"));) {
             ps.setLong(1, id);
@@ -65,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 
         int startIndex = currentPage * recordsPerPage - recordsPerPage;
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.all.users"));) {
 
@@ -85,7 +86,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean createUser(UserDto user) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("create.user"));) {
             ps.setString(1, user.getUsername());
@@ -100,7 +101,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateUser(UserDto userDto) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("update.user"));) {
             ps.setString(1, userDto.getUsername());
@@ -116,7 +117,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int getUsersNumber() {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("get.users.number"));) {
 
@@ -131,7 +132,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean isUserExistsWithUsername(String username) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("is.exists.user.with.username"));) {
 
@@ -146,7 +147,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean areUsernameAndPasswordCorrect(String username, String password) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
                      .prepareStatement(queries.getString("are.username.and.password.correct"));) {
 

@@ -1,5 +1,6 @@
 package ua.kpi.service.impl;
 
+import ua.kpi.controller.exception.ReportNotFoundException;
 import ua.kpi.controller.exception.UserNotFoundException;
 import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.impl.ReportDaoImpl;
@@ -14,6 +15,7 @@ import ua.kpi.service.ReportService;
 import ua.kpi.util.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class for receiving and processing report data.
@@ -70,8 +72,8 @@ public class ReportServiceImpl implements ReportService {
      * @see Report
      */
     @Override
-    public Report getReportById(Long id) {
-        return reportDao.findReportById(id);
+    public Optional<Report> getReportById(Long id) {
+        return Optional.ofNullable(reportDao.findReportById(id));
     }
 
     /** Update report data after verifying.
@@ -101,8 +103,10 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public boolean setReplacedInspector(Long reportId) {
-        Long oldInspectorId = getReportById(reportId).getInspectorId();
-        Long newInspectorId = getInspectorIdWithLeastReportsNumber(reportId);
+        Long oldInspectorId = getReportById(reportId)
+                .orElseThrow((() -> new ReportNotFoundException("Report: " + reportId + " was not found")))
+                .getInspectorId();
+        Long newInspectorId = getInspectorIdWithLeastReportsNumber(reportId, false);
         return reportDao.setReplacedInspector(reportId, oldInspectorId, newInspectorId);
     }
 
@@ -111,10 +115,15 @@ public class ReportServiceImpl implements ReportService {
      * @return Inspector id.
      */
     @Override
-    public Long getInspectorIdWithLeastReportsNumber(Long reportId) {
+    public Long getInspectorIdWithLeastReportsNumber(Long reportId, boolean createReport) {
         List<Long> inspectors = reportDao.getAllInspectorIds();
-        List<Long> replacedInspectors = reportDao.getReplacedInspectorsByReportId(reportId);
-        inspectors.removeAll(replacedInspectors);
+        if(!createReport) {
+            List<Long> replacedInspectors = reportDao.getReplacedInspectorsByReportId(reportId);
+            inspectors.removeAll(replacedInspectors);
+            inspectors.remove(getReportById(reportId)
+                    .orElseThrow(() -> new ReportNotFoundException("Report: " + reportId + " was not found"))
+                    .getInspectorId());
+        }
         List<Long> inspectorIdsInReports = reportDao.getAllInspectorIdsFromReports();
 
         Long inspectorWithLeastReportsNumber = inspectors.get(0);
@@ -143,9 +152,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public boolean isPossiblyToReplaceInspector(Long reportId) {
         List<Long> inspectors = reportDao.getAllInspectorIds();
-        System.out.println("All inspectors: " + inspectors);
         List<Long> replacedInspectors = reportDao.getReplacedInspectorsByReportId(reportId);
-        System.out.println("Replaced inspectors: " + replacedInspectors);
 
         return (inspectors.size() - replacedInspectors.size()) > 1;
     }
