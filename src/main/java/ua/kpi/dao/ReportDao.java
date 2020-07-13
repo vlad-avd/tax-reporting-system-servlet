@@ -17,31 +17,9 @@ public interface ReportDao {
 
     Report findReportById(Long id);
 
-    List<Report> getVerificationReports(Long inspectorId, Page page);
-
-    int getVerificationReportsNumberByInspectorId(Long inspectorId);
-
-    boolean updateVerifiedReport(ReportDto reportDto);
-
-    boolean moveReportToArchive(ReportDto reportDto);
-
-    boolean setReplacedInspector(Long reportId, Long oldInspectorId, Long newInspectorId);
-
-    List<Long> getAllInspectorIds();
-
-    List<Long> getAllInspectorIdsFromReports();
-
-    List<Long> getReplacedInspectorsByReportId(Long reportId);
-
     int getReportsNumber();
 
     int getReportsNumberByUserId(Long userId);
-
-    List<Report> getAllReports(int currentPage, int recordsPerPage);
-
-    List<Report> getFilteredReports(String sortByDate, String sortByReportStatus, int currentPage, int recordsPerPage);
-
-    int getFilteredReportsNumber(String sortByReportStatus);
 
     boolean updateReport(ReportDto reportDto);
 }

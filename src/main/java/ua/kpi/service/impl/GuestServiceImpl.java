@@ -1,7 +1,9 @@
 package ua.kpi.service.impl;
 
 import ua.kpi.controller.exception.UserNotFoundException;
+import ua.kpi.dao.GuestDao;
 import ua.kpi.dao.UserDao;
+import ua.kpi.dao.impl.GuestDaoImpl;
 import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.UserDto;
 import ua.kpi.model.entity.User;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class GuestServiceImpl implements GuestService {
 
     private final UserDao userDao;
+    private final GuestDao guestDao;
 
     {
         userDao = new UserDaoImpl();
+        guestDao = new GuestDaoImpl();
     }
 
     /** Return user with given username.
@@ -40,7 +44,7 @@ public class GuestServiceImpl implements GuestService {
      */
     @Override
     public boolean createUser(UserDto user) {
-        return userDao.createUser(user.getBuilder()
+        return guestDao.createUser(user.getBuilder()
                 .setUsername(user.getUsername())
                 .setPassword(user.getPassword())
                 .build());
@@ -52,7 +56,7 @@ public class GuestServiceImpl implements GuestService {
      */
     @Override
     public boolean isUserExistsWithUsername(String username) {
-        return userDao.isUserExistsWithUsername(username);
+        return guestDao.isUserExistsWithUsername(username);
     }
 
     /** Check if the user exists with the given username and password.

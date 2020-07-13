@@ -59,45 +59,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAllUsers(int currentPage, int recordsPerPage) {
-        List<User> users = new ArrayList<>();
-
-        int startIndex = currentPage * recordsPerPage - recordsPerPage;
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("get.all.users"));) {
-
-            ps.setInt(1, recordsPerPage);
-            ps.setInt(2, startIndex);
-
-            ResultSet resultSet =  ps.executeQuery();
-
-            while (resultSet.next()) {
-                users.add(mapper.extractUser(resultSet));
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        return users;
-    }
-
-    @Override
-    public boolean createUser(UserDto user) {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("create.user"));) {
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getRole().toString());
-            ps.execute();
-            return true;
-        } catch (SQLException ex) {
-            throw new UserAlreadyExistsException("User: " + user.getUsername() + " already exists.");
-        }
-    }
-
-    @Override
     public boolean updateUser(UserDto userDto) {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection
@@ -110,36 +71,6 @@ public class UserDaoImpl implements UserDao {
             return true;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public int getUsersNumber() {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("get.users.number"));) {
-
-            ResultSet rs = ps.executeQuery();
-
-            return rs.next() ? rs.getInt(1) : 0;
-
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public boolean isUserExistsWithUsername(String username) {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection
-                     .prepareStatement(queries.getString("is.exists.user.with.username"));) {
-
-            ps.setString(1,username);
-
-            return ps.executeQuery().next();
-
-        } catch (SQLException ex) {
-            throw new UserAlreadyExistsException("User: " + username + " already exists.");
         }
     }
 

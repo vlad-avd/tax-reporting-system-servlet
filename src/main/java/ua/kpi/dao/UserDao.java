@@ -11,15 +11,7 @@ public interface UserDao {
 
     User getUserById(Long id) throws UserNotFoundException;
 
-    boolean createUser(UserDto userDTO);
-
-    List<User> getAllUsers(int currentPage, int recordsPerPage);
-
     boolean updateUser(UserDto userDto);
-
-    int getUsersNumber();
-
-    boolean isUserExistsWithUsername(String username);
 
     boolean areUsernameAndPasswordCorrect(String username, String password);
 }

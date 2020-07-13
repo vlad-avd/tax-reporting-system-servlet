@@ -1,7 +1,9 @@
 package ua.kpi.service.impl;
 
+import ua.kpi.dao.AdminDao;
 import ua.kpi.dao.ReportDao;
 import ua.kpi.dao.UserDao;
+import ua.kpi.dao.impl.AdminDaoImpl;
 import ua.kpi.dao.impl.ReportDaoImpl;
 import ua.kpi.dao.impl.UserDaoImpl;
 import ua.kpi.dto.PageableReportDto;
@@ -24,12 +26,12 @@ import java.util.stream.Collectors;
  */
 public class AdminServiceImpl implements AdminService {
 
-    private final UserDao userDao;
     private final ReportDao reportDao;
+    private final AdminDao adminDao;
 
     {
-        userDao = new UserDaoImpl();
         reportDao = new ReportDaoImpl();
+        adminDao = new AdminDaoImpl();
     }
 
     /** Returns user edit form filled with current user data.
@@ -41,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public PageableUserDto getAllUsers(Page page) {
         PageableUserDto pageableUserDto = new PageableUserDto();
-        pageableUserDto.setUserPage(userDao.getAllUsers(page.getCurrentPage(), page.getRecordsPerPage()));
+        pageableUserDto.setUserPage(adminDao.getAllUsers(page.getCurrentPage(), page.getRecordsPerPage()));
         pageableUserDto.setRowNumber(getUsersNumber());
 
         return  pageableUserDto;
@@ -106,7 +108,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public int getUsersNumber() {
-        return userDao.getUsersNumber();
+        return adminDao.getUsersNumber();
     }
 
     /** Returns all reports.
@@ -116,7 +118,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public List<Report> getAllReports(int currentPage, int recordsPerPage) {
-        return reportDao.getAllReports(currentPage, recordsPerPage);
+        return adminDao.getAllReports(currentPage, recordsPerPage);
     }
 
     /** Returns total number of reports.
@@ -148,7 +150,7 @@ public class AdminServiceImpl implements AdminService {
             reports.setReportsPage(getAllReports(page.getCurrentPage(), page.getRecordsPerPage()));
             reports.setRowNumber(getReportsNumber());
         } else {
-            reports.setReportsPage(reportDao.getFilteredReports(sortByDate, sortByReportStatus, page.getCurrentPage(), page.getRecordsPerPage()));
+            reports.setReportsPage(adminDao.getFilteredReports(sortByDate, sortByReportStatus, page.getCurrentPage(), page.getRecordsPerPage()));
             reports.setRowNumber(getFilteredReportsNumber(sortByReportStatus));
         }
 
@@ -162,7 +164,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public int getFilteredReportsNumber(String sortByReportStatus) {
-        return reportDao.getFilteredReportsNumber(sortByReportStatus);
+        return adminDao.getFilteredReportsNumber(sortByReportStatus);
     }
 
 
